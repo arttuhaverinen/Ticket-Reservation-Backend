@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System.Reflection.Metadata.Ecma335;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 
@@ -12,7 +14,8 @@ namespace TicketReservationApp.Repositories
         }
         public void DeleteTimetable(int timetableId)
         {
-            var timetable = _dataContext.Timetables.Remove(GetTimetabletByID(timetableId));
+            _dataContext.Timetables.Remove(GetTimetabletByID(timetableId));
+            _dataContext.SaveChangesAsync();
             
         }
 
@@ -28,6 +31,12 @@ namespace TicketReservationApp.Repositories
             return timetable;
         }
 
+        public async Task<ActionResult<IEnumerable<Timetables>>> GetTimetablesByLocation(string departure, string destination)
+        {
+            var timetable =  _dataContext.Timetables.Where(timetable => timetable.Departure == departure && timetable.Destination == destination).ToList();
+            return timetable;
+        }
+
         public Timetables InsertTimetable(Timetables timetable)
         {
             _dataContext.Timetables.Add(timetable);
@@ -40,5 +49,7 @@ namespace TicketReservationApp.Repositories
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

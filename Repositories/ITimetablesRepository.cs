@@ -1,4 +1,5 @@
-﻿using TicketReservationApp.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using TicketReservationApp.Models;
 
 namespace TicketReservationApp.Repositories
 {
@@ -9,5 +10,7 @@ namespace TicketReservationApp.Repositories
         Timetables InsertTimetable(Timetables timetable);
         void DeleteTimetable(int timetableId);
         void UpdateTimetable(Timetables timetable);
+
+        Task<ActionResult<IEnumerable<Timetables>>> GetTimetablesByLocation(string departure, string location);
     }
 }

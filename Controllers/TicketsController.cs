@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 
@@ -26,6 +29,22 @@ namespace TicketReservationApp.Controllers
         public async Task<ActionResult<IEnumerable<Tickets>>> GetTickets()
         {
             return await _context.Tickets.ToListAsync();
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("ByUsers")]
+        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser()
+        {
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            Console.WriteLine("tickets, user id");
+            Console.WriteLine(userName);
+            return  _context.Tickets.Where(ticket => ticket.Name.Contains(userName)).ToList();
+        }
+        [HttpGet]
+        [Route("ByTimetable/{id}")]
+        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser(string id)
+        {
+            return _context.Tickets.Where(ticket => ticket.TimetablesId.Contains(id)).ToList();
         }
 
         // GET: api/Tickets/5
@@ -85,6 +104,7 @@ namespace TicketReservationApp.Controllers
         }
 
         // DELETE: api/Tickets/5
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTickets(int id)
         {
@@ -104,5 +124,7 @@ namespace TicketReservationApp.Controllers
         {
             return _context.Tickets.Any(e => e.Id == id);
         }
+        
     }
+        
 }

@@ -45,7 +45,23 @@ namespace TicketReservationApp.Controllers
 
             return timetables;
         }
+        [HttpGet]
+        [Route("{departure}/{destination}")]
+        public async Task<ActionResult<IEnumerable<Timetables>>> GetTimetablesByLocations(string departure, string destination)
+        {
+           var timetables = await _timetablesRepository.GetTimetablesByLocation(departure, destination);
+            return timetables;
+        }
 
+
+        /*
+
+        [HttpGet("/{paramOne}/{paramTwo}")]
+        public string Get(int paramOne, int paramTwo)
+        {
+            return "The [Route] with multiple params worked";
+        }
+        */
         // PUT: api/Timetables/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /*
