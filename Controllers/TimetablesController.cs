@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketReservationApp.Data;
+using TicketReservationApp.Dto;
 using TicketReservationApp.Models;
 using TicketReservationApp.Repositories;
 
@@ -24,26 +26,46 @@ namespace TicketReservationApp.Controllers
 
         // GET: api/Timetables
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Timetables>>> GetTimetables()
+        public async Task<ActionResult<IEnumerable<TimetableDto>>> GetTimetables()
         {
             //return await _context.Timetables.ToListAsync();
-            var timetables = _timetablesRepository.GetTimetables();
-            return timetables;
+            var timetables = await _timetablesRepository.GetTimetables();
+            var timetablesDto = timetables.Select(t => new TimetableDto()
+            {
+                EndTime = t.EndTime,
+                Day = t.Day,    
+                Departure = t.Departure,
+                Destination = t.Destination,
+                Price = t.Price,
+                StartTime = t.StartTime
+            }).ToList();
+           
+            return Ok(timetablesDto);
         }
 
         // GET: api/Timetables/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Timetables>> GetTimetables(int id)
+        public async Task<ActionResult<TimetableDto>> GetTimetables(int id)
         {
             //var timetables = await _context.Timetables.FindAsync(id);
-            var timetables = _timetablesRepository.GetTimetabletByID(id);
+            var timetables = await _timetablesRepository.GetTimetabletByID(id);
 
             if (timetables == null)
             {
                 return NotFound();
             }
 
-            return timetables;
+            var timetableDto = new TimetableDto()
+            {
+                EndTime = timetables.EndTime,
+                Day = timetables.Day,
+                Departure = timetables.Departure,
+                Destination = timetables.Destination,
+                Price = timetables.Price,
+                StartTime = timetables.StartTime
+            };
+
+            return timetableDto;
         }
         [HttpGet]
         [Route("{departure}/{destination}")]
@@ -99,18 +121,27 @@ namespace TicketReservationApp.Controllers
         // POST: api/Timetables
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Timetables>> PostTimetables(Timetables timetables)
+        public async Task<ActionResult<TimetableDto>> PostTimetables(Timetables timetables)
         {
             //_context.Timetables.Add(timetables);
-            var timetable = _timetablesRepository.InsertTimetable(timetables);
+            var timetable = await _timetablesRepository.InsertTimetable(timetables);
 
+            var timetableDto = new TimetableDto()
+            {
+                EndTime = timetable.EndTime,
+                Day = timetable.Day,
+                Departure = timetable.Departure,
+                Destination = timetable.Destination,
+                Price = timetable.Price,
+                StartTime = timetable.StartTime
+            };
 
-            return timetable;
+            return timetableDto;
         }
 
         // DELETE: api/Timetables/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTimetables(int id)
+        public async Task<ActionResult<TimetableDto>> DeleteTimetables(int id)
         {
             var timetables = _timetablesRepository.GetTimetabletByID(id);
 
@@ -119,10 +150,21 @@ namespace TicketReservationApp.Controllers
                 return NotFound();
             }
 
-            _timetablesRepository.DeleteTimetable(id);
-            
+            var deletedTimetable = await _timetablesRepository.DeleteTimetable(id);
 
-            return NoContent();
+
+            var timetableDto = new TimetableDto()
+            {
+                EndTime = deletedTimetable.EndTime,
+                Day = deletedTimetable.Day,
+                Departure = deletedTimetable.Departure,
+                Destination = deletedTimetable.Destination,
+                Price = deletedTimetable.Price,
+                StartTime = deletedTimetable.StartTime
+
+            };
+
+            return timetableDto;
         }
 
      

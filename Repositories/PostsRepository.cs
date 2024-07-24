@@ -3,6 +3,9 @@ using System.Security.Claims;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TicketReservationApp.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TicketReservationApp.Repositories
 {
@@ -14,47 +17,63 @@ namespace TicketReservationApp.Repositories
             _dataContext = dataContext;
         }
 
-        public Posts AddPost (Posts post)
+        public async Task<Posts> AddPost (Posts post)
         {
-            _dataContext.Posts.Add(post);
-            _dataContext.SaveChanges();
+            
+            await _dataContext.Posts.AddAsync(post);
+            await _dataContext.SaveChangesAsync();
             return post;
         }
 
-        public void DeletePost(int studentID)
+        public async Task<Posts> DeletePost(int postId)
         {
-            var timetable = _dataContext.Posts.Remove(GetPostByID(studentID));
-            //var timetable = _dataContext.Timetables.Remove(GetTimetabletByID(timetableId));
-            _dataContext.SaveChanges();
-
-
+            var post = await _dataContext.Posts.FindAsync(postId);
+            if (post == null) 
+            {
+                return null;
+            }
+            _dataContext.Posts.Remove(post);
+            await _dataContext.SaveChangesAsync();
+            return post;
         }
 
 
-        public Posts GetPostByID(int studentId)
+        public async Task<Posts> GetPostByID(int studentId)
         {
-            Posts post = _dataContext.Posts.FirstOrDefault(post => post.Id == studentId);
+            var post = await _dataContext.Posts.FirstOrDefaultAsync(post => post.Id == studentId);
             return post;
 
         }
 
-        public List<Posts> GetPosts()
+        public async Task<IEnumerable<Posts>> GetPosts()
         {
-            return _dataContext.Posts.ToList();
+            return await _dataContext.Posts.ToListAsync();
         }
 
 
 
-        public Posts InsertPost(Posts post)
+        public async Task<Posts> InsertPost(Posts post)
         {
-            _dataContext.Posts.Add(post);
-            _dataContext.SaveChanges();
+            await _dataContext.Posts.AddAsync(post);
+            await _dataContext.SaveChangesAsync();
             return post;
         }
 
-        public void UpdatePost(Posts student)
+        public async Task<Posts> UpdatePost(int id, Posts post)
         {
-            throw new NotImplementedException();
+            /*
+            var postById = await _dataContext.Posts.FindAsync(id);
+            if (postById == null)
+            {
+                return null;
+            }*/
+
+            _dataContext.Posts.Update(post);
+            await _dataContext.SaveChangesAsync();
+            return post;
+            
         }
+
+
     }
 }

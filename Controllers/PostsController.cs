@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using TicketReservationApp.Dto;
 
 namespace TicketReservationApp.Controllers
 {
@@ -20,38 +21,85 @@ namespace TicketReservationApp.Controllers
         }
 
         [HttpGet]
-        public List<Posts> getPosts()
+        public async Task<ActionResult<PostsDto>> getPosts()
         {
-            return _postsRepository.GetPosts();
+            System.Diagnostics.Debug.WriteLine("get");
+
+            var posts = await _postsRepository.GetPosts();
+
+            var postsDto = posts.Select(p => new PostsDto
+            {
+                AppUserId = p.AppUserId,
+                PostContent = p.PostContent,
+                PostTitle = p.PostTitle,
+                PostType = p.PostType,
+            });
+
+
+            return Ok(postsDto);
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public Posts addPosts([FromBody] Posts post)
+        public async Task<ActionResult<PostsDto>> addPosts([FromBody] PostsDto post)
         {
-            Console.WriteLine(post.PostType);
+
+            System.Diagnostics.Debug.WriteLine(post.PostType);
             post.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Console.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Posts addPost = _postsRepository.InsertPost(post);
-            return addPost;
+            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
+            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
+            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            Posts addpost = new Posts()
+            {
+                PostType = post.PostType,
+                PostContent = post.PostContent,
+                PostTitle = post.PostTitle,
+                AppUserId = post.AppUserId
+            };
+
+            var newPost = await _postsRepository.InsertPost(addpost);
+
+            return post;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id)
         {
-            var timetables = _postsRepository.GetPostByID(id);
+            var post = await _postsRepository.DeletePost(id);
 
-            if (timetables == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            _postsRepository.DeletePost(id);
-
-
-            return NoContent();
+            return Ok(post);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePost(int id, [FromBody]PostsDto post)
+        {
+            Posts modifiedPost = new Posts()
+            {
+                Id = id,
+                PostType = post.PostType,
+                PostContent = post.PostContent,
+                PostTitle = post.PostTitle,
+                AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+            };
+
+            System.Diagnostics.Debug.WriteLine(modifiedPost.ToString());
+
+
+            var updatedPost = await _postsRepository.UpdatePost(id, modifiedPost);
+
+            if (updatedPost == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedPost);
+        }
 
 
     }

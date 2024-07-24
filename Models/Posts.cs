@@ -11,6 +11,7 @@ namespace TicketReservationApp.Models
     {
         [Required]
         public int Id { get; set; }
+
         [Required]
         public string PostTitle { get; set; }
 
@@ -19,9 +20,11 @@ namespace TicketReservationApp.Models
 
         public string PostType { get; set; }
 
-        
         public string AppUserId { get; set; }
-        //public virtual AppUser AppUser { get; set; }
+
+        public AppUser AppUser { get; set; }
+
+
 
 
 

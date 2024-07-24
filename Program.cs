@@ -4,9 +4,9 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using TicketReservationApp.Data;
 using TicketReservationApp.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
@@ -39,6 +39,11 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .CreateLogger();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -92,7 +97,7 @@ using (var scope = app.Services.CreateScope())
         
     }
 }
-
+/*
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -103,6 +108,7 @@ using (var scope = app.Services.CreateScope())
     if (await userManager.FindByEmailAsync(email) == null)
     {
         var user = new IdentityUser();
+        user.Id = "1";
         user.Email = email;
         user.UserName = email;
         await userManager.CreateAsync (user, password);
@@ -111,5 +117,5 @@ using (var scope = app.Services.CreateScope())
     }
 
 }
-
+*/
 app.Run();

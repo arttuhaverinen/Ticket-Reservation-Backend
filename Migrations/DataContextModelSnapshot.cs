@@ -46,6 +46,14 @@ namespace TicketReservationApp.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "5d17c25b-5b57-472a-83a5-771e0d2ab8f5",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -84,6 +92,11 @@ namespace TicketReservationApp.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -135,6 +148,10 @@ namespace TicketReservationApp.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -197,6 +214,13 @@ namespace TicketReservationApp.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            RoleId = "5d17c25b-5b57-472a-83a5-771e0d2ab8f5"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -244,7 +268,35 @@ namespace TicketReservationApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            PostContent = "seed 1",
+                            PostTitle = "first post",
+                            PostType = "info"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            PostContent = "seed 2",
+                            PostTitle = "second post",
+                            PostType = "warning"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            PostContent = "seed 3",
+                            PostTitle = "third post",
+                            PostType = "info"
+                        });
                 });
 
             modelBuilder.Entity("TicketReservationApp.Models.Tickets", b =>
@@ -286,13 +338,60 @@ namespace TicketReservationApp.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("TimetablesId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TimetablesId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("TimetablesId");
+
                     b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            Date = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Departure = "Joensuu",
+                            Destination = "Tampere",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Expired = false,
+                            Name = "arttu",
+                            Seat = 12,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            TimetablesId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            Date = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Departure = "Joensuu",
+                            Destination = "Tampere",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Expired = false,
+                            Name = "juhani",
+                            Seat = 13,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            TimetablesId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppUserId = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            Date = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Departure = "Joensuu",
+                            Destination = "Kuopio",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Expired = false,
+                            Name = "name",
+                            Seat = 5,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            TimetablesId = 2
+                        });
                 });
 
             modelBuilder.Entity("TicketReservationApp.Models.Timetables", b =>
@@ -327,6 +426,76 @@ namespace TicketReservationApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Timetables");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Day = "Maanantai",
+                            Departure = "Joensuu",
+                            Destination = "Tampere",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Price = 29.989999999999998,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Day = "Tiistai",
+                            Departure = "Joensuu",
+                            Destination = "Kuopio",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Price = 19.989999999999998,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Day = "Keskiviikko",
+                            Departure = "Joensuu",
+                            Destination = "Nurmes",
+                            EndTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Price = 14.99,
+                            StartTime = new DateTime(2024, 7, 19, 9, 0, 0, 0, DateTimeKind.Utc)
+                        });
+                });
+
+            modelBuilder.Entity("TicketReservationApp.Data.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "dff5f216-cd3f-4469-9ec1-c1c2a45c1566",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ad525245-e72a-4e53-8f79-e35c559435e9",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIfLL/xNs8HaW0CogV/nlu+8r+k8YIxjdyjgtDG8ReQhOjt1yuGBSyceXqe4lVRRyQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com"
+                        });
+                });
+
+            modelBuilder.Entity("TicketReservationApp.Models.AppUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TicketsId")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -378,6 +547,43 @@ namespace TicketReservationApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TicketReservationApp.Models.Posts", b =>
+                {
+                    b.HasOne("TicketReservationApp.Models.AppUser", "AppUser")
+                        .WithMany("Posts")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("TicketReservationApp.Models.Tickets", b =>
+                {
+                    b.HasOne("TicketReservationApp.Models.AppUser", "AppUser")
+                        .WithMany("Tickets")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TicketReservationApp.Models.Timetables", "Timetables")
+                        .WithMany()
+                        .HasForeignKey("TimetablesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Timetables");
+                });
+
+            modelBuilder.Entity("TicketReservationApp.Models.AppUser", b =>
+                {
+                    b.Navigation("Posts");
+
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

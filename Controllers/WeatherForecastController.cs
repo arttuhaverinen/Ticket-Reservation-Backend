@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using Serilog;
 namespace TicketReservationApp.Controllers
 {
     [ApiController]
@@ -21,23 +22,22 @@ namespace TicketReservationApp.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast"), Authorize(Roles = "Admin")]
+        [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
-            Console.WriteLine("Username: " + User.FindFirstValue(ClaimTypes.Name));
-            Console.WriteLine("Role: " + User.FindFirstValue(ClaimTypes.Role));
-            Console.WriteLine("First name: " + User.FindFirstValue("firstname"));
-            Console.WriteLine("Last name: " + User.FindFirstValue("lastname"));
 
-            var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Console.WriteLine(currentUser);
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var result =  Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
+            Log.Information("Weather forecast => {@result}", result);
+            System.Diagnostics.Debug.WriteLine("ok");
+            Console.WriteLine("ok");
+            return result;
         }
     }
 }
