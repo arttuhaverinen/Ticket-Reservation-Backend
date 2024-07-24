@@ -6,9 +6,13 @@ namespace TicketReservationApp.Models
 {
     public class AppUser : IdentityUser
     {
-        //public string DisplayName { get; set; }
 
-        //public virtual ICollection<Posts> Posts { get; set; }
+        public int TicketsId { get; set; }
+        public ICollection<Tickets> Tickets { get; set; }
+
+
+        public int PostsId { get; set; }
+        public ICollection<Posts> Posts { get; set; }
     }
 }
 

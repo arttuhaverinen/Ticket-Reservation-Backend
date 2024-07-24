@@ -1,4 +1,5 @@
-﻿using TicketReservationApp.Models;
+﻿using TicketReservationApp.Dto;
+using TicketReservationApp.Models;
 
 namespace TicketReservationApp.Repositories
 {
@@ -6,11 +7,11 @@ namespace TicketReservationApp.Repositories
     {
 
 
-        List<Posts> GetPosts();
-        Posts GetPostByID(int studentId);
-        Posts InsertPost(Posts student);
-        void DeletePost(int studentID);
-        void UpdatePost(Posts student);
+        Task<IEnumerable<Posts>> GetPosts();
+        Task<Posts> GetPostByID(int postId);
+        Task<Posts> InsertPost(Posts post);
+        Task<Posts> DeletePost(int postId);
+        Task<Posts> UpdatePost(int id, Posts post);
 
 
     }

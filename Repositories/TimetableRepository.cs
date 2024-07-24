@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Reflection.Metadata.Ecma335;
 using TicketReservationApp.Data;
@@ -12,22 +13,28 @@ namespace TicketReservationApp.Repositories
         public TimetableRepository(DataContext datacontext) { 
             _dataContext = datacontext;
         }
-        public void DeleteTimetable(int timetableId)
+        public async Task<Timetables> DeleteTimetable(int timetableId)
         {
-            _dataContext.Timetables.Remove(GetTimetabletByID(timetableId));
-            _dataContext.SaveChangesAsync();
-            
+            var timetable = await _dataContext.Timetables.FindAsync(timetableId);
+            if (timetable == null)
+            {
+                return null;
+            }
+            _dataContext.Timetables.Remove(timetable);
+            await _dataContext.SaveChangesAsync();
+            return timetable;
+
         }
 
-        public List<Timetables> GetTimetables()
+        public async Task<IEnumerable<Timetables>> GetTimetables()
         {
-            return _dataContext.Timetables.ToList();
+            return await _dataContext.Timetables.ToListAsync();
 
         }
 
-        public Timetables GetTimetabletByID(int timetableId)
+        public async Task<Timetables> GetTimetabletByID(int timetableId)
         {
-            Timetables timetable = _dataContext.Timetables.FirstOrDefault(timetable => timetable.Id == timetableId);
+            var timetable = await _dataContext.Timetables.FirstOrDefaultAsync(timetable => timetable.Id == timetableId);
             return timetable;
         }
 
@@ -37,17 +44,19 @@ namespace TicketReservationApp.Repositories
             return timetable;
         }
 
-        public Timetables InsertTimetable(Timetables timetable)
+        public async Task<Timetables> InsertTimetable(Timetables timetable)
         {
-            _dataContext.Timetables.Add(timetable);
+            await _dataContext.Timetables.AddAsync(timetable);
             _dataContext.SaveChanges();
             return timetable;
-            throw new NotImplementedException();
+            
         }
 
-        public void UpdateTimetable(Timetables timetable)
+        public async Task<Timetables> UpdateTimetable(int id, Timetables timetable)
         {
-            throw new NotImplementedException();
+            _dataContext.Timetables.Update(timetable);
+            await _dataContext.SaveChangesAsync();
+            return timetable;
         }
 
 

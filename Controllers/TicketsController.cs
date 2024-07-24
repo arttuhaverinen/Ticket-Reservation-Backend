@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using TicketReservationApp.Data;
+using TicketReservationApp.Dto;
 using TicketReservationApp.Models;
+using TicketReservationApp.Repositories;
 
 namespace TicketReservationApp.Controllers
 {
@@ -17,21 +19,40 @@ namespace TicketReservationApp.Controllers
     [ApiController]
     public class TicketsController : ControllerBase
     {
-        private readonly DataContext _context;
 
-        public TicketsController(DataContext context)
+        private readonly ITicketRepository _ticketRepository;
+        public TicketsController(ITicketRepository ticketRepository)
         {
-            _context = context;
+            _ticketRepository = ticketRepository;
         }
+
+
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tickets>>> GetTickets()
+        public async Task<ActionResult<IEnumerable<TicketDto>>> GetTickets()
         {
-            return await _context.Tickets.ToListAsync();
+            var tickets = await _ticketRepository.GetTickets();
+            var ticketsDto = tickets.Select(t => new TicketDto()
+            {
+                //AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                //Date = t.Date,
+                Departure = t.Departure,
+                Destination = t.Destination,
+                EndTime = t.EndTime,
+                Expired = t.Expired,
+                Name = t.Name,
+                Seat = t.Seat,
+                StartTime = t.StartTime,
+                //TimetablesId = t.TimetablesId
+            }).ToList();
+
+            return ticketsDto;
         }
+        /*
         [Authorize(Roles = "Admin")]
         [HttpGet]
+        
         [Route("ByUsers")]
         public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser()
         {
@@ -42,89 +63,111 @@ namespace TicketReservationApp.Controllers
         }
         [HttpGet]
         [Route("ByTimetable/{id}")]
-        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser(string id)
+        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser(int id)
         {
-            return _context.Tickets.Where(ticket => ticket.TimetablesId.Contains(id)).ToList();
+            return _context.Tickets.Where(ticket => ticket.TimetablesId.Equals(id)).ToList();
         }
-
+        */
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tickets>> GetTickets(int id)
+        public async Task<ActionResult<TicketDto>> GetTickets(int id)
         {
-            var tickets = await _context.Tickets.FindAsync(id);
+            var tickets = await _ticketRepository.GetTicketByID(id);
 
-            if (tickets == null)
+            var TicketDto = new TicketDto()
             {
-                return NotFound();
-            }
+                Date = tickets.Date,
+                Departure = tickets.Departure,
+                Destination = tickets.Destination,
+                EndTime = tickets.EndTime,
+                Expired = tickets.Expired,
+                Name = tickets.Name,
+                Seat = tickets.Seat,
+                StartTime = tickets.StartTime,
+                TimetablesId = tickets.TimetablesId
+            };
 
-            return tickets;
+            return TicketDto;
         }
 
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTickets(int id, Tickets tickets)
+        public async Task<ActionResult<TicketDto>> PutTickets(int id, TicketDto ticket)
         {
-            if (id != tickets.Id)
+            var Updateticket = new Tickets()
             {
-                return BadRequest();
-            }
+                AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Date = ticket.Date,
+                Departure = ticket.Departure,
+                Destination = ticket.Destination,
+                EndTime = ticket.EndTime,
+                Expired = ticket.Expired,
+                Name = ticket.Name,
+                Seat = ticket.Seat,
+                StartTime = ticket.StartTime,
+                TimetablesId = ticket.TimetablesId
+            };
 
-            _context.Entry(tickets).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TicketsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedTicket = await _ticketRepository.UpdateTicket(Updateticket);
+            return ticket; 
         }
 
         // POST: api/Tickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Tickets>> PostTickets(Tickets tickets)
+        public async Task<ActionResult<TicketDto>> PostTickets(TicketDto tickets)
         {
-            _context.Tickets.Add(tickets);
-            await _context.SaveChangesAsync();
+            Tickets addTicket = new Tickets()
+            {
+                AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Date = tickets.Date,
+                Departure = tickets.Departure,
+                Destination = tickets.Destination,
+                EndTime = tickets.EndTime,
+                Expired = tickets.Expired,
+                Name = tickets.Name,
+                Seat = tickets.Seat,
+                StartTime = tickets.StartTime,
+                TimetablesId = tickets.TimetablesId
 
-            return CreatedAtAction("GetTickets", new { id = tickets.Id }, tickets);
+            };
+            var addedTicket = await _ticketRepository.InsertTicket(addTicket);
+
+            return tickets;
         }
 
         // DELETE: api/Tickets/5
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTickets(int id)
+        public async Task<ActionResult<TicketDto>> DeleteTickets(int id)
         {
-            var tickets = await _context.Tickets.FindAsync(id);
-            if (tickets == null)
+            var deletedTicket = await _ticketRepository.DeleteTicket(id);
+
+            var deletedTicketDto = new TicketDto()
             {
-                return NotFound();
-            }
+                Date = deletedTicket.Date,
+                Departure = deletedTicket.Departure,
+                Destination = deletedTicket.Destination,
+                EndTime = deletedTicket.EndTime,
+                Expired = deletedTicket.Expired,
+                Name = deletedTicket.Name,
+                Seat = deletedTicket.Seat,
+                StartTime = deletedTicket.StartTime,
+                TimetablesId = deletedTicket.TimetablesId
+            };
 
-            _context.Tickets.Remove(tickets);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return deletedTicketDto;
         }
+        /*
 
         private bool TicketsExists(int id)
         {
             return _context.Tickets.Any(e => e.Id == id);
         }
-        
+        */
     }
         
 }

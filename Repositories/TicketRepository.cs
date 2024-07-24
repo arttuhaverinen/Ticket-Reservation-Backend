@@ -1,4 +1,6 @@
-﻿using TicketReservationApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Xml;
+using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 
 namespace TicketReservationApp.Repositories
@@ -10,33 +12,42 @@ namespace TicketReservationApp.Repositories
         { 
             _dataContext = datacontext;
         }
-        public void DeleteTicket(int ticketId)
+        public async Task<Tickets> DeleteTicket(int ticketId)
         {
-            _dataContext.Remove(GetTicketByID(ticketId));
+            var timetable = await _dataContext.Tickets.FindAsync(ticketId);
+            if (timetable == null)
+            {
+                return null;
+            }
+            _dataContext.Tickets.Remove(timetable);
+            await _dataContext.SaveChangesAsync();
+            return timetable;
         }
 
-        public Tickets GetTicketByID(int ticketId)
+        public async Task<Tickets> GetTicketByID(int ticketId)
         {
             Tickets ticket = _dataContext.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId);
             return ticket;
         }
 
-        public List<Tickets> GetTickets()
+        public async Task<IEnumerable<Tickets>> GetTickets()
         {
-            return _dataContext.Tickets.ToList();
+            return await _dataContext.Tickets.ToListAsync();
             
         }
 
-        public Tickets InsertTicket(Tickets ticket)
+        public async Task<Tickets> InsertTicket(Tickets ticket)
         {
-            _dataContext.Tickets.Add(ticket);
-            _dataContext.SaveChanges();
+            await _dataContext.Tickets.AddAsync(ticket);
+            await _dataContext.SaveChangesAsync();
             return ticket;
         }
 
-        public void UpdateTicket(Tickets ticket)
+        public async Task<Tickets>  UpdateTicket(Tickets ticket)
         {
-            throw new NotImplementedException();
+            _dataContext.Tickets.Update(ticket);
+            await _dataContext.SaveChangesAsync();
+            return ticket;
         }
     }
 }
