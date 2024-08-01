@@ -45,7 +45,7 @@ namespace TicketReservationApp.Controllers
 
         // GET: api/Timetables/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TimetableDto>> GetTimetables(int id)
+        public async Task<ActionResult<TimetableDto>> GetTimetablesById(int id)
         {
             //var timetables = await _context.Timetables.FindAsync(id);
             var timetables = await _timetablesRepository.GetTimetabletByID(id);
@@ -65,7 +65,7 @@ namespace TicketReservationApp.Controllers
                 StartTime = timetables.StartTime
             };
 
-            return timetableDto;
+            return Ok(timetableDto);
         }
         [HttpGet]
         [Route("{departure}/{destination}")]
@@ -136,7 +136,7 @@ namespace TicketReservationApp.Controllers
                 StartTime = timetable.StartTime
             };
 
-            return timetableDto;
+            return Ok(timetableDto);
         }
 
         // DELETE: api/Timetables/5
@@ -164,7 +164,7 @@ namespace TicketReservationApp.Controllers
 
             };
 
-            return timetableDto;
+            return Ok(timetableDto);
         }
 
      

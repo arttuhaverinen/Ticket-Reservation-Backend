@@ -5,9 +5,32 @@ using Swashbuckle.AspNetCore.Filters;
 using TicketReservationApp.Data;
 using TicketReservationApp.Repositories;
 using Serilog;
+using Stripe;
+
+using DotNetEnv;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
+
+
+builder.Configuration
+    .AddEnvironmentVariables();
+
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+var apiKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+StripeConfiguration.ApiKey = apiKey;
+
+
+//var stripeSettingsSection = builder.Configuration.GetSection("Stripe");
+//StripeConfiguration.ApiKey = stripeSettingsSection["SecretKey"];
+
+Console.WriteLine(StripeConfiguration.ApiKey);
+
 
 builder.Services.AddCors(options =>
 {
@@ -49,6 +72,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<ITimetablesRepository, TimetableRepository>();

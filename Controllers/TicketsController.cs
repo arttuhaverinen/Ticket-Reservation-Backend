@@ -47,7 +47,7 @@ namespace TicketReservationApp.Controllers
                 //TimetablesId = t.TimetablesId
             }).ToList();
 
-            return ticketsDto;
+            return Ok(ticketsDto);
         }
         /*
         [Authorize(Roles = "Admin")]
@@ -70,9 +70,14 @@ namespace TicketReservationApp.Controllers
         */
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketDto>> GetTickets(int id)
+        public async Task<ActionResult<TicketDto>> GetTicketsById(int id)
         {
             var tickets = await _ticketRepository.GetTicketByID(id);
+
+            if (tickets == null)
+            {
+                return NotFound();
+            }
 
             var TicketDto = new TicketDto()
             {
@@ -87,7 +92,7 @@ namespace TicketReservationApp.Controllers
                 TimetablesId = tickets.TimetablesId
             };
 
-            return TicketDto;
+            return Ok(TicketDto);
         }
 
         // PUT: api/Tickets/5
@@ -111,7 +116,7 @@ namespace TicketReservationApp.Controllers
             };
 
             var updatedTicket = await _ticketRepository.UpdateTicket(Updateticket);
-            return ticket; 
+            return Ok(ticket); 
         }
 
         // POST: api/Tickets
@@ -136,7 +141,7 @@ namespace TicketReservationApp.Controllers
             };
             var addedTicket = await _ticketRepository.InsertTicket(addTicket);
 
-            return tickets;
+            return Ok(tickets);
         }
 
         // DELETE: api/Tickets/5
@@ -159,7 +164,7 @@ namespace TicketReservationApp.Controllers
                 TimetablesId = deletedTicket.TimetablesId
             };
 
-            return deletedTicketDto;
+            return Ok(deletedTicketDto);
         }
         /*
 
