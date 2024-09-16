@@ -26,8 +26,6 @@ namespace TicketReservationApp.Controllers
             _ticketRepository = ticketRepository;
         }
 
-
-
         // GET: api/Tickets
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketDto>>> GetTickets()
@@ -44,35 +42,24 @@ namespace TicketReservationApp.Controllers
                 Name = t.Name,
                 Seat = t.Seat,
                 StartTime = t.StartTime,
-                //TimetablesId = t.TimetablesId
+                TimetablesId = t.TimetablesId,
+                AppUserId = t.AppUserId,
+                Date = t.Date,
+                Status = t.Status,
             }).ToList();
 
-            return ticketsDto;
+            return Ok(ticketsDto);
         }
-        /*
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        
-        [Route("ByUsers")]
-        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser()
-        {
-            var userName = User.FindFirstValue(ClaimTypes.Name);
-            Console.WriteLine("tickets, user id");
-            Console.WriteLine(userName);
-            return  _context.Tickets.Where(ticket => ticket.Name.Contains(userName)).ToList();
-        }
-        [HttpGet]
-        [Route("ByTimetable/{id}")]
-        public async Task<ActionResult<IEnumerable<Tickets>>> GetTicketsByUser(int id)
-        {
-            return _context.Tickets.Where(ticket => ticket.TimetablesId.Equals(id)).ToList();
-        }
-        */
-        // GET: api/Tickets/5
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketDto>> GetTickets(int id)
+        public async Task<ActionResult<TicketDto>> GetTicketsById(int id)
         {
             var tickets = await _ticketRepository.GetTicketByID(id);
+
+            if (tickets == null)
+            {
+                return NotFound();
+            }
 
             var TicketDto = new TicketDto()
             {
@@ -87,11 +74,9 @@ namespace TicketReservationApp.Controllers
                 TimetablesId = tickets.TimetablesId
             };
 
-            return TicketDto;
+            return Ok(TicketDto);
         }
 
-        // PUT: api/Tickets/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<TicketDto>> PutTickets(int id, TicketDto ticket)
@@ -111,32 +96,36 @@ namespace TicketReservationApp.Controllers
             };
 
             var updatedTicket = await _ticketRepository.UpdateTicket(Updateticket);
-            return ticket; 
+            return Ok(ticket); 
         }
 
-        // POST: api/Tickets
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<TicketDto>> PostTickets(TicketDto tickets)
+        public async Task<ActionResult<TicketDto>> PostTickets(TicketDto ticket)
         {
+
+            Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Console.WriteLine(User.Identity);
+            Console.WriteLine(User.Identity.IsAuthenticated);
+
+            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+
             Tickets addTicket = new Tickets()
             {
-                AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Date = tickets.Date,
-                Departure = tickets.Departure,
-                Destination = tickets.Destination,
-                EndTime = tickets.EndTime,
-                Expired = tickets.Expired,
-                Name = tickets.Name,
-                Seat = tickets.Seat,
-                StartTime = tickets.StartTime,
-                TimetablesId = tickets.TimetablesId
+                AppUserId = userId,
+                Date = ticket.Date,
+                Departure = ticket.Departure,
+                Destination = ticket.Destination,
+                EndTime = ticket.EndTime,
+                Expired = ticket.Expired,
+                Name = ticket.Name,
+                Seat = ticket.Seat,
+                StartTime = ticket.StartTime,
+                TimetablesId = ticket.TimetablesId
 
             };
             var addedTicket = await _ticketRepository.InsertTicket(addTicket);
 
-            return tickets;
+            return Ok(ticket);
         }
 
         // DELETE: api/Tickets/5
@@ -159,7 +148,7 @@ namespace TicketReservationApp.Controllers
                 TimetablesId = deletedTicket.TimetablesId
             };
 
-            return deletedTicketDto;
+            return Ok(deletedTicketDto);
         }
         /*
 

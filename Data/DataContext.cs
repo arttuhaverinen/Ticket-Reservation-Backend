@@ -13,32 +13,18 @@ namespace TicketReservationApp.Data
     public class ApplicationUser : IdentityUser { }
     public class DataContext : IdentityDbContext<IdentityUser>
     {
-        /*
-        private static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-        {
-            builder.AddSerilog(new LoggerConfiguration().WriteTo.Console().CreateLogger());
-        });
-        */
+
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
 
         }
 
-        /*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseLoggerFactory(loggerFactory);
-            }
-        }
-        */
         public DbSet<Posts> Posts { get; set; }
         public DbSet<Tickets> Tickets { get; set; } 
         public DbSet<TicketReservationApp.Models.Timetables> Timetables { get; set; } = default!;
-        //public DbSet<AppUser> User { get; set; }
 
         
+        // DATABASE SEEDING
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -83,37 +69,66 @@ namespace TicketReservationApp.Data
                 new Timetables
                 {
                     Id = 1,
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(9, 0, 0),
                     Price = 29.99,
                     Departure = "Joensuu",
                     Destination = "Tampere",
-                    Day = "Maanantai"
+                    Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
+                    Cancelled = new List<DateTime>(),
+                    Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    AppUserId = userId,
+
                 },
                 new Timetables
                 {
                     Id = 2,
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(9, 0, 0),
                     Price = 19.99,
                     Departure = "Joensuu",
                     Destination = "Kuopio",
-                    Day = "Tiistai"
+                    Day = new List<string> { "saturday", "sunday" },
+                    Cancelled = new List<DateTime>(),
+                    Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    AppUserId = userId,
+
+
                 },
                 new Timetables
                 {
                     Id = 3,
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    StartTime = new TimeSpan(17, 0, 0),
+                    EndTime = new TimeSpan(17, 0, 0),
+                    Price = 29.99,
+                    Departure = "Joensuu",
+                    Destination = "Kuopio",
+                    Day = new List<string> { "saturday", "sunday" },
+                    Cancelled = new List<DateTime>(),
+                    Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    AppUserId = userId,
+
+
+
+                },
+                new Timetables
+                {
+                    Id = 4,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(9, 0, 0),
                     Price = 14.99,
                     Departure = "Joensuu",
                     Destination = "Nurmes",
-                    Day = "Keskiviikko"
+                    Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
+                    Cancelled = new List<DateTime>(),
+                    Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    AppUserId = userId,
+                    PriceDiscount = 10.99
                 }
 
 
 
-            );
+            );;
 
             modelBuilder.Entity<Posts>().HasData(
                 new Posts
@@ -149,45 +164,98 @@ namespace TicketReservationApp.Data
                 {
                     Id = 1,
                     AppUserId = userId,
-                    Date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 4, 9, 0, 0), DateTimeKind.Utc),
                     Departure = "Joensuu",
                     Destination = "Tampere",
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    StartTime = new TimeSpan(9, 0, 0),
                     Expired = false,
                     Seat = 12,
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    EndTime = new TimeSpan(9, 0, 0),
                     Name = "arttu",
                     TimetablesId = 1,
+                    Status =  "paid"
                     
                 },
                 new Tickets
                 {
                     Id = 2,
                     AppUserId = userId,
-                    Date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 4, 9, 0, 0), DateTimeKind.Utc),
                     Departure = "Joensuu",
                     Destination = "Tampere",
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    StartTime = new TimeSpan(9, 0, 0),
                     Expired = false,
                     Seat = 13,
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    EndTime = new TimeSpan(9, 0, 0),
                     Name = "juhani",
                     TimetablesId = 1,
+                    Status = "paid"
+
                 },
                 new Tickets
                 {
                     Id = 3,
                     AppUserId = userId,
-                    Date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 5, 9, 0, 0), DateTimeKind.Utc),
                     Departure = "Joensuu",
-                    Destination = "Kuopio",
-                    StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    Destination = "Tampere",
+                    StartTime = new TimeSpan(9, 0, 0),
                     Expired = false,
                     Seat = 5,
-                    EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                    EndTime = new TimeSpan(9, 0, 0),
+                    Name = "name",
+                    TimetablesId = 1,
+                    Status = "paid"
+
+                },
+                new Tickets
+                {
+                    Id = 4,
+                    AppUserId = userId,
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 8, 9, 0, 0), DateTimeKind.Utc),
+                    Departure = "Joensuu",
+                    Destination = "Kuopio",
+                    StartTime = new TimeSpan(17, 0, 0),
+                    Expired = false,
+                    Seat = 10,
+                    EndTime = new TimeSpan(17, 0, 0),
                     Name = "name",
                     TimetablesId = 2,
-                });
+                    Status = "paid"
+
+                },
+                new Tickets
+                {
+                    Id = 5,
+                    AppUserId = userId,
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 7, 9, 0, 0), DateTimeKind.Utc),
+                    Departure = "Joensuu",
+                    Destination = "Kuopio",
+                    StartTime = new TimeSpan(9, 0, 0),
+                    Expired = false,
+                    Seat = 9,
+                    EndTime = new TimeSpan(9, 0, 0),
+                    Name = "name",
+                    TimetablesId = 2,
+                    Status = "paid"
+
+                },
+                new Tickets
+                {
+                    Id = 6,
+                    AppUserId = userId,
+                    Date = DateTime.SpecifyKind(new DateTime(2024, 9, 7, 9, 0, 0), DateTimeKind.Utc),
+                    Departure = "Joensuu",
+                    Destination = "Kuopio",
+                    StartTime = new TimeSpan(17, 0, 0),
+                    Expired = false,
+                    Seat = 12,
+                    EndTime = new TimeSpan(17, 0, 0),
+                    Name = "name",
+                    TimetablesId = 3,
+                    Status = "paid"
+                }
+                );
         }
         
 

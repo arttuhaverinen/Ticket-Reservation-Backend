@@ -7,6 +7,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using TicketReservationApp.Dto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TicketReservationApp.Controllers
 {
@@ -21,9 +22,11 @@ namespace TicketReservationApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<PostsDto>> getPosts()
         {
-            System.Diagnostics.Debug.WriteLine("get");
+            string authorizationHeader = Request.Headers["Authorization"];
+            var id = User.Identity.IsAuthenticated;
 
             var posts = await _postsRepository.GetPosts();
 
@@ -35,7 +38,6 @@ namespace TicketReservationApp.Controllers
                 PostType = p.PostType,
             });
 
-
             return Ok(postsDto);
         }
         [Authorize(Roles = "Admin")]
@@ -43,11 +45,7 @@ namespace TicketReservationApp.Controllers
         public async Task<ActionResult<PostsDto>> addPosts([FromBody] PostsDto post)
         {
 
-            System.Diagnostics.Debug.WriteLine(post.PostType);
             post.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
-            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
-            System.Diagnostics.Debug.WriteLine("User Id: " + User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             Posts addpost = new Posts()
             {
@@ -89,7 +87,6 @@ namespace TicketReservationApp.Controllers
             };
 
             System.Diagnostics.Debug.WriteLine(modifiedPost.ToString());
-
 
             var updatedPost = await _postsRepository.UpdatePost(id, modifiedPost);
 

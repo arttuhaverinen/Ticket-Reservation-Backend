@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TicketReservationApp.Models
 {
@@ -8,10 +9,10 @@ namespace TicketReservationApp.Models
         public int Id { get; set; }
 
         [Required]
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         [Required]
-        public DateTime EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -36,9 +37,10 @@ namespace TicketReservationApp.Models
 
         public Timetables Timetables { get; set; }
 
-        [Required]
-        public string AppUserId { get; set; }
+        public string? AppUserId { get; set; }
 
-        public  AppUser AppUser { get; set; }
+        public AppUser? AppUser { get; set; }
+
+        public string Status { get; set; }
     }
 }

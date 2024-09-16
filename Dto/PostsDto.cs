@@ -1,4 +1,5 @@
-﻿using TicketReservationApp.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using TicketReservationApp.Models;
 
 namespace TicketReservationApp.Dto
 {
@@ -9,7 +10,6 @@ namespace TicketReservationApp.Dto
         public string PostContent { get; set; }
 
         public string PostType { get; set; }
-
 
         public string AppUserId { get; set; }
 

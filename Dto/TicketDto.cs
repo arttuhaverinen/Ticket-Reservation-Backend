@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using TicketReservationApp.Models;
 
 namespace TicketReservationApp.Dto
@@ -7,9 +8,9 @@ namespace TicketReservationApp.Dto
     {
 
 
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -23,10 +24,11 @@ namespace TicketReservationApp.Dto
 
         public int Seat { get; set; }
 
-        [Required]
         public int TimetablesId { get; set; }
 
-        [Required]
         public string AppUserId { get; set; }
+
+        public string? Status { get; set; }
+
     }
 }

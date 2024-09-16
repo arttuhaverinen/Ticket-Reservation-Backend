@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection.Metadata.Ecma335;
+using System.Xml;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 
@@ -26,9 +28,16 @@ namespace TicketReservationApp.Repositories
 
         }
 
-        public async Task<IEnumerable<Timetables>> GetTimetables()
+        public async Task<IEnumerable<Timetables>> GetTimetables(string? offers)
         {
-            return await _dataContext.Timetables.ToListAsync();
+            var query = _dataContext.Timetables.AsQueryable();
+
+
+            if (offers == "true")
+            {
+                query =  query.Where(tt => tt.PriceDiscount != null);
+            }
+            return await query.ToListAsync();
 
         }
 
@@ -38,10 +47,36 @@ namespace TicketReservationApp.Repositories
             return timetable;
         }
 
-        public async Task<ActionResult<IEnumerable<Timetables>>> GetTimetablesByLocation(string departure, string destination)
+        public async Task<IEnumerable<Timetables>> GetTimetablesByLocation(string departure, string destination, string weekday, string date, string time)
         {
-            var timetable =  _dataContext.Timetables.Where(timetable => timetable.Departure == departure && timetable.Destination == destination).ToList();
-            return timetable;
+            Console.WriteLine(departure);
+            Console.WriteLine(destination);
+            Console.WriteLine(weekday);
+            Console.WriteLine(date);
+            Console.WriteLine(time);
+            DateTime dt;
+            
+            date = date.Replace("-", "/");
+            dt = DateTime.Parse(date).Date;
+            Console.WriteLine(dt);
+
+             
+
+
+
+            IQueryable<Timetables> query = _dataContext.Timetables.Where(timetable => timetable.Departure == departure && timetable.Destination == destination && timetable.Day.Contains(weekday));
+
+            if (!string.IsNullOrEmpty(time))
+            {
+                query = query.Where(timetable => timetable.StartTime.ToString() == time);
+                //query = query.Include(t => t.Tickets.Where(ticket => ticket.Date.ToShortDateString() == date));
+            }
+
+            return await query
+                .Include(t => t.Tickets.Where(ticket => ticket.Date.Date == dt.Date))
+                .ToListAsync();
+            //return timetable;
+            // .Where(ticket => ticket.Date.ToShortDateString() == time)
         }
 
         public async Task<Timetables> InsertTimetable(Timetables timetable)
@@ -62,3 +97,17 @@ namespace TicketReservationApp.Repositories
 
     }
 }
+
+/*
+          public async Task<IEnumerable<Timetables>> GetTimetablesByLocation(string departure, string destination, string weekday, string time)
+        {
+            Console.WriteLine(departure);
+            Console.WriteLine(destination);
+            Console.WriteLine(weekday);
+
+            return await _dataContext.Timetables.Where(timetable => timetable.Departure == departure && timetable.Destination == destination && timetable.Day.Contains(weekday))
+                .Include(t => t.Tickets)
+                .ToListAsync();
+            //return timetable;
+        }
+*/

@@ -1,8 +1,9 @@
 ﻿namespace TicketReservationApp.Dto
 {
-    public class TimetableDto
+    public class TimetableResponseDto
     {
-        public DateTime Date { get; set; } 
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
@@ -16,8 +17,5 @@
         public string Destination { get; set; }
 
         public List<string> Day { get; set; }
-
-
-
     }
 }
