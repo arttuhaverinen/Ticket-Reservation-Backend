@@ -136,8 +136,8 @@ namespace TicketReservationApp.Tests
 
             var ticketDto = new TicketDto()
             {
-                StartTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
-                EndTime = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc),
+                StartTime = new TimeSpan(9, 0, 0),
+                EndTime = new TimeSpan(9, 0, 0),
                 Departure = "string",
                 Destination = "string",
                 //AppUserId = "1",

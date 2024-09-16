@@ -8,15 +8,21 @@ using Serilog;
 using Stripe;
 
 using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.HttpOverrides;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
-
 builder.Configuration
     .AddEnvironmentVariables();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -30,6 +36,9 @@ StripeConfiguration.ApiKey = apiKey;
 //StripeConfiguration.ApiKey = stripeSettingsSection["SecretKey"];
 
 Console.WriteLine(StripeConfiguration.ApiKey);
+DateTime date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc);
+Console.WriteLine(DateTime.Today.DayOfWeek);
+Console.WriteLine(date.DayOfWeek);
 
 
 builder.Services.AddCors(options =>
@@ -37,17 +46,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173",
-                                              "http://www.contoso.com")
+                          //policy.WithOrigins("http://localhost:5173",
+                            policy.AllowAnyOrigin()
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
                           ;
                       });
 });
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles; }) ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -77,8 +86,16 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<ITimetablesRepository, TimetableRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-
+/*
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer();
+*/
 builder.Services.AddAuthentication();
+
+builder.Services.AddAuthorization();
 
 
 
@@ -89,6 +106,13 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>(
 
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
+
 app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.

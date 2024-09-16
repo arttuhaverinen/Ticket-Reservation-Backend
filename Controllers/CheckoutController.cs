@@ -1,10 +1,15 @@
 ﻿namespace TicketReservationApp.Controllers;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
+using System.Security.Claims;
+using System.Xml.Linq;
+using TicketReservationApp.Dto;
 using TicketReservationApp.Models;
-
+using TicketReservationApp.Repositories;
 
 [ApiController]
 [Route("[controller]")]
@@ -15,15 +20,17 @@ public class CheckoutController : ControllerBase
 
     private static string s_wasmClientURL = string.Empty;
 
-    public CheckoutController(IConfiguration configuration)
+    private readonly ITicketRepository _ticketRepository;
+
+    public CheckoutController(IConfiguration configuration, ITicketRepository ticketRepository)
     {
         _configuration = configuration;
+        _ticketRepository = ticketRepository;
     }
-
+    //[Authorize]
     [HttpPost]
-    public async Task<ActionResult> CheckoutOrder([FromBody] Timetables product, [FromServices] IServiceProvider sp)
+    public async Task<ActionResult> CheckoutOrder([FromBody] TicketDto product, [FromServices] IServiceProvider sp)
     {
-        Console.WriteLine("checkout order");
         var referer = Request.Headers.Referer;
         s_wasmClientURL = referer[0];
 
@@ -39,9 +46,33 @@ public class CheckoutController : ControllerBase
             thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
         }
 
+        var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+
+        // Create a pending tickeg
+
+        Tickets ticket = new Tickets()
+        {
+            StartTime = new TimeSpan(10, 0, 0),
+            EndTime = new TimeSpan(12, 0, 0),
+            Departure = product.Departure,
+            Destination = product.Destination,
+            AppUserId = userId,
+            Name = product.Name,
+            TimetablesId = product.TimetablesId,
+            Expired = false,
+            Seat = product.Seat,
+            Date = product.Date,
+            Status = "pending"
+
+        };
+
+        var newTicket = await _ticketRepository.InsertTicket(ticket);
+
+        Console.WriteLine(ticket.Id);
+
         if (thisApiUrl is not null)
         {
-            var sessionId = await CheckOut(product, thisApiUrl);
+            var sessionId = await CheckOut(product, thisApiUrl, ticket.Id);
             var pubKey = _configuration["Stripe:PubKey"];
 
             Console.WriteLine(sessionId);
@@ -53,70 +84,84 @@ public class CheckoutController : ControllerBase
                 PubKey = pubKey
             };
 
+
+
+
+
             return Ok(checkoutOrderResponse);
-        }
-        else
-        {
-            return StatusCode(500);
-        }
-    }
-
-    [NonAction]
-    public async Task<string> CheckOut(Timetables product, string thisApiUrl)
-    {
-        Console.WriteLine("checkout");
-        // Create a payment flow from the items in the cart.
-        // Gets sent to Stripe API.
-        var options = new SessionCreateOptions
-        {
-            // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-            SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-            CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
-            PaymentMethodTypes = new List<string> // Only card available in test mode?
+            }
+            else
             {
-                "card"
-            },
-            LineItems = new List<SessionLineItemOptions>
+                return StatusCode(500);
+            }
+        }
+        //[Authorize]
+        [NonAction]
+        public async Task<string> CheckOut(TicketDto product, string thisApiUrl, int ticketId)
+        {
+            Console.WriteLine("checkout");
+            // Create a payment flow from the items in the cart.
+            // Gets sent to Stripe API.
+            var options = new SessionCreateOptions
             {
-                new()
+                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+                SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
+                PaymentMethodTypes = new List<string> 
                 {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = 2000, // Price is in USD cents.
-                        Currency = "USD",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = product.Day,
-                            Description = product.StartTime.ToString(),
-                            //Images = new List<string> { product.ImageUrl }
-                        },
-                    },
-                    Quantity = 1,
+                    "card"
                 },
-            },
-            Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
-        };
+                LineItems = new List<SessionLineItemOptions>
+                {
+                    new()
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = 2000, // cents
+                            Currency = "USD",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = $"{product.Departure} ({product.StartTime}) - {product.Destination} ({product.EndTime}) | Pvm: {product.Date} | Istumapaikka: {product.Seat}"
 
-        var service = new SessionService();
-        var session = await service.CreateAsync(options);
+                            },
+                        },
+                        Quantity = 1,
+                    },
+                },
+                Mode = "payment", // One-time payment.
+                Metadata = new Dictionary<string, string> { { "ticketId", ticketId.ToString() } }
+            };
 
-        return session.Id;
-    }
+            var service = new SessionService();
+            var session = await service.CreateAsync(options);
 
-    [HttpGet("success")]
-    // Automatic query parameter handling from ASP.NET.
-    // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
-    public ActionResult CheckoutSuccess(string sessionId)
-    {
-        Console.WriteLine("success");
+            return session.Id;
+        }
 
-        var sessionService = new SessionService();
-        var session = sessionService.Get(sessionId);
+        [HttpGet("success")]
+        // Automatic query parameter handling from ASP.NET.
+        public async Task<ActionResult> CheckoutSuccess(string sessionId)
+        {
+            Console.WriteLine("success");
 
-        // Here you can save order and customer details to your database.
-        var total = session.AmountTotal.Value;
-        var customerEmail = session.CustomerDetails.Email;
+            var sessionService = new SessionService();
+            var session = sessionService.Get(sessionId);
 
-        return Redirect(s_wasmClientURL + "success");
+            
+            var total = session.AmountTotal.Value;
+            var customerEmail = session.CustomerDetails.Email;
+
+            // Create new ticket after payment
+
+            var ticketId = int.Parse(session.Metadata["ticketId"]);
+
+            var pendingTicket = await _ticketRepository.GetTicketByID(ticketId);
+
+            pendingTicket.Status = "paid";
+
+            var paidTicket = await _ticketRepository.UpdateTicket(pendingTicket);
+
+
+            return Redirect(s_wasmClientURL + "success");
     }
 }
