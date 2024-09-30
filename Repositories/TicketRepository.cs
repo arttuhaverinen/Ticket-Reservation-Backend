@@ -49,5 +49,11 @@ namespace TicketReservationApp.Repositories
             await _dataContext.SaveChangesAsync();
             return ticket;
         }
+        public async Task<IEnumerable<Tickets>> GetTicketByUser(string token)
+        {
+            var users =  await _dataContext.Tickets.Where(ticket => ticket.AppUserId == token && ticket.Status == "paid").ToListAsync();
+            return users;
+        }
+
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Build.Execution;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
@@ -24,6 +25,12 @@ builder.Configuration
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
+
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+{
+    { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
+});
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

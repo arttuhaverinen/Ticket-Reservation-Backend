@@ -9,5 +9,6 @@ namespace TicketReservationApp.Repositories
         Task<Tickets> InsertTicket(Tickets ticket);
         Task<Tickets> DeleteTicket(int ticketId);
         Task<Tickets> UpdateTicket(Tickets ticket);
+        Task<IEnumerable<Tickets>> GetTicketByUser( string token);
     }
 }
