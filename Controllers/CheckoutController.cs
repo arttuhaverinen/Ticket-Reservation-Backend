@@ -44,6 +44,7 @@ public class CheckoutController : ControllerBase
         if (serverAddressesFeature is not null)
         {
             thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
+            Console.WriteLine(thisApiUrl);
         }
 
         var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;

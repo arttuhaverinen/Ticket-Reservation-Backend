@@ -30,7 +30,34 @@ namespace TicketReservationApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TicketDto>>> GetTickets()
         {
+
             var tickets = await _ticketRepository.GetTickets();
+            var ticketsDto = tickets.Select(t => new TicketDto()
+            {
+                //AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                //Date = t.Date,
+                Departure = t.Departure,
+                Destination = t.Destination,
+                EndTime = t.EndTime,
+                Expired = t.Expired,
+                Name = t.Name,
+                Seat = t.Seat,
+                StartTime = t.StartTime,
+                TimetablesId = t.TimetablesId,
+                AppUserId = t.AppUserId,
+                Date = t.Date,
+                Status = t.Status,
+            }).ToList();
+
+            return Ok(ticketsDto);
+        }
+        [Authorize]
+        [HttpGet("/api/ticketsbyuser")]
+        public async Task<ActionResult<IEnumerable<TicketDto>>> GetTicketsByUser()
+        {
+            var AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Console.WriteLine(AppUserId);
+            var tickets = await _ticketRepository.GetTicketByUser(AppUserId);
             var ticketsDto = tickets.Select(t => new TicketDto()
             {
                 //AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
