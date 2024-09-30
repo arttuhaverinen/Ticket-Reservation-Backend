@@ -47,6 +47,12 @@ DateTime date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTim
 Console.WriteLine(DateTime.Today.DayOfWeek);
 Console.WriteLine(date.DayOfWeek);
 
+/*
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5001);  // Listen on all network interfaces
+});
+*/
 
 builder.Services.AddCors(options =>
 {

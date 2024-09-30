@@ -7,6 +7,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "5001:5001"
+    volumes:
+      - ./:/App            # Syncs source code
+      - /App/bin           # Excludes 'bin' from syncing back to host
+      - /App/obj           # Excludes 'obj' from syncing back to host
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"

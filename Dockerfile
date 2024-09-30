@@ -1,15 +1,30 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:35792ea4ad1db051981f62b313f1be3b46b1f45cadbaa3c288cd0d3056eefb83 AS build-env
-WORKDIR /App
+# Stage 1: Build the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /app
 
 # Copy everything
 COPY . ./
-# Restore as distinct layers
-RUN dotnet restore
-# Build and publish a release
-RUN dotnet publish -c Release -o out
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0@sha256:6c4df091e4e531bb93bdbfe7e7f0998e7ced344f54426b7e874116a3dc3233ff
-WORKDIR /App
-COPY --from=build-env /App/out .
-ENTRYPOINT ["dotnet", "DotNet.TicketReservationApp.dll"]
+# Restore the dependencies
+RUN dotnet restore
+
+# Build the application in Release mode and publish the output
+RUN dotnet publish -c Release -o /app/publish
+
+# Stage 2: Build the runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+
+# Copy the published output from the build stage
+COPY --from=build-env /app/publish .
+
+# Expose the port that your app listens on (if needed)
+#EXPOSE 5001
+
+# Run the application
+# ENTRYPOINT ["dotnet", "TicketReservationApp.dll"]
+
+#ENTRYPOINT ["sh", "-c", "while :; do sleep 1; done"]
+
+
+ENTRYPOINT ["dotnet", "TicketReservationApp.dll"]
