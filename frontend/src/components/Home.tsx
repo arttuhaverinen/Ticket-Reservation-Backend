@@ -30,6 +30,7 @@ const Home = () => {
 				<Image className="image-constrain-height" src={mountains} />
 			</Container>
 			<Search />
+			<p>dockerdocker123456</p>
 			<Row className="w-100 my-5 mx-auto">
 				<Posts />
 				<Offers />
