@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  webapp:
+    image: busapp
+    build:
+      context: ./backend # Path to the backend folder
+      dockerfile: Dockerfile # Dockerfile inside the backend folder
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./backend:/app # Mount the backend folder to the /app directory in the container
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+  client:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    command: npm run dev
