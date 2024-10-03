@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
+
 builder.Configuration
     .AddEnvironmentVariables();
 
@@ -113,6 +114,11 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>(
 
 
 var app = builder.Build();
+
+app.MapFallbackToFile("index.html");
+
+app.UseStaticFiles();
+
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
