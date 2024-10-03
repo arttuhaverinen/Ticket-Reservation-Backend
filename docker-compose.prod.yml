@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  webapp:
+    image: busapp
+    build:
+      context: . # Path to the backend folder
+      dockerfile: ./backend/Dockerfile.prod # Dockerfile inside the backend folder
+    ports:
+      - "5001:5001"
+    #volumes:
+    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"

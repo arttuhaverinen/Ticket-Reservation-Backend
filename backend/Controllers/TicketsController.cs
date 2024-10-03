@@ -57,6 +57,7 @@ namespace TicketReservationApp.Controllers
         {
             var AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Console.WriteLine(AppUserId);
+            Console.WriteLine("123");
             var tickets = await _ticketRepository.GetTicketByUser(AppUserId);
             var ticketsDto = tickets.Select(t => new TicketDto()
             {
