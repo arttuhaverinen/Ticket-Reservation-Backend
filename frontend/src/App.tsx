@@ -101,7 +101,7 @@ function App() {
 				setIsAdmin,
 			}}
 		>
-			<Router>
+			<Router basename="/busapp">
 				<Navigation />
 				<Container className="app w-100">
 					<Routes>
