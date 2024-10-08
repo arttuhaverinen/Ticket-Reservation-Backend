@@ -23,6 +23,10 @@ import.meta.env.MODE;
 import mountains from "./images/outputcrop.jpg";
 import Success from "./components/Success";
 
+const basename = window.location.pathname.startsWith("/client")
+	? "/client"
+	: "";
+
 interface WeatherForecast {
 	date: Date;
 	summary: string;
@@ -101,7 +105,7 @@ function App() {
 				setIsAdmin,
 			}}
 		>
-			<Router basename="/busapp">
+			<Router basename={basename}>
 				<Navigation />
 				<Container className="app w-100">
 					<Routes>

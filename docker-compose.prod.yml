@@ -12,3 +12,19 @@ services:
     #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
+  frontend:
+    build:
+      context: . # Adjust this to point to your React app's directory
+      dockerfile: ./frontend/Dockerfile.prod
+    ports:
+      - "3000:3000"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # Mount your local default.conf
+      - ./nginx/static-files:/usr/share/nginx/html # Optionally, if you have static files to serve
+
