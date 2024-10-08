@@ -115,11 +115,11 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>(
 
 var app = builder.Build();
 
-app.MapFallbackToFile("index.html");
+//app.MapFallbackToFile("index.html");
 //app.MapFallbackToFile("/busapp/{*path:nonfile}", "index.html");
 
 
-app.UseStaticFiles();
+//app.UseStaticFiles();
 
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
