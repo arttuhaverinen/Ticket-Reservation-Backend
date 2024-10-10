@@ -29,6 +29,7 @@ const Home = () => {
 			<Container className="w-100 image-wrapper">
 				<Image className="image-constrain-height" src={mountains} />
 			</Container>
+			<p>workflow test</p>
 			<Search />
 			<Row className="w-100 my-5 mx-auto">
 				<Posts />
