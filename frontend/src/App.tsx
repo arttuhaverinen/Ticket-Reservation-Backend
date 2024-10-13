@@ -22,6 +22,7 @@ import Footer from "./components/Footer";
 import.meta.env.MODE;
 import mountains from "./images/outputcrop.jpg";
 import Success from "./components/Success";
+import CompanyDetails from "./components/CompanyDetails";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
@@ -107,7 +108,7 @@ function App() {
 		>
 			<Router basename={basename}>
 				<Navigation />
-				<Container className="app w-100">
+				<Container fluid className="app  ">
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/register" element={<Register />} />
@@ -137,6 +138,7 @@ function App() {
 						</Col>
 					</Row>
 				*/}
+					<CompanyDetails />
 				</Container>
 				<Footer />
 			</Router>

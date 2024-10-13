@@ -122,17 +122,6 @@ h3 {
 	text-align: end !important; /* Override Bootstrap’s text-end */
 }
 
-.image-wrapper {
-	width: 100%; /* Set the desired width */
-	overflow: hidden;
-	max-height: 500px;
-}
-.image-wrapper img {
-	width: 100%;
-	object-fit: fill;
-	object-position: center;
-	top: -100;
-}
 /*
 .image-constrain-height {
 	width: 100%; 
@@ -143,8 +132,24 @@ h3 {
 
 @media (max-width: 991.98px) {
 	/* Adjust the breakpoint as needed */
+
+	body {
+		color: red;
+		background-color: red;
+	}
+
 	.text-end-responsive {
 		display: block;
 		text-align: start !important; /* Override Bootstrap’s text-end */
 	}
+}
+
+@media (max-width: 768px) {
+	/*
+	.image-container {
+		background-size: contain; /* Adjusts image scaling on smaller screens */
+		background-position: center top; /* Aligns image for better visibility on mobile */
+		max-height: 25px; /* Adjust height for smaller screens */
+	}
+	*/
 }

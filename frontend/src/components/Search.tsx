@@ -17,7 +17,7 @@ export const Search = () => {
 			{console.log(startDate)}
 			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded">
 				<Row>
-					<Col md={4} lg={3}>
+					<Col md={6}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
 							<Form.Label>Lähtö</Form.Label>
 							<Form.Select
@@ -32,7 +32,7 @@ export const Search = () => {
 							<Form.Text className="text-muted"></Form.Text>
 						</Form.Group>
 					</Col>
-					<Col md={4} lg={3}>
+					<Col md={6} lg={6}>
 						<Form.Group className="mb-3" controlId="formBasicPassword">
 							<Form.Label>Kohde</Form.Label>
 							<Form.Select
@@ -46,7 +46,7 @@ export const Search = () => {
 							</Form.Select>
 						</Form.Group>
 					</Col>
-					<Col md={4} lg={3}>
+					<Col md={8} lg={6}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
 							<Form.Label>Päivämäärä</Form.Label>
 							<br />
@@ -62,7 +62,7 @@ export const Search = () => {
 							></DatePicker>
 						</Form.Group>
 					</Col>
-					<Col sm={12} md={12} lg={3} className="d-flex align-items-center">
+					<Col sm={12} md={4} lg={5} className="d-flex align-items-center">
 						<Link
 							className="w-100"
 							to={"/tickets"}
