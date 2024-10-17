@@ -145,11 +145,9 @@ h3 {
 }
 
 @media (max-width: 768px) {
-	/*
 	.image-container {
 		background-size: contain; /* Adjusts image scaling on smaller screens */
 		background-position: center top; /* Aligns image for better visibility on mobile */
 		max-height: 25px; /* Adjust height for smaller screens */
 	}
-	*/
 }

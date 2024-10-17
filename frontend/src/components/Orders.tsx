@@ -21,7 +21,13 @@ interface Itimetable {
 }
 
 const Orders = (props) => {
-	let baseurl: string = import.meta.env.VITE_BASEURL;
+	let baseurl = "";
+	if (import.meta.env.VITE_BASEURL) {
+		baseurl = import.meta.env.VITE_BASEURL;
+	} else {
+		baseurl = "http://localhost:5001";
+	}
+	//let baseurl: string = import.meta.env.VITE_BASEURL;
 	const location = useLocation();
 	const [timetable, setTimetable] = useState();
 	//console.log(JSON.stringify(timetable));
@@ -57,6 +63,9 @@ const Orders = (props) => {
 
 	useEffect(() => {
 		//let id = timetable.id.toString();
+		console.log(
+			`${baseurl}/api/Timetables/${departure}/${destination}/${date}/${time}`
+		);
 		fetch(
 			`${baseurl}/api/Timetables/${departure}/${destination}/${date}/${time}`
 		)
@@ -149,7 +158,7 @@ const Orders = (props) => {
 	return (
 		<div>
 			{reservedSeats ? (
-				<div>
+				<div data-testid="Orders">
 					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
 						<Col className="d-flex" xs={3}>
 							<p className="mx-auto">

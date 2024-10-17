@@ -28,7 +28,11 @@ const AlertMessage = ({
 	};
 
 	return (
-		<Alert className="d-flex fade show" variant={theme}>
+		<Alert
+			data-testid="AlertMessage-div"
+			className="d-flex fade show"
+			variant={theme}
+		>
 			{message}
 			<Button
 				onClick={(e) => setShowToast(false)}

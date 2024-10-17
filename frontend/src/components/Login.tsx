@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Appcontext } from "../App";
 import AlertMessage from "./AlertMessage";
-const Login = (props) => {
+const Login = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [userName, setUserName] = useState<string>("null");
 	const [password, setPassword] = useState<string>("null");
@@ -74,6 +74,7 @@ const Login = (props) => {
 						onChange={(e) => setUserName(e.target.value)}
 						type="email"
 						placeholder=""
+						data-testid="login-username-label"
 					/>
 					<Form.Text className="text-muted"></Form.Text>
 				</Form.Group>
@@ -83,9 +84,14 @@ const Login = (props) => {
 						onChange={(e) => setPassword(e.target.value)}
 						type="password"
 						placeholder=""
+						data-testid="login-password-label"
 					/>
 				</Form.Group>
-				<Button variant="primary" type="submit">
+				<Button
+					data-testid="login-submit-button"
+					variant="primary"
+					type="submit"
+				>
 					Kirjaudu
 				</Button>
 			</Form>

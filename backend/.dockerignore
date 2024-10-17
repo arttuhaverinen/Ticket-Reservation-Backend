@@ -1,0 +1,45 @@
+.env
+# Ignore the output of build and publish commands
+bin/
+obj/
+out/
+
+# Ignore temporary files and folders
+*.user
+*.suo
+*.sln.ide
+*.userprefs
+
+# Ignore logs
+*.log
+
+# Ignore backups and temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Ignore environment variable files (if any)
+.env
+.env.local
+
+# Ignore secrets or sensitive files
+secrets/
+
+# Ignore Visual Studio files and folders
+.vscode/
+.idea/
+*.ncb
+*.scc
+*.pdb
+
+# Ignore package files (if using NuGet)
+packages/
+
+# Ignore build artifacts
+dist/
+publish/
+
+# Ignore test results
+TestResults/
+coverage/

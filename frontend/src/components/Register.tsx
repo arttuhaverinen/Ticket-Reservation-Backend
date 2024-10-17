@@ -63,6 +63,7 @@ const Register = () => {
 						onChange={(e) => setUserName(e.target.value)}
 						type="email"
 						placeholder=""
+						data-testid="register-username-label"
 					/>
 					<Form.Text className="text-muted"></Form.Text>
 				</Form.Group>
@@ -73,9 +74,14 @@ const Register = () => {
 						onChange={(e) => setPassword(e.target.value)}
 						type="password"
 						placeholder=""
+						data-testid="register-password-label"
 					/>
 				</Form.Group>
-				<Button variant="primary" type="submit">
+				<Button
+					data-testid="register-submit-button"
+					variant="primary"
+					type="submit"
+				>
 					Rekisteröidy
 				</Button>
 			</Form>

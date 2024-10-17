@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
@@ -11,5 +11,10 @@ export default defineConfig({
 		watch: {
 			usePolling: true, // Necessary for hot reloads inside Docker
 		},
+	},
+	test: {
+		environment: "jsdom", // Set the test environment to jsdom
+		globals: true, // Enable global like `describe`, `it`, etc.
+		setupFiles: "./vitest.setup.js", // Path to your setup file
 	},
 });
