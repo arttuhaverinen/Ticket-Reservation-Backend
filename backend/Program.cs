@@ -28,10 +28,25 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
 
-builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+Console.WriteLine(environment);
+
+if (environment == "Test")
+{
+    builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+{
+    { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TEST") }
+});
+}
+else
+{
+    builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
 {
     { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
 });
+}
+
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
