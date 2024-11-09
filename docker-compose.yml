@@ -6,6 +6,8 @@ services:
     build:
       context: ./backend # Path to the backend folder
       dockerfile: Dockerfile # Dockerfile inside the backend folder
+    env_file:
+      - ./backend/.env # Specify the path to the .env file
     ports:
       - "5001:5001"
     #volumes:
@@ -14,11 +16,10 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
       - ./backend:/app # Mount your local code into the container
-
   client:
     build: ./frontend
     ports:
       - "5173:5173"
-    volumes:
-      - ./backend/wwwroot:/app/dist
+    #    volumes:
+    #      - ./backend/wwwroot:/app/dist
     command: npm run dev

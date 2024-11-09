@@ -51,7 +51,7 @@ namespace TicketReservationApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57c64f2b-0ada-4b64-9bc9-ab1e260a276a",
+                            Id = "775e1c20-3b1d-4ee3-a457-0ed07368099a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -219,8 +219,8 @@ namespace TicketReservationApp.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
-                            RoleId = "57c64f2b-0ada-4b64-9bc9-ab1e260a276a"
+                            UserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
+                            RoleId = "775e1c20-3b1d-4ee3-a457-0ed07368099a"
                         });
                 });
 
@@ -277,7 +277,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             PostContent = "seed 1",
                             PostTitle = "first post",
                             PostType = "info"
@@ -285,7 +285,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 2,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             PostContent = "seed 2",
                             PostTitle = "second post",
                             PostType = "warning"
@@ -293,7 +293,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 3,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             PostContent = "seed 3",
                             PostTitle = "third post",
                             PostType = "info"
@@ -357,7 +357,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Tampere",
@@ -372,7 +372,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 2,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Tampere",
@@ -387,7 +387,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 3,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 5, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Tampere",
@@ -402,7 +402,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 4,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 8, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Kuopio",
@@ -417,7 +417,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 5,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Kuopio",
@@ -432,7 +432,7 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 6,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Date = new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc),
                             Departure = "Joensuu",
                             Destination = "Kuopio",
@@ -499,9 +499,9 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1615),
+                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8815),
                             Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
                             Departure = "Joensuu",
                             Destination = "Tampere",
@@ -512,9 +512,9 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 2,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1674),
+                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8867),
                             Day = new List<string> { "saturday", "sunday" },
                             Departure = "Joensuu",
                             Destination = "Kuopio",
@@ -525,9 +525,9 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 3,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1680),
+                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8873),
                             Day = new List<string> { "saturday", "sunday" },
                             Departure = "Joensuu",
                             Destination = "Kuopio",
@@ -538,9 +538,9 @@ namespace TicketReservationApp.Migrations
                         new
                         {
                             Id = 4,
-                            AppUserId = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1687),
+                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8973),
                             Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
                             Departure = "Joensuu",
                             Destination = "Nurmes",
@@ -560,15 +560,15 @@ namespace TicketReservationApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d8533f12-c1f9-42bf-bbad-67e282555214",
+                            Id = "c895e2ba-889b-4388-9c6a-df71363e9278",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "356a12e6-3be8-42fd-a8bf-69831005e89a",
+                            ConcurrencyStamp = "d7a03135-6015-4730-b31c-e1ef2e66c97c",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK8W5yttCSIhCflkj0qAF/YD0d0V+6HBqjgqydM3zRK9tzyjp6/KedElVrTwpHDKaQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJHryrfRprW1gTDFV4h5mQXVkX7s28+dm286MzMpDYpawekT7lXMjtVByfM19vkY0g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

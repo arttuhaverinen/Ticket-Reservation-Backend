@@ -6,7 +6,14 @@ import { useMediaQuery } from "react-responsive";
 
 const Tickets = () => {
 	const mobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
-	let baseurl: string = import.meta.env.VITE_BASEURL;
+	let baseurl = "";
+	if (import.meta.env.VITE_BASEURL) {
+		baseurl = import.meta.env.VITE_BASEURL;
+	} else {
+		console.log("baseurl was undefined");
+		baseurl = "http://localhost:5001";
+	}
+
 	/*
 	const location = useLocation();
 	const { departureLocation } = location.state;
@@ -22,7 +29,9 @@ const Tickets = () => {
 	const [startTime, setStartTime] = useState();
 
 	useEffect(() => {
-		console.log("fetching timetables");
+		console.log(
+			`${baseurl}/api/Timetables/${departure}/${destination}/${date}`
+		);
 
 		fetch(`${baseurl}/api/Timetables/${departure}/${destination}/${date}`)
 			.then((res) => res.json())
@@ -40,7 +49,7 @@ const Tickets = () => {
 						<>
 							{mobileScreen ? (
 								<>
-									<Row className="my-5">
+									<Row data-testid="tickets-mobile-row" className="my-5">
 										<Col className="d-flex " xs={4} lg={3}>
 											<p className="mx-auto">lähtöaika / saapumisaika</p>
 										</Col>
@@ -73,6 +82,7 @@ const Tickets = () => {
 							*/}
 										<Col className="" xs={4}>
 											<Link
+												data-testid="tickets-mobile-purchase-button"
 												className="h-100 xs-auto"
 												to={`/orders?departure=${departure}&destination=${destination}&date=${date}&time=${timetable.startTime}`}
 												state={{ timetable: timetable }}
@@ -86,7 +96,7 @@ const Tickets = () => {
 								</>
 							) : (
 								<>
-									<Row className="my-5">
+									<Row data-testid="tickets-desktop-row" className="my-5">
 										<Col className=" " xs={3}>
 											<p className="">lähtöaika / saapumisaika</p>
 										</Col>
@@ -117,6 +127,7 @@ const Tickets = () => {
 
 										<Col className="" xs={3}>
 											<Link
+												data-testid="tickets-desktop-purchase-button"
 												className="h-100 xs-auto"
 												to={`/orders?departure=${departure}&destination=${destination}&date=${date}&time=${timetable.startTime}`}
 												state={{ timetable: timetable }}

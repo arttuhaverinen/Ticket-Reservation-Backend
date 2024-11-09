@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TicketReservationApp.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -250,26 +250,26 @@ namespace TicketReservationApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "57c64f2b-0ada-4b64-9bc9-ab1e260a276a", null, "Admin", "ADMIN" });
+                values: new object[] { "775e1c20-3b1d-4ee3-a457-0ed07368099a", null, "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "d8533f12-c1f9-42bf-bbad-67e282555214", 0, "356a12e6-3be8-42fd-a8bf-69831005e89a", "ApplicationUser", "admin@example.com", true, false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEK8W5yttCSIhCflkj0qAF/YD0d0V+6HBqjgqydM3zRK9tzyjp6/KedElVrTwpHDKaQ==", null, false, "", false, "admin@example.com" });
+                values: new object[] { "c895e2ba-889b-4388-9c6a-df71363e9278", 0, "d7a03135-6015-4730-b31c-e1ef2e66c97c", "ApplicationUser", "admin@example.com", true, false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEJHryrfRprW1gTDFV4h5mQXVkX7s28+dm286MzMpDYpawekT7lXMjtVByfM19vkY0g==", null, false, "", false, "admin@example.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "57c64f2b-0ada-4b64-9bc9-ab1e260a276a", "d8533f12-c1f9-42bf-bbad-67e282555214" });
+                values: new object[] { "775e1c20-3b1d-4ee3-a457-0ed07368099a", "c895e2ba-889b-4388-9c6a-df71363e9278" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "AppUserId", "PostContent", "PostTitle", "PostType" },
                 values: new object[,]
                 {
-                    { 1, "d8533f12-c1f9-42bf-bbad-67e282555214", "seed 1", "first post", "info" },
-                    { 2, "d8533f12-c1f9-42bf-bbad-67e282555214", "seed 2", "second post", "warning" },
-                    { 3, "d8533f12-c1f9-42bf-bbad-67e282555214", "seed 3", "third post", "info" }
+                    { 1, "c895e2ba-889b-4388-9c6a-df71363e9278", "seed 1", "first post", "info" },
+                    { 2, "c895e2ba-889b-4388-9c6a-df71363e9278", "seed 2", "second post", "warning" },
+                    { 3, "c895e2ba-889b-4388-9c6a-df71363e9278", "seed 3", "third post", "info" }
                 });
 
             migrationBuilder.InsertData(
@@ -277,10 +277,10 @@ namespace TicketReservationApp.Migrations
                 columns: new[] { "Id", "AppUserId", "Cancelled", "Date", "Day", "Departure", "Destination", "EndTime", "Price", "PriceDiscount", "StartTime" },
                 values: new object[,]
                 {
-                    { 1, "d8533f12-c1f9-42bf-bbad-67e282555214", new List<DateTime>(), new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1615), new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" }, "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), 29.989999999999998, null, new TimeSpan(0, 9, 0, 0, 0) },
-                    { 2, "d8533f12-c1f9-42bf-bbad-67e282555214", new List<DateTime>(), new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1674), new List<string> { "saturday", "sunday" }, "Joensuu", "Kuopio", new TimeSpan(0, 9, 0, 0, 0), 19.989999999999998, null, new TimeSpan(0, 9, 0, 0, 0) },
-                    { 3, "d8533f12-c1f9-42bf-bbad-67e282555214", new List<DateTime>(), new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1680), new List<string> { "saturday", "sunday" }, "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), 29.989999999999998, null, new TimeSpan(0, 17, 0, 0, 0) },
-                    { 4, "d8533f12-c1f9-42bf-bbad-67e282555214", new List<DateTime>(), new DateTime(2024, 9, 15, 15, 39, 11, 691, DateTimeKind.Utc).AddTicks(1687), new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" }, "Joensuu", "Nurmes", new TimeSpan(0, 9, 0, 0, 0), 14.99, 10.99, new TimeSpan(0, 9, 0, 0, 0) }
+                    { 1, "c895e2ba-889b-4388-9c6a-df71363e9278", new List<DateTime>(), new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8815), new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" }, "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), 29.989999999999998, null, new TimeSpan(0, 9, 0, 0, 0) },
+                    { 2, "c895e2ba-889b-4388-9c6a-df71363e9278", new List<DateTime>(), new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8867), new List<string> { "saturday", "sunday" }, "Joensuu", "Kuopio", new TimeSpan(0, 9, 0, 0, 0), 19.989999999999998, null, new TimeSpan(0, 9, 0, 0, 0) },
+                    { 3, "c895e2ba-889b-4388-9c6a-df71363e9278", new List<DateTime>(), new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8873), new List<string> { "saturday", "sunday" }, "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), 29.989999999999998, null, new TimeSpan(0, 17, 0, 0, 0) },
+                    { 4, "c895e2ba-889b-4388-9c6a-df71363e9278", new List<DateTime>(), new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8973), new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" }, "Joensuu", "Nurmes", new TimeSpan(0, 9, 0, 0, 0), 14.99, 10.99, new TimeSpan(0, 9, 0, 0, 0) }
                 });
 
             migrationBuilder.InsertData(
@@ -288,12 +288,12 @@ namespace TicketReservationApp.Migrations
                 columns: new[] { "Id", "AppUserId", "Date", "Departure", "Destination", "EndTime", "Expired", "Name", "Seat", "StartTime", "Status", "TimetablesId" },
                 values: new object[,]
                 {
-                    { 1, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "arttu", 12, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
-                    { 2, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "juhani", 13, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
-                    { 3, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 5, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "name", 5, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
-                    { 4, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 8, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), false, "name", 10, new TimeSpan(0, 17, 0, 0, 0), "paid", 2 },
-                    { 5, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 9, 0, 0, 0), false, "name", 9, new TimeSpan(0, 9, 0, 0, 0), "paid", 2 },
-                    { 6, "d8533f12-c1f9-42bf-bbad-67e282555214", new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), false, "name", 12, new TimeSpan(0, 17, 0, 0, 0), "paid", 3 }
+                    { 1, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "arttu", 12, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
+                    { 2, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "juhani", 13, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
+                    { 3, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 5, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Tampere", new TimeSpan(0, 9, 0, 0, 0), false, "name", 5, new TimeSpan(0, 9, 0, 0, 0), "paid", 1 },
+                    { 4, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 8, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), false, "name", 10, new TimeSpan(0, 17, 0, 0, 0), "paid", 2 },
+                    { 5, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 9, 0, 0, 0), false, "name", 9, new TimeSpan(0, 9, 0, 0, 0), "paid", 2 },
+                    { 6, "c895e2ba-889b-4388-9c6a-df71363e9278", new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc), "Joensuu", "Kuopio", new TimeSpan(0, 17, 0, 0, 0), false, "name", 12, new TimeSpan(0, 17, 0, 0, 0), "paid", 3 }
                 });
 
             migrationBuilder.CreateIndex(
