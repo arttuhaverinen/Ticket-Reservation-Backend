@@ -10,8 +10,7 @@ namespace TicketReservationApp.Data
 
 
 {
-    public class ApplicationUser : IdentityUser { }
-    public class DataContext : IdentityDbContext<IdentityUser>
+    public class DataContext : IdentityDbContext<AppUser>
     {
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
@@ -29,7 +28,7 @@ namespace TicketReservationApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-
+            /*
             // Seed Roles
             string roleId = Guid.NewGuid().ToString();
             string adminRoleName = "Admin";
@@ -256,10 +255,12 @@ namespace TicketReservationApp.Data
                     Status = "paid"
                 }
                 );
+            */
         }
         
 
-
+            
     }
+            
 }
 

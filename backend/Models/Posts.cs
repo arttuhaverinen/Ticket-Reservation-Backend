@@ -24,6 +24,8 @@ namespace TicketReservationApp.Models
 
         public AppUser AppUser { get; set; }
 
+        public string? TestField { get; set; }
+
 
 
 
