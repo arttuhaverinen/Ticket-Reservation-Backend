@@ -13,6 +13,8 @@ namespace TicketReservationApp.Models
 
         public int PostsId { get; set; }
         public ICollection<Posts> Posts { get; set; }
+
+        public string? ProfileImage {  get; set; }
     }
 }
 

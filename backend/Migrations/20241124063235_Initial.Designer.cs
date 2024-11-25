@@ -13,8 +13,8 @@ using TicketReservationApp.Data;
 namespace TicketReservationApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241017212402_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241124063235_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,14 +50,6 @@ namespace TicketReservationApp.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "775e1c20-3b1d-4ee3-a457-0ed07368099a",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -99,8 +91,8 @@ namespace TicketReservationApp.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -218,13 +210,6 @@ namespace TicketReservationApp.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            RoleId = "775e1c20-3b1d-4ee3-a457-0ed07368099a"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -270,37 +255,14 @@ namespace TicketReservationApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("TestField")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            PostContent = "seed 1",
-                            PostTitle = "first post",
-                            PostType = "info"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            PostContent = "seed 2",
-                            PostTitle = "second post",
-                            PostType = "warning"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            PostContent = "seed 3",
-                            PostTitle = "third post",
-                            PostType = "info"
-                        });
                 });
 
             modelBuilder.Entity("TicketReservationApp.Models.Tickets", b =>
@@ -355,98 +317,6 @@ namespace TicketReservationApp.Migrations
                     b.HasIndex("TimetablesId");
 
                     b.ToTable("Tickets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Tampere",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Expired = false,
-                            Name = "arttu",
-                            Seat = 12,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 4, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Tampere",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Expired = false,
-                            Name = "juhani",
-                            Seat = 13,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 5, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Tampere",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Expired = false,
-                            Name = "name",
-                            Seat = 5,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 8, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Kuopio",
-                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
-                            Expired = false,
-                            Name = "name",
-                            Seat = 10,
-                            StartTime = new TimeSpan(0, 17, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Kuopio",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Expired = false,
-                            Name = "name",
-                            Seat = 9,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Date = new DateTime(2024, 9, 7, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Departure = "Joensuu",
-                            Destination = "Kuopio",
-                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
-                            Expired = false,
-                            Name = "name",
-                            Seat = 12,
-                            StartTime = new TimeSpan(0, 17, 0, 0, 0),
-                            Status = "paid",
-                            TimetablesId = 3
-                        });
                 });
 
             modelBuilder.Entity("TicketReservationApp.Models.Timetables", b =>
@@ -497,86 +367,6 @@ namespace TicketReservationApp.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Timetables");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8815),
-                            Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
-                            Departure = "Joensuu",
-                            Destination = "Tampere",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Price = 29.989999999999998,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8867),
-                            Day = new List<string> { "saturday", "sunday" },
-                            Departure = "Joensuu",
-                            Destination = "Kuopio",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Price = 19.989999999999998,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8873),
-                            Day = new List<string> { "saturday", "sunday" },
-                            Departure = "Joensuu",
-                            Destination = "Kuopio",
-                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
-                            Price = 29.989999999999998,
-                            StartTime = new TimeSpan(0, 17, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AppUserId = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            Cancelled = new List<DateTime>(),
-                            Date = new DateTime(2024, 10, 18, 0, 24, 1, 991, DateTimeKind.Utc).AddTicks(8973),
-                            Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" },
-                            Departure = "Joensuu",
-                            Destination = "Nurmes",
-                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Price = 14.99,
-                            PriceDiscount = 10.99,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
-                        });
-                });
-
-            modelBuilder.Entity("TicketReservationApp.Data.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c895e2ba-889b-4388-9c6a-df71363e9278",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d7a03135-6015-4730-b31c-e1ef2e66c97c",
-                            Email = "admin@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJHryrfRprW1gTDFV4h5mQXVkX7s28+dm286MzMpDYpawekT7lXMjtVByfM19vkY0g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@example.com"
-                        });
                 });
 
             modelBuilder.Entity("TicketReservationApp.Models.AppUser", b =>
@@ -585,6 +375,9 @@ namespace TicketReservationApp.Migrations
 
                     b.Property<int>("PostsId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("text");
 
                     b.Property<int>("TicketsId")
                         .HasColumnType("integer");

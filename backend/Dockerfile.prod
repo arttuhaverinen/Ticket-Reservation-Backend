@@ -17,7 +17,7 @@ WORKDIR /app
 
 # Copy everything
 
-COPY .dockerignore.prod .dockerignore
+#COPY ./backend/.dockerignore .dockerignore
 
 COPY ./backend/ ./
 

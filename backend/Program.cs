@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Build.Execution;
+using Microsoft.Extensions.Hosting;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
@@ -46,6 +47,8 @@ else
     { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
 });
 }
+
+
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -125,6 +128,7 @@ builder.Services.AddAuthorization();
 
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<DataContext>();
+builder.Services.AddScoped<DatabaseSeeder>(); // Assuming you have a DatabaseSeeder class
 
 
 
@@ -135,6 +139,16 @@ var app = builder.Build();
 
 
 //app.UseStaticFiles();
+using (var scope = app.Services.CreateScope()) // Create a scope to resolve scoped services
+{
+    // Manually trigger seeding if 'seed' argument is passed
+    if (args.Contains("seed"))
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>(); // Resolve DatabaseSeeder inside the scope
+        await seeder.Seed(); // Call the seeding method
+        Console.WriteLine("Seeding completed.");
+    }
+}
 
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -161,6 +175,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+/*
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -175,6 +191,7 @@ using (var scope = app.Services.CreateScope())
         
     }
 }
+*/
 /*
 using (var scope = app.Services.CreateScope())
 {

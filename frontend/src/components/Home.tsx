@@ -20,17 +20,30 @@ import useTokenExpireMiddleware from "../middleware/useTokenExpireMiddleware";
 import Success from "./Success";
 import ImageOverlay from "./ImageOverlay";
 import { useMediaQuery } from "react-responsive";
+import ProfilePicture from "./ProfilePicture";
 
 registerLocale("fi", fi);
 
 const Home = () => {
 	const mobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
-
+	const [imageUrl, setImageUrl] = useState("");
+	const minioUrl = "http://localhost:9000/test/image.png";
+	//setImageUrl(minioUrl);
 	const [startDate, setStartDate] = useState(new Date());
 	const [showToast, setShowToast] = useState(true);
 	return (
 		<Container fluid className="">
 			{useTokenExpireMiddleware()}
+			<h3>minio img</h3>
+			<img
+				//src="http://localhost:9000/test/image.png"
+				//src="http://minio:9000/test/image.png"
+				src={`${import.meta.env.VITE_MINIO_URL}/test/image.png`}
+				alt="MinIO Image"
+				style={{ maxWidth: "300px" }}
+			/>
+			<ProfilePicture />
+
 			{mobileScreen ? (
 				<Row
 					style={{
