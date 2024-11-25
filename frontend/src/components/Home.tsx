@@ -36,9 +36,8 @@ const Home = () => {
 			{useTokenExpireMiddleware()}
 			<h3>minio img</h3>
 			<img
-				//src="http://localhost:9000/test/image.png"
+				src="http://localhost:9000/test/image.png"
 				//src="http://minio:9000/test/image.png"
-				src={`${import.meta.env.VITE_MINIO_URL}/test/image.png`}
 				alt="MinIO Image"
 				style={{ maxWidth: "300px" }}
 			/>
