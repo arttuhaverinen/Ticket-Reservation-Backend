@@ -50,7 +50,7 @@ const TimetableView = () => {
 	};
 
 	return (
-		<div>
+		<div className="shadow p-3 my-5 mb-5 bg-white rounded">
 			<h3>Ajovuorot</h3>
 			<Link to={"createtimetable"}>
 				<Button className="w-100 my-3">Lisää uusi vuoro</Button>

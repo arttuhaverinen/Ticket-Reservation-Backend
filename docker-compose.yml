@@ -33,7 +33,7 @@ services:
   #    - busapp-network
   minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
-    #container_name: minio-server
+    container_name: minio
     environment:
       # Set up root user credentials here
       MINIO_ROOT_USER: admin

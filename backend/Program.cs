@@ -14,6 +14,13 @@ using System.Text;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Build.Execution;
 using Microsoft.Extensions.Hosting;
+using Minio;
+
+using Amazon;
+using Amazon.S3;
+using Amazon.Runtime;
+using TicketReservationApp.Models;
+
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
@@ -79,6 +86,28 @@ builder.Services.AddCors(options =>
                           ;
                       });
 });
+var endpoint = "http://localhost:9000"; // Your MinIO endpoint (use the correct URL here)
+var accessKey = "admin";           // Your MinIO access key
+var secretKey = "your-secret-password";           // Your MinIO secret key
+//var region = RegionEndpoint.USEast1;    // Use any region (e.g., us-east-1)
+
+var credentials = new BasicAWSCredentials(accessKey, secretKey);
+var config = new AmazonS3Config
+{
+    ServiceURL = endpoint,           // MinIO endpoint
+    ForcePathStyle = true,           // MinIO uses path-style addressing
+   // RegionEndpoint = region         // MinIO region
+};
+builder.Services.AddSingleton<IAmazonS3>(new AmazonS3Client(credentials, config));
+
+
+//var bucketName = "test"; // Replace with your desired bucket name
+
+
+// Add Minio using the default endpoint
+
+// Add Minio using the custom endpoint and configure additional settings for default MinioClient initialization
+
 
 // Add services to the container.
 
@@ -112,6 +141,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<ITimetablesRepository, TimetableRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<IUserRepository, UsersRepository>(); // Change to your actual repository and interface
+
 /*
 builder.Services.AddAuthentication(options =>
 {
@@ -127,7 +158,11 @@ builder.Services.AddAuthorization();
 
 
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<DataContext>();
+//builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<DataContext>();
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<DataContext>();
+
 builder.Services.AddScoped<DatabaseSeeder>(); // Assuming you have a DatabaseSeeder class
 
 
@@ -166,7 +201,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<IdentityUser>();
+//app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<AppUser>();
 
 app.UseHttpsRedirection();
 
