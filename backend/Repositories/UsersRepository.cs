@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Xml;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
 
@@ -17,9 +18,10 @@ namespace TicketReservationApp.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<AppUser> GetUserByID(int postId)
+        public async Task<AppUser> GetUserByID(string userId)
         {
-            throw new NotImplementedException();
+            var user = await _dataContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
+            return user;
         }
 
         public async Task<IEnumerable<AppUser>> GetUsers()
@@ -34,9 +36,11 @@ namespace TicketReservationApp.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<AppUser> UpdateUser(int id, AppUser post)
+        public async Task<AppUser> UpdateUser(AppUser user)
         {
-            throw new NotImplementedException();
+            _dataContext.Users.Update(user);
+            await _dataContext.SaveChangesAsync();
+            return user;
         }
     }
 }

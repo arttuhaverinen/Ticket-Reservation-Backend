@@ -35,6 +35,7 @@ namespace TicketReservationApp.Data
             string userEmail = "admin@example.com";
 
             var hasher = new PasswordHasher<AppUser>();
+            
             var user = new AppUser
             {
                 Id = userId,
@@ -44,10 +45,12 @@ namespace TicketReservationApp.Data
                 NormalizedEmail = userEmail.ToUpper(),
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "Admin@123"),
-                SecurityStamp = string.Empty
+                SecurityStamp = string.Empty,
+
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            
 
             // Assign User to Role
             _context.UserRoles.Add(new IdentityUserRole<string>

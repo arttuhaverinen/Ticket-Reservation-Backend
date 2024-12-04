@@ -23,6 +23,12 @@ import.meta.env.MODE;
 import mountains from "./images/outputcrop.jpg";
 import Success from "./components/Success";
 import CompanyDetails from "./components/CompanyDetails";
+import TimetableView from "./components/TimetableView";
+import ProfileNavigation from "./components/ProfileNavigation";
+import OwnTickets from "./components/OwnTickets";
+import Posts from "./components/Posts";
+import AdminCreatePost from "./components/AdminCreatePost";
+import ProfilePicture from "./components/ProfilePicture";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
@@ -44,6 +50,8 @@ interface AppContextType {
 	setAppUserName: React.Dispatch<React.SetStateAction<string | null>>;
 	isAdmin: boolean;
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+	profilePicture: string | null;
+	setProfilePicture: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Appcontext = createContext<AppContextType | undefined>(undefined);
@@ -55,10 +63,23 @@ function App() {
 	const [appUserName, setAppUserName] = useState<string | null>(null);
 	const [appRefreshToken, setAppRefreshToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
+	const [profilePicture, setProfilePicture] = useState(null);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	console.log(baseurl);
 	console.log(appUserName);
+
+	const fetchProfileImage = () => {
+		try {
+			fetch(`${baseurl}/api/minio`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => setProfilePicture(res.url));
+		} catch (error) {}
+	};
 
 	useEffect(() => {
 		if (!appToken) {
@@ -90,6 +111,7 @@ function App() {
 						setIsAdmin(true);
 					}
 				});
+			fetchProfileImage();
 		}
 	}, [appToken]);
 
@@ -104,22 +126,38 @@ function App() {
 				setAppToken,
 				isAdmin,
 				setIsAdmin,
+				profilePicture,
+				setProfilePicture,
 			}}
 		>
 			<Router basename={basename}>
 				<Navigation />
 				<Container fluid className="app  ">
+					{console.log(profilePicture)}
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/tickets" element={<Tickets />} />
 						<Route path="/orders" element={<Orders />} />
-						<Route path="/admin" element={<AdminView />} />
+						<Route path="/profile" element={<AdminView />}>
+							<Route index element={<ProfilePicture />} />
+							<Route path="description" element={<ProfilePicture />} />
+							<Route path="timetables" element={<TimetableView />} />
+							<Route path="posts" element={<AdminCreatePost />} />
+							<Route path="tickets" element={<OwnTickets />} />
+
+							<Route
+								path="timetables/createtimetable"
+								element={<CreateTimetable />}
+							/>
+							<Route
+								path="timetables/modifytimetable"
+								element={<ModifyTimetable />}
+							/>
+						</Route>{" "}
 						<Route path="/failed" element={<Failed />} />
 						<Route path="/success" element={<Success />} />
-						<Route path="admin/createtimetable" element={<CreateTimetable />} />
-						<Route path="admin/modifytimetable" element={<ModifyTimetable />} />
 					</Routes>
 
 					{/* 

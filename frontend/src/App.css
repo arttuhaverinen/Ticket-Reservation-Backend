@@ -122,6 +122,18 @@ h3 {
 	text-align: end !important; /* Override Bootstrap’s text-end */
 }
 
+.navigation-link-hover:hover {
+	margin-top: 3px;
+	border-bottom: 3px solid black;
+	border-radius: 1px;
+	scale: 1.1;
+}
+
+.navbar-profile-hover:hover {
+	background-color: lightblue;
+	cursor: pointer;
+}
+
 /*
 .image-constrain-height {
 	width: 100%; 

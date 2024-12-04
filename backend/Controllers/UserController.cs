@@ -22,17 +22,17 @@ namespace TicketReservationApp.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<PostsDto>> getPosts()
+        public async Task<ActionResult> getUserById()
         {
-            string authorizationHeader = Request.Headers["Authorization"];
-            var id = User.Identity.IsAuthenticated;
+            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
+            Console.WriteLine(userId);
 
-            var posts = await _usersRepository.GetUsers();
+            var user = await _usersRepository.GetUserByID(userId);
+
+            Console.WriteLine(user);
 
 
-
-            return Ok();
+            return Ok(user);
         }
 
 
