@@ -1,5 +1,5 @@
 services:
-  webapp:
+  test-webapp:
     image: busapp
     build:
       context: ./backend # Path to the backend folder
@@ -17,7 +17,7 @@ services:
     #networks:
     #  - busapp-network
 
-  client:
+  test-client:
     build: ./frontend
     ports:
       - "5173:5173"
@@ -31,7 +31,7 @@ services:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
   #  networks:
   #    - busapp-network
-  minio:
+  test-minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
     container_name: minio
     environment:
