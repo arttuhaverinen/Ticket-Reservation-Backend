@@ -27,4 +27,4 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          run-command: up --build --abort-on-container-exit
+          up-flags: "--build --abort-on-container-exit"
