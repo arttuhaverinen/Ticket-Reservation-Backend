@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace TicketReservationApp.Tests
 {
     public class TimetableTest : IAsyncLifetime
@@ -26,7 +27,7 @@ namespace TicketReservationApp.Tests
         {
 
         
-            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestDatabase")
+            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestTimetableDatabase")
             .UseLoggerFactory(new LoggerFactory().AddSerilog(new LoggerConfiguration().WriteTo.Console().CreateLogger()))
             .Options;
 
@@ -52,19 +53,32 @@ namespace TicketReservationApp.Tests
         public async Task InitializeAsync()
         {
             // Apply seed data
-            using var context = new DataContext(_options);
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            using (var context = GetDbContext())
+            {
+                context.Database.EnsureDeleted();  // Deletes the database (if exists)
+                context.Database.EnsureCreated();  // Creates a fresh database
 
-            var seeder = new DatabaseSeeder(context);
-            await seeder.Seed();
-            _output.WriteLine("Database seeded for testing.");
+                var seeder = new DatabaseSeeder(context); // Seeder to add test data
+                await seeder.Seed();  // Perform seeding
+                _output.WriteLine("Database seeded for testing.");
+            }
+
+
 
         }
 
         public Task DisposeAsync()
         {
-            // Perform any clean-up logic if needed
+            // Cleanup after each test
+            _output.WriteLine("Test cleanup starting...");
+
+            // You can delete the in-memory database explicitly (optional)
+            using (var context = GetDbContext())
+            {
+                context.Database.EnsureDeleted(); // Optionally delete the database after the test (it will be auto-cleaned anyway)
+                _output.WriteLine("Database cleaned up.");
+            }
+
             return Task.CompletedTask;
         }
 

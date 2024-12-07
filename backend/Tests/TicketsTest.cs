@@ -15,8 +15,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 // dotnet test --logger "console;verbosity=detailed"
-
-
 namespace TicketReservationApp.Tests
 {
     public  class TicketsTest : IAsyncLifetime
@@ -27,7 +25,7 @@ namespace TicketReservationApp.Tests
 
         public  TicketsTest(ITestOutputHelper output)
         {
-            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestDatabase")
+            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestTicketDatabase")
             .UseLoggerFactory(new LoggerFactory().AddSerilog(new LoggerConfiguration().WriteTo.Console().CreateLogger()))
             .Options;
 
