@@ -40,7 +40,8 @@
     "Test": { // Updated Test profile
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false, // No need to launch the browser for API testing
+      "launchUrl": "swagger",
+      "launchBrowser": true, // No need to launch the browser for API testing
       "applicationUrl": "http://localhost:5002", // Use port 5002 for the test backend
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Test" // Set Test environment

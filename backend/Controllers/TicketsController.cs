@@ -148,7 +148,8 @@ namespace TicketReservationApp.Controllers
                 Name = ticket.Name,
                 Seat = ticket.Seat,
                 StartTime = ticket.StartTime,
-                TimetablesId = ticket.TimetablesId
+                TimetablesId = ticket.TimetablesId,
+                Status = ticket.Status != null ? ticket.Status : ""
 
             };
             var addedTicket = await _ticketRepository.InsertTicket(addTicket);

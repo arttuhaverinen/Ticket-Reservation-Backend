@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+// dotnet run --launch-profile Test
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,13 +42,16 @@ var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 Console.WriteLine(environment);
 
-if (environment == "Test")
+if (environment != "Test")
 {
     builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
 {
-    { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TEST") }
+    { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
+
 });
 }
+
+/*
 else
 {
     builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
@@ -55,7 +59,7 @@ else
     { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
 });
 }
-
+*/
 
 
 
@@ -142,10 +146,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+
+
 
 
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
@@ -184,15 +186,52 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<DatabaseSeeder>(); // Assuming you have a DatabaseSeeder class
 
+builder.Services.AddDbContext<DataContext>(options =>
+
+{
+
+    if (environment == "Test")
+    {
+        Console.WriteLine("TEST ENV");
+        options.UseInMemoryDatabase("InMemoryDb");
+
+
+    }
+    else
+    {
+        Console.WriteLine("DEV ENV");
+        //Console.WriteLine("Seeding completed.");
+
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+
+    }
+});
+
 
 
 var app = builder.Build();
+
+
+
+
+
 
 //app.MapFallbackToFile("index.html");
 //app.MapFallbackToFile("/busapp/{*path:nonfile}", "index.html");
 
 
 //app.UseStaticFiles();
+if (environment == "Test")
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        await seeder.Seed();
+        Console.WriteLine("Seeding completed.");
+    }
+}
+
 using (var scope = app.Services.CreateScope()) // Create a scope to resolve scoped services
 {
     // Manually trigger seeding if 'seed' argument is passed
@@ -214,7 +253,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Test")
 {
     app.UseSwagger();
     app.UseSwaggerUI();

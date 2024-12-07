@@ -12,10 +12,11 @@ using TicketReservationApp.Controllers;
 using TicketReservationApp.Dto;
 using System;
 using System.Diagnostics.CodeAnalysis;
-/*
+using System.Security.Claims;
+
 namespace TicketReservationApp.Tests
 {
-    public class TimetableTest
+    public class TimetableTest : IAsyncLifetime
     {
         private readonly DbContextOptions<DataContext> _options;
 
@@ -23,16 +24,20 @@ namespace TicketReservationApp.Tests
 
         public TimetableTest(ITestOutputHelper output)
         {
+
+        
             _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestDatabase")
             .UseLoggerFactory(new LoggerFactory().AddSerilog(new LoggerConfiguration().WriteTo.Console().CreateLogger()))
             .Options;
 
-            // Apply seed data
-            using var context = new DataContext(_options);
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
 
-            _output = output;
+
+
+
+
+
+
+        _output = output;
 
         }
 
@@ -44,6 +49,25 @@ namespace TicketReservationApp.Tests
 
 
 
+        public async Task InitializeAsync()
+        {
+            // Apply seed data
+            using var context = new DataContext(_options);
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            var seeder = new DatabaseSeeder(context);
+            await seeder.Seed();
+            _output.WriteLine("Database seeded for testing.");
+
+        }
+
+        public Task DisposeAsync()
+        {
+            // Perform any clean-up logic if needed
+            return Task.CompletedTask;
+        }
+
 
 
         [Fact]
@@ -53,13 +77,13 @@ namespace TicketReservationApp.Tests
             var repository = new TimetableRepository(context);
             var controller = new TimetablesController(repository);
 
-            var result = await controller.GetTimetables();
+            var result = await controller.GetTimetables(null);
 
             _output.WriteLine($"GetAllTimetables - {JsonConvert.SerializeObject(result)}");
 
             var actionResult = Assert.IsType<ActionResult<IEnumerable<TimetableDto>>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<List<TimetableDto>>(okResult.Value);
+            var returnValue = Assert.IsType<List<TimetableResponseDto>>(okResult.Value);
 
             Assert.NotNull(returnValue);
             Assert.NotEmpty(returnValue); 
@@ -81,7 +105,7 @@ namespace TicketReservationApp.Tests
             _output.WriteLine($"GetTimetableById - {JsonConvert.SerializeObject(actionResult)}");
 
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<TimetableDto>(okResult.Value);
+            var returnValue = Assert.IsType<TimetableResponseDto>(okResult.Value);
 
             Assert.NotNull(returnValue);
 
@@ -111,25 +135,48 @@ namespace TicketReservationApp.Tests
             var repository = new TimetableRepository(context);
             var controller = new TimetablesController(repository);
 
-            Timetables tb = new Timetables()
+            var claims = new[]
+{
+            new Claim(ClaimTypes.NameIdentifier, "admin")
+            };
+
+            var identity = new ClaimsIdentity(claims, "TestAuthentication");
+            var user = new ClaimsPrincipal(identity);
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = user
+                }
+            };
+
+
+            TimetableDto tb = new TimetableDto()
             {
                 StartTime = new TimeSpan(9, 0, 0),
                 EndTime = new TimeSpan(9, 0, 0),
                 Price = 0,
                 Departure = "string",
                 Destination = "string",
-                Day = new List<string> { "monday" }
+                Day = new List<string> { "monday" },
+                Date = new DateTime(),
+                PriceDiscount = 0,
+               
+                
+                
             };
-            
 
-            var result = await controller.PostTimetables(tb);
+
+
+        var result = await controller.PostTimetables(tb);
 
             _output.WriteLine($"PostTimetable - {JsonConvert.SerializeObject(result)}");
 
             var actionResult = Assert.IsType<ActionResult<TimetableDto>>(result);
 
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returnValue = Assert.IsType<TimetableDto>(okResult.Value);
+            var returnValue = Assert.IsType<Timetables>(okResult.Value);
 
             Assert.NotNull(returnValue);
 
@@ -163,4 +210,3 @@ namespace TicketReservationApp.Tests
 }
 
 // dotnet test --logger "console;verbosity=detailed"
-*/

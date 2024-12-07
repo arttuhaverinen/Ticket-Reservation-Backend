@@ -1,0 +1,54 @@
+services:
+  webapp:
+    image: busapp
+    build:
+      context: ./backend # Path to the backend folder
+      dockerfile: Dockerfile.test # Dockerfile inside the backend folder
+    env_file:
+      - ./backend/.env # Specify the path to the .env file
+    ports:
+      - "5001:5001"
+    #volumes:
+    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - ./backend:/app # Mount your local code into the container
+    #networks:
+    #  - busapp-network
+
+    client:
+      build: ./frontend
+      ports:
+        - "5173:5173"
+      #    volumes:
+      #      - ./backend/wwwroot:/app/dist
+      volumes:
+        - ./frontend:/app # Mount the frontend code directory into the container
+      #    - /app/node_modules # Prevent overwriting node_modules in container with local version
+      command: npm run dev
+      environment:
+        - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
+  #  networks:
+  #    - busapp-network
+  minio:
+    image: minio/minio:latest # Specify the MinIO image and tag here
+    container_name: minio
+    environment:
+      # Set up root user credentials here
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: your-secret-password
+    ports:
+      - "9000:9000" # MinIO API port
+      - "9001:9001" # MinIO web console port
+    volumes:
+      - minio-data:/data # Persist data across restarts
+    command: server /data #--console-address ":9001"
+    #networks:
+    #  - busapp-network
+
+volumes:
+  minio-data:
+#networks:
+#  busapp-network:
+#    driver: bridge
