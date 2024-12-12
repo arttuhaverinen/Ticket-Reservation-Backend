@@ -14,26 +14,24 @@ using System;
 using System.Security.Claims;
 using System.Security.Principal;
 
+// dotnet test --logger "console;verbosity=detailed"
 namespace TicketReservationApp.Tests
 {
-    public class TicketsTest
+    public  class TicketsTest : IAsyncLifetime
     {
         private readonly DbContextOptions<DataContext> _options;
 
         private readonly ITestOutputHelper _output;
 
-        public TicketsTest(ITestOutputHelper output)
+        public  TicketsTest(ITestOutputHelper output)
         {
-            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestDatabase")
+            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestTicketDatabase")
             .UseLoggerFactory(new LoggerFactory().AddSerilog(new LoggerConfiguration().WriteTo.Console().CreateLogger()))
             .Options;
 
 
 
-            // Apply seed data
-            using var context = new DataContext(_options);
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+
 
 
 
@@ -49,6 +47,25 @@ namespace TicketReservationApp.Tests
         }
 
 
+
+        public async Task InitializeAsync()
+        {
+            // Apply seed data
+            using var context = new DataContext(_options);
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            var seeder = new DatabaseSeeder(context);
+            await seeder.Seed();
+            _output.WriteLine("Database seeded for testing.");
+
+        }
+
+        public Task DisposeAsync()
+        {
+            // Perform any clean-up logic if needed
+            return Task.CompletedTask;
+        }
 
 
 
@@ -145,6 +162,7 @@ namespace TicketReservationApp.Tests
                 TimetablesId = 1,
                 Expired = false,
                 Seat = 10,
+                Status = "paid"
                 
             };
 
@@ -181,9 +199,6 @@ namespace TicketReservationApp.Tests
             Assert.NotNull(returnValue);
 
         }
-
-
-
 
 
     }

@@ -195,6 +195,7 @@ namespace TicketReservationApp.Controllers
                 AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Cancelled = [DateTime.MinValue],
                 PriceDiscount = timetables.PriceDiscount,
+                
             };
 
             var newTimetable = await _timetablesRepository.InsertTimetable(timetable);

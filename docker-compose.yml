@@ -25,13 +25,13 @@ services:
     #      - ./backend/wwwroot:/app/dist
     volumes:
       - ./frontend:/app # Mount the frontend code directory into the container
-    #  - /app/node_modules # Prevent overwriting node_modules in container with local version
+      - /app/node_modules # Prevent overwriting node_modules in container with local version
     command: npm run dev
     environment:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
   #  networks:
   #    - busapp-network
-  minio:
+  dev-minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
     container_name: minio
     environment:

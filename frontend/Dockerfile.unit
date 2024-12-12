@@ -1,0 +1,18 @@
+# Use an official Node.js image
+FROM node:18-bullseye
+
+# Set the working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of your application code
+COPY . .
+
+# Expose port (if necessary)
+EXPOSE 3000
+
+# Command to run unit tests
+CMD ["npm", "run", "test:unit"]
