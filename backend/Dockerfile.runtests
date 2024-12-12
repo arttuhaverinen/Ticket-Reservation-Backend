@@ -9,4 +9,5 @@ COPY . ./
 RUN dotnet restore
 
 # Command to run the app with file watching for automatic reload
+#ENTRYPOINT ["dotnet", "test", "--logger", "console;verbosity=detailed"]
 ENTRYPOINT ["dotnet", "test", "--logger", "console;verbosity=detailed"]
