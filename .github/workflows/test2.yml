@@ -28,7 +28,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "--build test-webapp test-client-vite "
+          up-flags: "--build --remove-orphans test-webapp test-client-vite "
 
       - name: Run Frontend unit tests
         uses: hoverkraft-tech/compose-action@v2.0.1
