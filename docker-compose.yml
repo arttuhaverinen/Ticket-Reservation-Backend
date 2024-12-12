@@ -38,9 +38,9 @@ services:
       # Set up root user credentials here
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: your-secret-password
-    #ports:
-    #  - "9000:9000" # MinIO API port
-    #  - "9001:9001" # MinIO web console port
+    ports:
+      - "9000:9000" # MinIO API port
+      - "9001:9001" # MinIO web console port
     volumes:
       - minio-data:/data # Persist data across restarts
     command: server /data #--console-address ":9001"

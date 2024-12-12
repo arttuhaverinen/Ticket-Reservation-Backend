@@ -4,12 +4,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Stripe.Checkout;
+using Stripe.Climate;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Xml.Linq;
 using TicketReservationApp.Dto;
 using TicketReservationApp.Models;
 using TicketReservationApp.Repositories;
+using static System.Net.WebRequestMethods;
 
 [ApiController]
 [Route("[controller]")]
@@ -22,10 +26,14 @@ public class CheckoutController : ControllerBase
 
     private readonly ITicketRepository _ticketRepository;
 
-    public CheckoutController(IConfiguration configuration, ITicketRepository ticketRepository)
+    private readonly EmailController _emailController;
+
+
+    public CheckoutController(IConfiguration configuration, ITicketRepository ticketRepository, EmailController emailController)
     {
         _configuration = configuration;
         _ticketRepository = ticketRepository;
+        _emailController = emailController;
     }
     //[Authorize]
     [HttpPost]
@@ -43,11 +51,15 @@ public class CheckoutController : ControllerBase
 
         if (serverAddressesFeature is not null)
         {
-            thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
+            //thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
+            thisApiUrl = "http://localhost:5001";
             Console.WriteLine(thisApiUrl);
         }
 
         var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+
+        Console.WriteLine(product);
+        Console.WriteLine(JsonSerializer.Serialize(product));
 
         // Create a pending tickeg
 
@@ -66,6 +78,9 @@ public class CheckoutController : ControllerBase
             Status = "pending"
 
         };
+
+        await _emailController.SendOrderSucceededEmail(ticket, ticket.Name);
+
 
         var newTicket = await _ticketRepository.InsertTicket(ticket);
 
@@ -101,13 +116,19 @@ public class CheckoutController : ControllerBase
         public async Task<string> CheckOut(TicketDto product, string thisApiUrl, int ticketId)
         {
             Console.WriteLine("checkout");
-            // Create a payment flow from the items in the cart.
-            // Gets sent to Stripe API.
-            var options = new SessionCreateOptions
+
+        // Create a payment flow from the items in the cart.
+        // Gets sent to Stripe API.
+        var options = new SessionCreateOptions
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-                SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
+                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid. TOIMIVA AIEMMIN
+                SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId={{CHECKOUT_SESSION_ID}}", // Use double braces to escape curly braces
+
+                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId={CHECKOUT_SESSION_ID}",
+
+            CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> 
                 {
                     "card"
@@ -162,7 +183,11 @@ public class CheckoutController : ControllerBase
 
             var paidTicket = await _ticketRepository.UpdateTicket(pendingTicket);
 
+            Console.WriteLine(JsonSerializer.Serialize(paidTicket));
+            await _emailController.SendOrderSucceededEmail(paidTicket, paidTicket.Name);
 
-            return Redirect(s_wasmClientURL + "success");
+
+
+        return Redirect(s_wasmClientURL + "success");
     }
 }

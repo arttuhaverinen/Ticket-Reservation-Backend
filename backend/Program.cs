@@ -20,6 +20,7 @@ using Amazon;
 using Amazon.S3;
 using Amazon.Runtime;
 using TicketReservationApp.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -64,9 +65,18 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var apiKey = Environment.GetEnvironmentVariable("SECRET_KEY");
 StripeConfiguration.ApiKey = apiKey;
 
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+{
+    { "EmailSettings:Password", Environment.GetEnvironmentVariable("EMAIL_PASSWORD") }
+});
 
 //var stripeSettingsSection = builder.Configuration.GetSection("Stripe");
 //StripeConfiguration.ApiKey = stripeSettingsSection["SecretKey"];
+
+var appSettings = builder.Configuration;
+Console.WriteLine($"Email Password: {appSettings["EmailSettings:Password"]}");
+Console.WriteLine("test");
+
 
 Console.WriteLine(StripeConfiguration.ApiKey);
 DateTime date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTimeKind.Utc);
@@ -142,6 +152,9 @@ builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<ITimetablesRepository, TimetableRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IUserRepository, UsersRepository>(); // Change to your actual repository and interface
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailSender, EmailController>();
+builder.Services.AddScoped<EmailController>();  // or AddTransient/ AddSingleton depending on your use case
 
 /*
 builder.Services.AddAuthentication(options =>
@@ -162,6 +175,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Require confirmed email for login
+    options.SignIn.RequireConfirmedEmail = true;
+});
 
 builder.Services.AddScoped<DatabaseSeeder>(); // Assuming you have a DatabaseSeeder class
 
@@ -200,6 +219,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 //app.MapIdentityApi<IdentityUser>();
 app.MapIdentityApi<AppUser>();

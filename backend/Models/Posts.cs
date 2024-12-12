@@ -9,7 +9,8 @@ namespace TicketReservationApp.Models
 {
     public class Posts
     {
-        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Ensures auto-increment
         public int Id { get; set; }
 
         [Required]

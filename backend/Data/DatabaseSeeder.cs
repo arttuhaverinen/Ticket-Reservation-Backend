@@ -64,7 +64,6 @@ namespace TicketReservationApp.Data
             _context.Timetables.AddRange(
             new Timetables
             {
-                Id = 1,
                 StartTime = new TimeSpan(9, 0, 0),
                 EndTime = new TimeSpan(9, 0, 0),
                 Price = 29.99,
@@ -78,7 +77,6 @@ namespace TicketReservationApp.Data
             },
             new Timetables
             {
-                Id = 2,
                 StartTime = new TimeSpan(9, 0, 0),
                 EndTime = new TimeSpan(9, 0, 0),
                 Price = 19.99,
@@ -93,7 +91,6 @@ namespace TicketReservationApp.Data
             },
             new Timetables
             {
-                Id = 3,
                 StartTime = new TimeSpan(17, 0, 0),
                 EndTime = new TimeSpan(17, 0, 0),
                 Price = 29.99,
@@ -109,7 +106,6 @@ namespace TicketReservationApp.Data
             },
             new Timetables
             {
-                Id = 4,
                 StartTime = new TimeSpan(9, 0, 0),
                 EndTime = new TimeSpan(9, 0, 0),
                 Price = 14.99,
@@ -126,7 +122,6 @@ namespace TicketReservationApp.Data
             _context.Posts.AddRange(
                 new Posts
                 {
-                    Id = 1,
                     PostContent = "seed 1",
                     PostTitle = "first post",
                     PostType = "info",
@@ -135,7 +130,6 @@ namespace TicketReservationApp.Data
                 },
                 new Posts
                 {
-                    Id = 2,
                     PostContent = "seed 2",
                     PostTitle = "second post",
                     PostType = "warning",
@@ -144,7 +138,6 @@ namespace TicketReservationApp.Data
                 },
                 new Posts
                 {
-                    Id = 3,
                     PostContent = "seed 3",
                     PostTitle = "third post",
                     PostType = "info",
@@ -157,7 +150,6 @@ namespace TicketReservationApp.Data
             _context.Tickets.AddRange(
             new Tickets
             {
-                Id = 1,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 4, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",
@@ -173,7 +165,6 @@ namespace TicketReservationApp.Data
             },
             new Tickets
             {
-                Id = 2,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 4, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",
@@ -189,7 +180,6 @@ namespace TicketReservationApp.Data
             },
             new Tickets
             {
-                Id = 3,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 5, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",
@@ -205,7 +195,6 @@ namespace TicketReservationApp.Data
             },
             new Tickets
             {
-                Id = 4,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 8, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",
@@ -221,7 +210,6 @@ namespace TicketReservationApp.Data
             },
             new Tickets
             {
-                Id = 5,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 7, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",
@@ -237,7 +225,6 @@ namespace TicketReservationApp.Data
             },
             new Tickets
             {
-                Id = 6,
                 AppUserId = userId,
                 Date = DateTime.SpecifyKind(new DateTime(2024, 9, 7, 9, 0, 0), DateTimeKind.Utc),
                 Departure = "Joensuu",

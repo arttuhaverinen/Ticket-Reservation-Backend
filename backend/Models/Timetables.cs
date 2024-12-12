@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TicketReservationApp.Models
 {
     public class Timetables
     {
-        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // Ensures auto-increment
         public int Id { get; set; }
 
         [Required] 
