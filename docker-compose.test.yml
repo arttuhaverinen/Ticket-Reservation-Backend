@@ -22,12 +22,6 @@ services:
     build:
       context: ./backend # Path to the backend folder
       dockerfile: Dockerfile.testport # Dockerfile inside the backend folder
-    command: [
-        "bash",
-        "-c",
-        "timeout 120 dotnet run --launch-profile Test || exit 0",
-      ] # Use bash instead of sh
-
     env_file:
       - ./backend/.env # Specify the path to the .env file
     ports:
