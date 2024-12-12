@@ -22,30 +22,31 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.yml"
+          up-flags: "--build"
 
       - name: Start test frontend and backend
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "test-webapp test-client-vite --build"
+          up-flags: "--build test-webapp test-client-vite "
 
       - name: Run Frontend unit tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "test-webapp --build"
+          up-flags: "--build test-webapp "
 
       - name: Run Frontend e2e tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "test-client-e2e --build"
+          up-flags: "--build test-client-e2e --build"
 
       - name: Run Backend tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "test-webapp-run-tests --build"
+          up-flags: "--build test-webapp-run-tests --build"
 
       - name: Shut down docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
