@@ -12,10 +12,14 @@ services:
     #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
+      ELASTICSEARCH_URI: "http://elasticsearch:9200"
     volumes:
       - ./backend:/app # Mount your local code into the container
     #networks:
     #  - busapp-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
 
   client:
     build: ./frontend
@@ -46,9 +50,38 @@ services:
     command: server /data #--console-address ":9001"
     #networks:
     #  - busapp-network
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Disable all security features
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data # Persist Elasticsearch data
+    healthcheck:
+      test: curl -s http://localhost:9200/_cluster/health | grep -E '"status":"(green|yellow)"'
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200 # Use HTTP for development
+    ports:
+      - 5601:5601 # Expose Kibana UI on port 5601
+    restart: always
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
 
 volumes:
   minio-data:
+  elasticsearch_data:
 #networks:
 #  busapp-network:
 #    driver: bridge

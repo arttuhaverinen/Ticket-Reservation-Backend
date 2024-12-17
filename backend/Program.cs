@@ -6,7 +6,8 @@ using TicketReservationApp.Data;
 using TicketReservationApp.Repositories;
 using Serilog;
 using Stripe;
-
+using Serilog.Sinks.Elasticsearch;
+using Serilog.Expressions;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -30,15 +31,88 @@ var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+
+var excludePatterns = new[] {
+    "Executing endpoint",
+    "Route matched with",
+    "Executed action",
+    "Executed endpoint",
+    "Executed DbCommand",
+    "Executing OkObjectResult",
+    "Executing ObjectResult"
+};
+
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    //var environment = context.HostingEnvironment.EnvironmentName;
+
+    //Local Console Logging (logs everything)
+    configuration.Enrich.FromLogContext()
+                 .Enrich.WithProperty("Environment", environment)
+                 .WriteTo.Console();
+    //configuration
+       //.Enrich.FromLogContext()
+       //.WriteTo.Console();
+       //.Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)));
+
+        if (Environment.GetEnvironmentVariable("ELASTICSEARCH_URI") != null)
+        {
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI")))
+        {
+            IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+            AutoRegisterTemplate = true,
+            NumberOfShards = 1,
+            NumberOfReplicas = 1,
+        })
+        .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
+
+    }
+        else if (environment == "Production")
+    {
+
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI")))
+        {
+            IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+            AutoRegisterTemplate = true,
+            NumberOfShards = 1,
+            NumberOfReplicas = 1,
+        })
+        .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
+
+    }
+    else
+        {
+            configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+            {
+                IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+                AutoRegisterTemplate = true,
+                NumberOfShards = 1,
+                NumberOfReplicas = 1,
+            })
+        .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
+       .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
+
+    };
+ 
+}); 
+
+
 
 builder.Configuration
     .AddEnvironmentVariables();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+Console.WriteLine("DB_CONNECTION_STRING");
 Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
 
-var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+Console.WriteLine("ELASTICSEARCH_URI");
+
+Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
 
 Console.WriteLine(environment);
 
@@ -60,7 +134,6 @@ else
 });
 }
 */
-
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
