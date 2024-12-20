@@ -2,10 +2,20 @@ import React, { useEffect, useContext, useState } from "react";
 import { Appcontext } from "../App";
 import { Col, Row } from "react-bootstrap";
 const OwnTickets = () => {
+	interface ticketInterface {
+		date: string;
+		startTime: string;
+		endTime: string;
+		departure: string;
+		destination: string;
+		seat: string;
+		name: string;
+	}
+
 	let baseurl: string = import.meta.env.VITE_BASEURL;
-	const [tickets, setTickets] = useState();
+	const [tickets, setTickets] = useState<ticketInterface[]>();
 	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext);
+		useContext(Appcontext)!;
 	useEffect(() => {
 		console.log(appToken);
 		let url = isAdmin ? "api/tickets" : "api/ticketsbyuser";

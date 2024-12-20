@@ -14,7 +14,7 @@ const Post = (props: postInterface) => {
 	const [bgColor, setBgColor] = useState("black");
 
 	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext);
+		useContext(Appcontext)!;
 
 	useEffect(() => {
 		handleBgColor();
@@ -46,8 +46,6 @@ const Post = (props: postInterface) => {
 	return (
 		<div className={`border rounded p-2 my-3 border-${bgColor}`}>
 			<Row className="w-100 justify-content-between">
-				{console.log(props)}
-
 				<Col className="justify-content-start" xs={4}>
 					<h6>{new Date().toISOString().slice(0, 10)}</h6>
 					<h5 style={{ color: bgColor }}>{props.postTitle}</h5>

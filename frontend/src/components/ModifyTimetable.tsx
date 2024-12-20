@@ -4,14 +4,25 @@ import { setTime } from "react-datepicker/dist/date_utils";
 import { Link, useSearchParams } from "react-router-dom";
 
 const ModifyTimetable = () => {
+	interface timetableInterface {
+		id: number;
+		departure: string;
+		destination: string;
+		startTime: string;
+		endTime: string;
+		price: number;
+		priceDiscount: number | null;
+		day: string[];
+	}
+
 	let baseurl: string = import.meta.env.VITE_BASEURL;
-	const [destination, setDestination] = useState();
-	const [departure, setDeparture] = useState();
-	const [startTime, setStartTime] = useState();
-	const [endTime, setEndTime] = useState();
-	const [price, setPrice] = useState();
-	const [days, setDays] = useState();
-	const [priceDiscount, setPriceDiscount] = useState();
+	const [destination, setDestination] = useState<string | null>();
+	const [departure, setDeparture] = useState<string | null>();
+	const [startTime, setStartTime] = useState<string | null>();
+	const [endTime, setEndTime] = useState<string | null>();
+	const [price, setPrice] = useState<string | null>();
+	const [days, setDays] = useState<string[] | null>();
+	const [priceDiscount, setPriceDiscount] = useState<string | null>();
 	const [monday, setMonday] = useState(false);
 	const [tuesday, setTuesday] = useState(false);
 	const [wednesday, setWednesday] = useState(false);
@@ -21,7 +32,7 @@ const ModifyTimetable = () => {
 	const [sunday, setSunday] = useState(false);
 
 	const [searchParams] = useSearchParams();
-	const [timetable, setTimetable] = useState();
+	const [timetable, setTimetable] = useState<timetableInterface>();
 
 	let timetableId = searchParams.get("Timetable");
 
@@ -64,7 +75,7 @@ const ModifyTimetable = () => {
 		}
 	};
 
-	const handleCreateTimetable = (e) => {
+	const handleCreateTimetable = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		let days = [
 			...(monday ? ["monday"] : []),
@@ -85,7 +96,7 @@ const ModifyTimetable = () => {
 			localStorage.getItem("accesstoken")
 		);
 
-		fetch(`${baseurl}/api/Timetables/${timetable.id}`, {
+		fetch(`${baseurl}/api/Timetables/${timetable?.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -106,142 +117,156 @@ const ModifyTimetable = () => {
 
 	return (
 		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
-			{console.log("monday", monday, "tuesday", tuesday, departure)}
-			<h3>Muokattava ajovuoro</h3>
-			<Table striped bordered hover>
-				<thead>
-					<tr>
-						<th>Lähtö</th>
-						<th>Kohde</th>
-						<th>Lähtöaika</th>
-						<th>Saapumisaika</th>
-						<th>Hinta</th>
-						<th>Ajopäivät</th>
-					</tr>
-				</thead>
-				<tbody>{mapTimetables()}</tbody>
-			</Table>
+			{timetable ? (
+				<>
+					<h3>Muokattava ajovuoro</h3>
+					<Table striped bordered hover>
+						<thead>
+							<tr>
+								<th>Lähtö</th>
+								<th>Kohde</th>
+								<th>Lähtöaika</th>
+								<th>Saapumisaika</th>
+								<th>Hinta</th>
+								<th>Ajopäivät</th>
+							</tr>
+						</thead>
+						<tbody>{mapTimetables()}</tbody>
+					</Table>
 
-			{console.log(departure)}
+					<h3>Valitse muokattavat tiedot</h3>
+					<Form
+						onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+							handleCreateTimetable(e)
+						}
+					>
+						<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Label>Lähtö</Form.Label>
+							<Form.Control
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+									setDeparture(e.target.value)
+								}
+								type=""
+								defaultValue={timetable && timetable.departure}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="">
+							<Form.Label>Kohde</Form.Label>
+							<Form.Control
+								onChange={(e) => setDestination(e.target.value)}
+								type=""
+								defaultValue={timetable && timetable.destination}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formBasicPassword">
+							<Form.Label>Lähtöaika</Form.Label>
+							<Form.Control
+								onChange={(e) => setStartTime(e.target.value)}
+								type=""
+								placeholder="Lähtöaika"
+								defaultValue={timetable && timetable.startTime}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formBasicPassword">
+							<Form.Label>Saapumisaika</Form.Label>
+							<Form.Control
+								onChange={(e) => setEndTime(e.target.value)}
+								type=""
+								placeholder="Saapumisaika"
+								defaultValue={timetable && timetable.endTime}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formBasicPassword">
+							<Form.Label>Hinta</Form.Label>
+							<Form.Control
+								onChange={(e) => setPrice(e.target.value)}
+								type=""
+								placeholder="20.00"
+								defaultValue={timetable && timetable.price}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formBasicPassword">
+							<Form.Label>Alennettu hinta</Form.Label>
+							<Form.Control
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+									setPrice(e.target.value)
+								}
+								type=""
+								placeholder="15.00"
+							/>
+						</Form.Group>
+						<h5>Ajopäivät</h5>
 
-			<h3>Valitse muokattavat tiedot</h3>
-			<Form onSubmit={(e) => handleCreateTimetable(e)}>
-				<Form.Group className="mb-3" controlId="formBasicEmail">
-					<Form.Label>Lähtö</Form.Label>
-					<Form.Control
-						onChange={(e) => setDeparture(e.target.value)}
-						type=""
-						defaultValue={timetable && timetable.departure}
-					/>
-					<Form.Text className="text-muted"></Form.Text>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="">
-					<Form.Label>Kohde</Form.Label>
-					<Form.Control
-						onChange={(e) => setDestination(e.target.value)}
-						type=""
-						defaultValue={timetable && timetable.destination}
-					/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Lähtöaika</Form.Label>
-					<Form.Control
-						onChange={(e) => setStartTime(e.target.value)}
-						type=""
-						placeholder="Lähtöaika"
-						defaultValue={timetable && timetable.startTime}
-					/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Saapumisaika</Form.Label>
-					<Form.Control
-						onChange={(e) => setEndTime(e.target.value)}
-						type=""
-						placeholder="Saapumisaika"
-						defaultValue={timetable && timetable.endTime}
-					/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Hinta</Form.Label>
-					<Form.Control
-						onChange={(e) => setPrice(e.target.value)}
-						type=""
-						placeholder="20.00"
-						defaultValue={timetable && timetable.price}
-					/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Alennettu hinta</Form.Label>
-					<Form.Control
-						onChange={(e) => setPrice(e.target.value)}
-						type=""
-						placeholder="15.00"
-						defaultValue={timetable && timetable.priceDiscount}
-					/>
-				</Form.Group>
-				<h5>Ajopäivät</h5>
-
-				<Form.Check
-					type="checkbox"
-					label="Maanantai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setMonday(!monday)}
-					defaultChecked={timetable && monday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Tiistai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setTuesday(!tuesday)}
-					defaultChecked={timetable && tuesday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Keskiviikko"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setWednesday(!wednesday)}
-					defaultChecked={timetable && wednesday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Torstai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setThursday(!thursday)}
-					defaultChecked={timetable && thursday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Perjantai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setFriday(!friday)}
-					defaultChecked={timetable && friday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Lauantai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setSaturday(!saturday)}
-					defaultChecked={timetable && saturday}
-				/>
-				<Form.Check
-					type="checkbox"
-					label="Sunnuntai"
-					name="checkboxGroup"
-					id="option1"
-					onChange={(e) => setSunday(!sunday)}
-					defaultChecked={timetable && sunday}
-				/>
-				<hr />
-				<Button className="w-100" variant="primary" type="submit">
-					Päivitä ajovuoro
-				</Button>
-			</Form>
+						<Form.Check
+							type="checkbox"
+							label="Maanantai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setMonday(!monday)}
+							defaultChecked={timetable && monday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Tiistai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setTuesday(!tuesday)}
+							defaultChecked={timetable && tuesday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Keskiviikko"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setWednesday(!wednesday)}
+							defaultChecked={timetable && wednesday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Torstai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setThursday(!thursday)}
+							defaultChecked={timetable && thursday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Perjantai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setFriday(!friday)}
+							defaultChecked={timetable && friday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Lauantai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setSaturday(!saturday)}
+							defaultChecked={timetable && saturday}
+						/>
+						<Form.Check
+							type="checkbox"
+							label="Sunnuntai"
+							name="checkboxGroup"
+							id="option1"
+							onChange={(e) => setSunday(!sunday)}
+							defaultChecked={timetable && sunday}
+						/>
+						<hr />
+						<Button className="w-100" variant="primary" type="submit">
+							Päivitä ajovuoro
+						</Button>
+					</Form>
+					{/*defaultValue={timetable && timetable.priceDiscount}*/}
+				</>
+			) : (
+				<>
+					{" "}
+					<h1>ladataan ajovuoroa</h1>
+				</>
+			)}
 		</div>
 	);
 };

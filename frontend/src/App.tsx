@@ -51,7 +51,7 @@ interface AppContextType {
 	isAdmin: boolean;
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 	profilePicture: string | null;
-	setProfilePicture: React.Dispatch<React.SetStateAction<boolean>>;
+	setProfilePicture: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const Appcontext = createContext<AppContextType | undefined>(undefined);
@@ -63,7 +63,7 @@ function App() {
 	const [appUserName, setAppUserName] = useState<string | null>(null);
 	const [appRefreshToken, setAppRefreshToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
-	const [profilePicture, setProfilePicture] = useState(null);
+	const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	console.log(baseurl);
@@ -133,7 +133,6 @@ function App() {
 			<Router basename={basename}>
 				<Navigation />
 				<Container fluid className="app  ">
-					{console.log(profilePicture)}
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/register" element={<Register />} />

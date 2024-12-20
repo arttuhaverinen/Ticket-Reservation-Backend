@@ -9,7 +9,7 @@ interface postInterface {
 	postType: string;
 }
 
-const Posts = (props: postInterface) => {
+const Posts = (/*props: postInterface*/) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [posts, setPosts] = useState<postInterface[]>();
 	useEffect(() => {

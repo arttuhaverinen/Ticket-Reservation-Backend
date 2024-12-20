@@ -26,6 +26,7 @@ import Minio from "./Minio";
 registerLocale("fi", fi);
 
 const Home = () => {
+	useTokenExpireMiddleware();
 	const mobileScreen = useMediaQuery({ query: "(max-width: 991px)" });
 	const [imageUrl, setImageUrl] = useState("");
 	const minioUrl = "http://localhost:9000/test/image.png";
@@ -35,8 +36,6 @@ const Home = () => {
 
 	return (
 		<Container fluid className="">
-			{useTokenExpireMiddleware()}
-
 			{mobileScreen ? (
 				<Row
 					style={{
