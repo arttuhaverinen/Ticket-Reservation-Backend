@@ -19,7 +19,7 @@ const Navigation = () => {
 		isAdmin,
 		setIsAdmin,
 		profilePicture,
-	} = useContext(Appcontext);
+	} = useContext(Appcontext)!;
 
 	const linkHover = {
 		color: "red",

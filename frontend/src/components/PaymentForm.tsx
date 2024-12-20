@@ -44,7 +44,7 @@ const PaymentForm = (ticket: TicketInterface) => {
 	const elements = useElements();
 
 	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext);
+		useContext(Appcontext)!;
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -55,7 +55,7 @@ const PaymentForm = (ticket: TicketInterface) => {
 		});
 		*/
 
-		if (true) {
+		if (stripe) {
 			try {
 				//const { id } = paymentMethod;
 				const response = await fetch(`${baseurl}/Checkout`, {
@@ -89,25 +89,12 @@ const PaymentForm = (ticket: TicketInterface) => {
 				console.log(error);
 			}
 		} else {
-			console.log(error.message);
+			//console.log(error.message);
 		}
 	};
 
 	return (
 		<div>
-			{console.log(JSON.stringify(ticket))}
-			{console.log(
-				ticket.startTime,
-				ticket.endTime,
-				ticket.date,
-				ticket.expired,
-				ticket.departure,
-				ticket.destination,
-				ticket.name,
-				ticket.seat,
-				ticket.timetablesId,
-				appToken
-			)}
 			{!success ? (
 				<form onSubmit={(e) => handleSubmit(e)}>
 					<fieldset className="formGroup">

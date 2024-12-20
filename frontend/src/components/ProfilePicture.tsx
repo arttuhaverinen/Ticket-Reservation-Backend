@@ -20,9 +20,9 @@ const ProfilePicture = () => {
 		setIsAdmin,
 		profilePicture,
 		setProfilePicture,
-	} = useContext(Appcontext);
+	} = useContext(Appcontext)!;
 
-	const handleFileSubmit = (e) => {
+	const handleFileSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		if (file) {
 			const formData = new FormData();
@@ -94,7 +94,9 @@ const ProfilePicture = () => {
 					<Form.Label>Valitse profiilikuva</Form.Label>
 					<Form.Control
 						type="file"
-						onChange={(e) => setFile(e.target.files[0])}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+							e.target.files && setFile(e.target.files[0]);
+						}}
 					/>
 				</Form.Group>
 

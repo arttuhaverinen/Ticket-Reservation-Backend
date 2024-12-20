@@ -14,7 +14,6 @@ export const Search = () => {
 
 	return (
 		<div className="w-100 my-3">
-			{console.log(startDate)}
 			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded">
 				<Row>
 					<Col md={6}>
@@ -53,7 +52,7 @@ export const Search = () => {
 							<DatePicker
 								className="datepicker"
 								locale="fi"
-								selected={startDate}
+								selected={startDate as unknown as Date} // Workaround to fix typescript error
 								dateFormat="dd/MM/yyyy"
 								onChange={(date) =>
 									//setStartDate(date?.toISOString().split("T")[0])

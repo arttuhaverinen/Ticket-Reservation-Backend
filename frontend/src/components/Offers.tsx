@@ -4,6 +4,17 @@ import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 
 const Offers = () => {
+	interface timetableInterface {
+		id: number;
+		departure: string;
+		destination: string;
+		startTime: string;
+		endTime: string;
+		price: number;
+		priceDiscount: number | null;
+		day: string[];
+	}
+
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [destination, setDestination] = useState();
 	const [departure, setDeparture] = useState();
@@ -18,7 +29,7 @@ const Offers = () => {
 	const [friday, setFriday] = useState(false);
 	const [saturday, setSaturday] = useState(false);
 	const [sunday, setSunday] = useState(false);
-	const [timetables, setTimetables] = useState([]);
+	const [timetables, setTimetables] = useState<timetableInterface[] | []>([]);
 	const [startDate, setStartDate] = useState(
 		new Date().toISOString().split("T")[0]
 	);

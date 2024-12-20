@@ -4,8 +4,19 @@ import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 
 const TimetableView = () => {
+	interface timetableInterface {
+		id: number;
+		departure: string;
+		destination: string;
+		startTime: string;
+		endTime: string;
+		price: number;
+		priceDiscount: number | null;
+		day: string[];
+	}
+
 	let baseurl: string = import.meta.env.VITE_BASEURL;
-	const [timetables, setTimetables] = useState();
+	const [timetables, setTimetables] = useState<timetableInterface[]>();
 
 	useEffect(() => {
 		fetch(`${baseurl}/api/Timetables`)

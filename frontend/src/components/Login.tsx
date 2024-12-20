@@ -14,12 +14,12 @@ const Login = () => {
 		setAppToken,
 		appRefreshToken,
 		setAppRefreshToken,
-	} = useContext(Appcontext);
+	} = useContext(Appcontext)!;
 	const [alert, setAlert] = useState(false);
 	const [alertTheme, setAlertTheme] = useState("");
 	const [alertMessage, setAlertMessage] = useState("");
 
-	const login = (e) => {
+	const login = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		console.log("login");
 		fetch(`${baseurl}/login`, {
@@ -67,7 +67,7 @@ const Login = () => {
 				/>
 			)}
 			<h3>Kirjaudu</h3>
-			<Form onSubmit={(e) => login(e)}>
+			<Form onSubmit={(e: React.FormEvent<HTMLFormElement>) => login(e)}>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Käyttäjänimi</Form.Label>
 					<Form.Control

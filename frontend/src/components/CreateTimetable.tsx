@@ -3,13 +3,13 @@ import { Button, Form } from "react-bootstrap";
 
 const CreateTimetable = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
-	const [destination, setDestination] = useState();
-	const [departure, setDeparture] = useState();
-	const [startTime, setStartTime] = useState();
-	const [endTime, setEndTime] = useState();
-	const [price, setPrice] = useState();
-	const [days, setDays] = useState();
-	const [priceDiscount, setPriceDiscount] = useState();
+	const [destination, setDestination] = useState<string>("");
+	const [departure, setDeparture] = useState<string>("");
+	const [startTime, setStartTime] = useState<string>("");
+	const [endTime, setEndTime] = useState<string>("");
+	const [price, setPrice] = useState<string>("");
+	const [days, setDays] = useState<string>("");
+	const [priceDiscount, setPriceDiscount] = useState<string | null>(null);
 	const [monday, setMonday] = useState(false);
 	const [tuesday, setTuesday] = useState(false);
 	const [wednesday, setWednesday] = useState(false);
@@ -18,7 +18,7 @@ const CreateTimetable = () => {
 	const [saturday, setSaturday] = useState(false);
 	const [sunday, setSunday] = useState(false);
 
-	const handleCreateTimetable = (e) => {
+	const handleCreateTimetable = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		let days = [
 			...(monday ? ["monday"] : []),
@@ -61,21 +61,18 @@ const CreateTimetable = () => {
 
 	return (
 		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
-			{console.log(
-				monday,
-				tuesday,
-				wednesday,
-				thursday,
-				friday,
-				saturday,
-				sunday
-			)}
 			<h3>Lisää uusi ajovuoro</h3>
-			<Form onSubmit={(e) => handleCreateTimetable(e)}>
+			<Form
+				onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+					handleCreateTimetable(e)
+				}
+			>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Lähtö</Form.Label>
 					<Form.Control
-						onChange={(e) => setDeparture(e.target.value)}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setDeparture(e.target.value)
+						}
 						type=""
 						placeholder="Kaupunki"
 					/>

@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import React, { useContext } from "react";
 import AdminCreatePost from "./AdminCreatePost";
 import { Row, Col, Container } from "react-bootstrap";
 import Posts from "./Posts";
@@ -18,7 +18,7 @@ const AdminView = () => {
 		setAppToken,
 		isAdmin,
 		setIsAdmin,
-	} = useContext(Appcontext);
+	} = useContext(Appcontext)!;
 
 	return (
 		<Container className="w-75 my-5 mx-auto">

@@ -5,6 +5,16 @@ import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
 const Tickets = () => {
+	interface timetableInterface {
+		id: number;
+		departure: string;
+		destination: string;
+		startTime: string;
+		endTime: string;
+		price: number;
+		priceDiscount: number | null;
+		day: string[];
+	}
 	const mobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
 	let baseurl = "";
 	if (import.meta.env.VITE_BASEURL) {
@@ -25,7 +35,7 @@ const Tickets = () => {
 	let destination = searchParams.get("destination");
 	let date = searchParams.get("date");
 
-	const [timetables, setTimetables] = useState([]);
+	const [timetables, setTimetables] = useState<timetableInterface[] | []>([]);
 	const [startTime, setStartTime] = useState();
 
 	useEffect(() => {

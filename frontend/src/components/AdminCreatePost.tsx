@@ -4,14 +4,14 @@ import { Appcontext } from "../App";
 const AdminCreatePost = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 
-	const [postTitle, setPostTitle] = useState();
-	const [postContent, setPostContent] = useState();
-	const [postType, setPostType] = useState();
+	const [postTitle, setPostTitle] = useState<string>("");
+	const [postContent, setPostContent] = useState<string>("");
+	const [postType, setPostType] = useState<string>("");
 
 	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext);
+		useContext(Appcontext)!;
 
-	const handleCreatePost = (e) => {
+	const handleCreatePost = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		fetch(`${baseurl}/api/posts`, {
 			method: "POST",
@@ -35,7 +35,9 @@ const AdminCreatePost = () => {
 	return (
 		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
 			<h3>Lisää uusi ilmoitus</h3>
-			<Form onSubmit={(e) => handleCreatePost(e)}>
+			<Form
+				onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleCreatePost(e)}
+			>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Ilmoituksen nimi</Form.Label>
 					<Form.Control
@@ -49,7 +51,9 @@ const AdminCreatePost = () => {
 				<Form.Group className="mb-3" controlId="">
 					<Form.Label>Post Content</Form.Label>
 					<Form.Control
-						onChange={(e) => setPostContent(e.target.value)}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setPostContent(e.target.value)
+						}
 						type=""
 						placeholder="Post content"
 					/>

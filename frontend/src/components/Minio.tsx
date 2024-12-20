@@ -6,7 +6,7 @@ const Minio = () => {
 	const [file, setFile] = useState<null | Blob>(null);
 	const [profilePicture, setProfilePicture] = useState<null | string>(null);
 
-	const handleFileSubmit = (e) => {
+	const handleFileSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		if (file) {
 			const formData = new FormData();
@@ -52,10 +52,13 @@ const Minio = () => {
 
 	return (
 		<div>
-			{console.log(profilePicture)}
-
 			<form onSubmit={handleFileSubmit}>
-				<input type="file" onChange={(e) => setFile(e.target.files[0])} />
+				<input
+					type="file"
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						e.target.files && setFile(e.target.files[0]);
+					}}
+				/>
 				<button type="submit">Upload</button>
 			</form>
 			<button onClick={() => fetchProfileImage()}>image</button>
