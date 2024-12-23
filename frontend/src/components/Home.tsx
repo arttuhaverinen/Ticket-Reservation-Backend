@@ -42,11 +42,11 @@ const Home = () => {
 						backgroundImage: `url(${forest})`,
 						/*backgroundSize: "cover", // Ensures the image covers the entire area*/
 						backgroundSize: "100% auto", // Ensures the image scales fluidly across the width
-
 						backgroundPosition: "center",
 						backgroundRepeat: "no-repeat",
+						margin: "0px",
+
 						minHeight: "200px", // Defines a minimum height for the row
-						border: "10px solid black",
 					}}
 				>
 					{/* Overlay Text 
@@ -78,12 +78,13 @@ const Home = () => {
 					}}
 					className="image-container"
 				>
-					<Col md={6} lg={6} xl={8} style={{ zIndex: 1 }}>
+					<Col md={6} lg={6} xl={6} style={{ zIndex: 1 }}>
 						<h1></h1>{" "}
 					</Col>
-					<Col md={6} lg={6} xl={4} style={{ zIndex: 1 }}>
+					<Col md={6} lg={6} xl={5} style={{ zIndex: 1 }}>
 						<Search />
 					</Col>
+
 					{/* Overlay Text 
 		<div
 			className="overlay-text"

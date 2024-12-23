@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { json, useLocation, useSearchParams } from "react-router-dom";
 import { Appcontext } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -156,7 +156,7 @@ const Orders = (props) => {
 	};
 
 	return (
-		<div>
+		<Container>
 			{reservedSeats && timetable ? (
 				<div data-testid="Orders">
 					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
@@ -446,7 +446,7 @@ const Orders = (props) => {
 			) : (
 				<h1>loading</h1>
 			)}
-		</div>
+		</Container>
 	);
 };
 
