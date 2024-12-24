@@ -22,6 +22,7 @@ const useTokenExpireMiddleware = () => {
 			let baseurl: string = import.meta.env.VITE_BASEURL;
 			let currentTime = Date.now();
 			let tokenCreatedTime = localStorage.getItem("time");
+			let accessToken = localStorage.getItem("accesstoken");
 			let expireTime = Number(localStorage.getItem("accessexpire")) || 0;
 			let expireTimeLeft =
 				(Number(currentTime) - Number(tokenCreatedTime)) / 1000;
@@ -35,7 +36,7 @@ const useTokenExpireMiddleware = () => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${refreshToken}`,
+						Authorization: `Bearer ${accessToken}`,
 					},
 					body: JSON.stringify({ refreshToken: refreshToken }),
 				})

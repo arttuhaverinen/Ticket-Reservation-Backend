@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ export const Search = () => {
 	);
 
 	return (
-		<div className="w-100 my-3">
+		<Container className="w-100 my-3">
 			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded">
 				<Row>
 					<Col md={6}>
@@ -82,6 +82,6 @@ export const Search = () => {
 					</Col>
 				</Row>
 			</Form>
-		</div>
+		</Container>
 	);
 };
