@@ -173,9 +173,17 @@ builder.Services.AddCors(options =>
                           ;
                       });
 });
-var endpoint = "http://localhost:9000"; // Your MinIO endpoint (use the correct URL here)
+//var endpoint = "http://localhost:9000"; // Your MinIO endpoint (use the correct URL here)
+//var accessKey = Environment.GetEnvironmentVariable("MINIO_ROOT_USER");
+//var secretKey = Environment.GetEnvironmentVariable("MINIO_ROOT_PASSWORD");
+var endpoint = "http://dev-minio:9000"; // Your MinIO endpoint (use the correct URL here)
 var accessKey = "admin";           // Your MinIO access key
 var secretKey = "your-secret-password";           // Your MinIO secret key
+
+Console.WriteLine(accessKey);
+Console.WriteLine(secretKey);
+
+
 //var region = RegionEndpoint.USEast1;    // Use any region (e.g., us-east-1)
 
 var credentials = new BasicAWSCredentials(accessKey, secretKey);
