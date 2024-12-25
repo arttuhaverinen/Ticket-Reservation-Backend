@@ -22,13 +22,30 @@ const ProfilePicture = () => {
 		setProfilePicture,
 	} = useContext(Appcontext)!;
 
+	const fetchUpdatedProfileImage = () => {
+		if (appUserName && appToken) {
+			fetch(`${baseurl}/api/User`, {
+				headers: { Authorization: `Bearer ${appToken}` },
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					console.log("IMAGE: ", res);
+					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
+				})
+				.then(res => res.json())
+				.then(res => setProfilePicture(res.url))
+
+
+	}
+}
+
 	const handleFileSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		if (file) {
 			const formData = new FormData();
 			formData.append("formFile", file);
 			try {
-				fetch(`${baseurl}/api/minio`, {
+				fetch(`${baseurl}/api/minio/upload`, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
 					},
@@ -36,7 +53,7 @@ const ProfilePicture = () => {
 					body: formData,
 				})
 					.then((res) => res.json())
-					.then((res) => fetchProfileImage());
+					.then((res) => fetchUpdatedProfileImage());
 			} catch (error) {}
 		}
 	};
@@ -95,7 +112,7 @@ const ProfilePicture = () => {
 					<Form.Control
 						type="file"
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							e.target.files && setFile(e.target.files[0]);
+							setFile(e.target.files[0]);
 						}}
 					/>
 				</Form.Group>

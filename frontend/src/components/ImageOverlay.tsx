@@ -20,7 +20,7 @@ const ImageOverlay = () => {
 				<Col md={6}>
 					<p>123</p>
 				</Col>
-				{/* Overlay Text 
+				Overlay Text 
 				<div
 					className="overlay-text"
 					style={{
@@ -35,8 +35,9 @@ const ImageOverlay = () => {
 					}}
 				>
 					<h3>This is an overlay text</h3>
-				</div> */}
+				</div>
 			</Row>
+			
 		</Container>
 	);
 };

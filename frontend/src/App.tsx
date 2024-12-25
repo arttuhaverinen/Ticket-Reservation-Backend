@@ -69,17 +69,7 @@ function App() {
 	console.log(baseurl);
 	console.log(appUserName);
 
-	const fetchProfileImage = () => {
-		try {
-			fetch(`${baseurl}/api/minio`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((res) => setProfilePicture(res.url));
-		} catch (error) {}
-	};
+
 
 	useEffect(() => {
 		if (!appToken) {
@@ -95,6 +85,36 @@ function App() {
 			}
 		}
 	}, []);
+
+	
+	const fetchProfileImage = () => {
+		try {
+			fetch(`${baseurl}/api/minio`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => setProfilePicture(res.url));
+		} catch (error) {}
+	};
+
+	useEffect(() => {
+		console.log(appToken, "check profileimage");
+
+		if (appUserName && appToken) {
+			fetch(`${baseurl}/api/User`, {
+				headers: { Authorization: `Bearer ${appToken}` },
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					console.log("IMAGE: ", res);
+					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
+				})
+				.then(res => res.json())
+				.then(res => setProfilePicture(res.url))
+		}
+	}, [appToken]);
 
 	useEffect(() => {
 		console.log(appToken, "check if admin");

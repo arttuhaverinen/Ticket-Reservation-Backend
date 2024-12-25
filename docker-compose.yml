@@ -21,6 +21,26 @@ services:
       elasticsearch:
         condition: service_healthy
 
+
+  #  networks:
+  #    - busapp-network
+  dev-minio:
+    image: minio/minio:latest # Specify the MinIO image and tag here
+    container_name: minio
+    env_file:
+      - ./backend/.env # Specify the path to the .env file
+    environment:
+      # Set up root user credentials here
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "9000:9000" # MinIO API port
+      - "9001:9001" # MinIO web console port
+    volumes:
+      - minio-data:/data # Persist data across restarts
+    command: server /data --console-address ":9001"
+    #networks:
+    #  - busapp-network
   client:
     build: ./frontend
     ports:
@@ -31,25 +51,11 @@ services:
       - ./frontend:/app # Mount the frontend code directory into the container
       - /app/node_modules # Prevent overwriting node_modules in container with local version
     command: npm run dev
+    
     environment:
-      - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
-  #  networks:
-  #    - busapp-network
-  dev-minio:
-    image: minio/minio:latest # Specify the MinIO image and tag here
-    container_name: minio
-    environment:
-      # Set up root user credentials here
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: your-secret-password
-    ports:
-      - "9000:9000" # MinIO API port
-      - "9001:9001" # MinIO web console port
-    volumes:
-      - minio-data:/data # Persist data across restarts
-    command: server /data #--console-address ":9001"
-    #networks:
-    #  - busapp-network
+      - VITE_MINIO_URL=http://dev-minio:9000 # React app talks directly to MinIO
+
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
     container_name: elasticsearch
