@@ -45,12 +45,12 @@ export const Search = () => {
 							</Form.Select>
 						</Form.Group>
 					</Col>
-					<Col md={8} lg={6}>
+					<Col xs={12} sm={6} md={6} lg={6}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
 							<Form.Label>Päivämäärä</Form.Label>
 							<br />
 							<DatePicker
-								className="datepicker"
+								className="datepicker w-100"
 								locale="fi"
 								selected={startDate as unknown as Date} // Workaround to fix typescript error
 								dateFormat="dd/MM/yyyy"
@@ -61,9 +61,9 @@ export const Search = () => {
 							></DatePicker>
 						</Form.Group>
 					</Col>
-					<Col sm={12} md={4} lg={5} className="d-flex align-items-center">
+					<Col xs={12} sm={6} md={6} lg={6} className="d-flex align-items-center">
 						<Link
-							className="w-100"
+							className="w-100 "
 							to={"/tickets"}
 							state={{
 								departureLocation: departureLocation,
@@ -74,7 +74,7 @@ export const Search = () => {
 							<Link
 								to={`tickets?departure=${departureLocation}&destination=${destinationLocation}&date=${startDate}`}
 							>
-								<Button className="w-100" variant="primary">
+								<Button className="w-100 h-75 p-2 my-auto" variant="primary">
 									haku
 								</Button>
 							</Link>

@@ -44,7 +44,7 @@ const Post = (props: postInterface) => {
 	};
 
 	return (
-		<div className={`border rounded p-2 my-3 border-${bgColor}`}>
+		<div className={`border p-2 my-3 border-${bgColor}`}>
 			<Row className="w-100 justify-content-between">
 				<Col className="justify-content-start" xs={4}>
 					<h6>{new Date().toISOString().slice(0, 10)}</h6>

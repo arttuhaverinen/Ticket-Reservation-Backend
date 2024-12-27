@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Col, Container, Form, Row, Image, Toast } from "react-bootstrap";
+import { Col, Container, Form, Row, Image, Toast, Spinner } from "react-bootstrap";
 import { Search } from "./Search";
 import Posts from "./Posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,6 +33,8 @@ const Home = () => {
 	//setImageUrl(minioUrl);
 	const [startDate, setStartDate] = useState(new Date());
 	const [showToast, setShowToast] = useState(true);
+
+
 
 	return (
 		<Container fluid className="">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Link, useSearchParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
@@ -35,7 +35,7 @@ const Tickets = () => {
 	let destination = searchParams.get("destination");
 	let date = searchParams.get("date");
 
-	const [timetables, setTimetables] = useState<timetableInterface[] | []>([]);
+	const [timetables, setTimetables] = useState<timetableInterface[] | null>(null);
 	const [startTime, setStartTime] = useState();
 
 	useEffect(() => {
@@ -51,11 +51,26 @@ const Tickets = () => {
 			});
 		//				//
 	}, []);
-
+	//http://localhost:5173/tickets?departure=Joensuu&destination=Nurmes&date=2024-12-26
 	return (
 		<Container>
-			<>
-				{mobileScreen ? (
+			{!timetables  && 
+				<Row className="my-3">
+					<Spinner className="mx-auto" style={{ width: "4rem", height: "4rem" }} animation="border" role="status">
+						<span className="visually-hidden">Ladataan aikatauluja...</span>
+					</Spinner>
+					<h3 className="">Ladataan aikatauluja...</h3>
+				</Row>}
+				{(timetables?.length == 0)  && <Row className="my-5 w-50 mx-auto">
+					<h3 className="w-100 text-center">Matkoja ei löytynyt.</h3>
+					<Link className="w-100" to="/">
+					<Button  className="w-100 btn btn-primary">Palaa takaisin etusivulle</Button>
+
+					</Link>
+					</Row>  } 
+
+				<div>
+			{(mobileScreen && timetables && timetables?.length > 0) &&
 					<>
 						<Row data-testid="tickets-mobile-row" className="my-5">
 							<Col className="d-flex " xs={4} lg={3}>
@@ -106,7 +121,8 @@ const Tickets = () => {
 							);
 						})}
 					</>
-				) : (
+				}
+				{(!mobileScreen && timetables && timetables?.length > 0) &&
 					<>
 						<Row data-testid="tickets-desktop-row" className="my-5">
 							<Col className=" " xs={3}>
@@ -154,8 +170,8 @@ const Tickets = () => {
 						})}
 						<hr></hr>
 					</>
-				)}
-			</>
+				}
+			</div>
 
 			{/*
 			<Row className="my-5">
