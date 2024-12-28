@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Appcontext } from "../App";
 
 const useTokenExpireMiddleware = () => {
+	console.log("auth")
 	const context = useContext(Appcontext);
 	if (!context) {
 		console.log("no context");
@@ -25,9 +26,10 @@ const useTokenExpireMiddleware = () => {
 			let accessToken = localStorage.getItem("accesstoken");
 			let expireTime = Number(localStorage.getItem("accessexpire")) || 0;
 			let expireTimeLeft =
-				(Number(currentTime) - Number(tokenCreatedTime)) / 1000;
+				(Number(currentTime) - Number(tokenCreatedTime)) / 10;
 			let refreshToken = localStorage.getItem("refreshtoken");
-			console.log(expireTimeLeft, expireTime);
+			
+			console.log("auth", expireTimeLeft, expireTime);
 
 			if (expireTimeLeft > expireTime) {
 				console.log("refresh accesstoken!");
@@ -42,13 +44,13 @@ const useTokenExpireMiddleware = () => {
 				})
 					.then((res) => res.json())
 					.then((res) => {
-						console.log(res);
+						console.log("auth res", res);
 						localStorage.setItem("accesstoken", res.accessToken);
 						localStorage.setItem("refreshtoken", res.refreshToken);
 						localStorage.setItem("accessexpire", res.expiresIn);
 						localStorage.setItem("time", Date.now().toString());
 
-						setAppToken(res.accesstoken);
+						setAppToken(res.accessToken);
 					})
 					.catch((error) => console.log(error));
 			}
