@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { json, useLocation, useSearchParams } from "react-router-dom";
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { json, Link, useLocation, useSearchParams } from "react-router-dom";
 import { Appcontext } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -29,7 +29,7 @@ const Orders = (props) => {
 	}
 	//let baseurl: string = import.meta.env.VITE_BASEURL;
 	const location = useLocation();
-	const [timetable, setTimetable] = useState<Itimetable>();
+	const [timetable, setTimetable] = useState<Itimetable | null>(null);
 	//console.log(JSON.stringify(timetable));
 	const seats = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -55,6 +55,7 @@ const Orders = (props) => {
 	const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
 	const [seatClicked, setSeatClicked] = useState<string | null>();
 	const [reservedSeats, setReservedSeats] = useState<number[]>();
+	const [notFound, setNotFound] = useState(false)
 
 	const { appToken, appUserName } = useContext(Appcontext)!;
 
@@ -71,14 +72,23 @@ const Orders = (props) => {
 		)
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res[0].seats);
-				setReservedSeats(res[0].seats);
-				setTimetable(res[0]);
+				if (res.length === 0) {
+					console.log("The array is empty.");
+					setNotFound(true)
+				}
+				else {
+					console.log("res", res)
+					console.log(res[0].seats);
+					setReservedSeats(res[0].seats);
+					setTimetable(res[0]);
+				}
+
 				/*res.map(
 					(timetable) =>
 						!reservedSeats.includes(timetable.seat) &&
 						setReservedSeats(reservedSeats.concat(ticket.seat))
 				);*/
+			
 			});
 	}, []);
 
@@ -157,7 +167,23 @@ const Orders = (props) => {
 
 	return (
 		<Container>
-			{reservedSeats && timetable ? (
+			{console.log("tt", timetable)}
+				{!timetable && notFound == false  && 
+				<Row className="my-3">
+					<Spinner className="mx-auto" style={{ width: "4rem", height: "4rem" }} animation="border" role="status">
+						<span className="visually-hidden">Ladataan aikatauluja...</span>
+					</Spinner>
+					<h3 className="">Ladataan aikatauluja...</h3>
+				</Row>}
+				{(notFound == true)  && <Row className="my-5 w-50 mx-auto">
+					<h3 className="w-100 text-center">Matkoja ei löytynyt.</h3>
+					<Link className="w-100" to="/">
+					<Button  className="w-100 btn btn-primary">Palaa takaisin etusivulle</Button>
+
+					</Link>
+					</Row>  } 
+ 
+			{reservedSeats && timetable &&
 				<div data-testid="Orders">
 					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
 						<Col className="d-flex" xs={3}>
@@ -442,10 +468,9 @@ const Orders = (props) => {
 							</div>
 						</Col>
 					</Row>
-				</div>
-			) : (
-				<h1>loading</h1>
-			)}
+			
+				</div>}
+
 		</Container>
 	);
 };
