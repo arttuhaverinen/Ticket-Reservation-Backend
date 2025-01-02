@@ -21,12 +21,10 @@ const AdminView = () => {
 	} = useContext(Appcontext)!;
 
 	return (
-		<Container className="w-75 my-5 mx-auto">
+		<Container className=" my-3 mx-auto">
 			{isAdmin && (
 				<Row>
-					<Col md={12} lg={12}>
-						<ProfileNavigation />
-					</Col>
+					<ProfileNavigation />
 					{/*
 					<Col md={12} lg={6}>
 						<AdminCreatePost />

@@ -37,7 +37,15 @@ interface TicketInterface {
 	appUserId: string | null;
 }
 
-const PaymentForm = (ticket: TicketInterface) => {
+const PaymentForm = ({
+	ticket,
+	noNameError,
+	setNoNameError,
+}: {
+	ticket: TicketInterface;
+	noNameError: boolean;
+	setNoNameError: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [success, setSuccess] = useState(false);
 	const stripe = useStripe();
@@ -48,6 +56,7 @@ const PaymentForm = (ticket: TicketInterface) => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		noNameError == true && setNoNameError(false);
 		/*
 		const { error, paymentMethod } = await stripe?.createPaymentMethod({
 			type: "card",
@@ -93,22 +102,28 @@ const PaymentForm = (ticket: TicketInterface) => {
 		}
 	};
 
+	const handleError = (e) => {
+		e.preventDefault();
+		setNoNameError(true);
+	};
+
 	return (
 		<div>
-			{!success ? (
-				<form onSubmit={(e) => handleSubmit(e)}>
-					<fieldset className="formGroup">
-						{/*<div className="formRow">
+			{console.log(ticket.seat)}
+			<form
+				onSubmit={(e) => {
+					ticket.name != "" ? handleSubmit(e) : handleError(e);
+				}}
+			>
+				<fieldset className="formGroup">
+					{/*<div className="formRow">
 							<CardElement></CardElement>
 			</div>*/}
-					</fieldset>
-					<button className="bg-primary">Vahvista tilaus</button>
-				</form>
-			) : (
-				<div>
-					<h2>You just bought this item!</h2>
-				</div>
-			)}
+				</fieldset>
+				<button type="submit" className="bg-primary">
+					Vahvista tilaus
+				</button>
+			</form>
 		</div>
 	);
 };

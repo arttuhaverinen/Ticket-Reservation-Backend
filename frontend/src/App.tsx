@@ -69,8 +69,6 @@ function App() {
 	console.log(baseurl);
 	console.log(appUserName);
 
-
-
 	useEffect(() => {
 		if (!appToken) {
 			if (localStorage.getItem("accesstoken")) {
@@ -86,7 +84,6 @@ function App() {
 		}
 	}, []);
 
-	
 	const fetchProfileImage = () => {
 		try {
 			fetch(`${baseurl}/api/minio`, {
@@ -111,8 +108,8 @@ function App() {
 					console.log("IMAGE: ", res);
 					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
 				})
-				.then(res => res.json())
-				.then(res => setProfilePicture(res.url))
+				.then((res) => res.json())
+				.then((res) => setProfilePicture(res.url));
 		}
 	}, [appToken]);
 
@@ -152,7 +149,7 @@ function App() {
 		>
 			<Router basename={basename}>
 				<Navigation />
-				<Container fluid className="app  ">
+				<Container fluid style={{ padding: 0 }} className="app">
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/register" element={<Register />} />
@@ -195,7 +192,6 @@ function App() {
 						</Col>
 					</Row>
 				*/}
-					<CompanyDetails />
 				</Container>
 				<Footer />
 			</Router>

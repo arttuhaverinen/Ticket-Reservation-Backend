@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Placeholder, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 
@@ -29,7 +29,9 @@ const Offers = () => {
 	const [friday, setFriday] = useState(false);
 	const [saturday, setSaturday] = useState(false);
 	const [sunday, setSunday] = useState(false);
-	const [timetables, setTimetables] = useState<timetableInterface[] | []>([]);
+	const [timetables, setTimetables] = useState<timetableInterface[] | null>(
+		null
+	);
 	const [startDate, setStartDate] = useState(
 		new Date().toISOString().split("T")[0]
 	);
@@ -115,15 +117,44 @@ const Offers = () => {
 					</Col>
 				);
 			});
+		} else {
+			return Array.from([2]).map((item, index) => {
+				return (
+					<Row>
+						<Col md={12} lg={6}>
+							<Placeholder className="w-100" animation="glow">
+								<Placeholder
+									style={{ height: "250px" }}
+									bg="secondary"
+									className="d-block mx-auto"
+								/>
+							</Placeholder>
+						</Col>
+						<Col md={12} lg={6}>
+							<Placeholder className="w-100" animation="glow">
+								<Placeholder
+									style={{ height: "250px" }}
+									bg="secondary"
+									className="d-block mx-auto"
+								/>
+							</Placeholder>
+						</Col>
+					</Row>
+				);
+			});
 		}
 	};
 
 	return (
-		<Container>
-			<h3>Tarjousliput</h3>
-			<Row className=" justify-content-between align-items-center  ">
-				{mapTimetables()}
-			</Row>
+		<Container className="py-5" fluid style={{ backgroundColor: "#77b1d4" }}>
+			<Container className="">
+				<h3 className="" style={{ color: "black" }}>
+					Tarjousliput
+				</h3>
+				<Row className=" justify-content-between align-items-center  ">
+					{mapTimetables()}
+				</Row>
+			</Container>
 		</Container>
 	);
 };

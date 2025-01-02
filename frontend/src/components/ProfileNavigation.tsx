@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import AdminCreatePost from "./AdminCreatePost";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import Posts from "./Posts";
 import OwnTickets from "./OwnTickets";
 import CreateTimetable from "./TimetableView";
@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 
 const ProfileNavigation = () => {
 	return (
-		<div className=" mx-auto">
-			<Row className=" mx-auto border">
+		<Container className=" p-0 mx-auto my-3 shadow p-3 bg-white rounded">
+			<Row className=" ">
 				<Col>
 					<Link to={"/profile/"}>
 						<h5>Profiili</h5>
@@ -34,7 +34,7 @@ const ProfileNavigation = () => {
 					</Link>{" "}
 				</Col>
 			</Row>
-		</div>
+		</Container>
 	);
 };
 

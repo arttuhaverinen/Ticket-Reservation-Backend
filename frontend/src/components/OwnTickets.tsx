@@ -34,7 +34,6 @@ const OwnTickets = () => {
 
 	return (
 		<div>
-			<hr />{" "}
 			<Row className="gap-3 justify-content-center">
 				<h3>Ostetut liput</h3>
 				{tickets &&
