@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export const Search = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [departureLocation, setDepartureLocation] = useState("Joensuu");
-	const [destinationLocation, setDestinationLocation] = useState("Joensuu");
+	const [destinationLocation, setDestinationLocation] = useState("Nurmes");
 	const [startDate, setStartDate] = useState<string | undefined>(
 		new Date().toJSON().split("T")[0]
 	);
@@ -22,6 +22,7 @@ export const Search = () => {
 							<Form.Select
 								onChange={(e) => setDepartureLocation(e.target.value)}
 								aria-label="Default select example"
+								value={departureLocation}
 							>
 								<option value="Joensuu">Joensuu</option>
 								<option value="Kuopio">Kuopio</option>
@@ -37,6 +38,7 @@ export const Search = () => {
 							<Form.Select
 								onChange={(e) => setDestinationLocation(e.target.value)}
 								aria-label="Default select example"
+								value={destinationLocation}
 							>
 								<option value="Joensuu">Joensuu</option>
 								<option value="Kuopio">Kuopio</option>
@@ -61,7 +63,13 @@ export const Search = () => {
 							></DatePicker>
 						</Form.Group>
 					</Col>
-					<Col xs={12} sm={6} md={6} lg={6} className="d-flex align-items-center">
+					<Col
+						xs={12}
+						sm={6}
+						md={6}
+						lg={6}
+						className="d-flex align-items-center"
+					>
 						<Link
 							className="w-100 "
 							to={"/tickets"}

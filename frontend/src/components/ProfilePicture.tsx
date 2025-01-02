@@ -32,12 +32,10 @@ const ProfilePicture = () => {
 					console.log("IMAGE: ", res);
 					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
 				})
-				.then(res => res.json())
-				.then(res => setProfilePicture(res.url))
-
-
-	}
-}
+				.then((res) => res.json())
+				.then((res) => setProfilePicture(res.url));
+		}
+	};
 
 	const handleFileSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
@@ -87,7 +85,7 @@ const ProfilePicture = () => {
 	};
 
 	return (
-		<div className="shadow p-3 my-5 mb-5 bg-white rounded">
+		<Container className="shadow p-3 my-3 mb-5 bg-white rounded">
 			<Row>
 				<Col xs={6} md={4}>
 					<Image
@@ -121,7 +119,7 @@ const ProfilePicture = () => {
 					Vaihda profiilikuva
 				</Button>
 			</Form>
-		</div>
+		</Container>
 	);
 };
 

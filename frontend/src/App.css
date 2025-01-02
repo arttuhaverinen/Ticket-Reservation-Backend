@@ -8,6 +8,8 @@ body {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	margin: 0;
+	background-color: red;
 }
 
 .logo {
@@ -124,9 +126,9 @@ h3 {
 
 .navigation-link-hover:hover {
 	margin-top: 3px;
-	border-bottom: 3px solid black;
+	border-bottom: 3px solid #0d6efd;
 	border-radius: 1px;
-	scale: 1.1;
+	scale: 1.05;
 }
 
 .navbar-profile-hover:hover {
@@ -148,6 +150,8 @@ h3 {
 	body {
 		color: red;
 		background-color: red;
+		margin: 0;
+		padding: 0;
 	}
 
 	.text-end-responsive {

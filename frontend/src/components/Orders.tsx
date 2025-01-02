@@ -9,6 +9,7 @@ import {
 	faArrowRightLong,
 } from "@fortawesome/free-solid-svg-icons";
 import StripeContainer from "./StripeContainer";
+import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons/faLessThanEqual";
 
 interface Itimetable {
 	day: string;
@@ -40,6 +41,7 @@ const Orders = (props) => {
 	let date = searchParams.get("date");
 	let time = searchParams.get("time");
 	let day = new Date(date?.toString());
+	const [noNameError, setNoNameError] = useState(false);
 	console.log("day", day);
 	const dayNames = [
 		"Sunnuntai",
@@ -55,7 +57,7 @@ const Orders = (props) => {
 	const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
 	const [seatClicked, setSeatClicked] = useState<string | null>();
 	const [reservedSeats, setReservedSeats] = useState<number[]>();
-	const [notFound, setNotFound] = useState(false)
+	const [notFound, setNotFound] = useState(false);
 
 	const { appToken, appUserName } = useContext(Appcontext)!;
 
@@ -74,10 +76,9 @@ const Orders = (props) => {
 			.then((res) => {
 				if (res.length === 0) {
 					console.log("The array is empty.");
-					setNotFound(true)
-				}
-				else {
-					console.log("res", res)
+					setNotFound(true);
+				} else {
+					console.log("res", res);
 					console.log(res[0].seats);
 					setReservedSeats(res[0].seats);
 					setTimetable(res[0]);
@@ -88,7 +89,6 @@ const Orders = (props) => {
 						!reservedSeats.includes(timetable.seat) &&
 						setReservedSeats(reservedSeats.concat(ticket.seat))
 				);*/
-			
 			});
 	}, []);
 
@@ -168,27 +168,36 @@ const Orders = (props) => {
 	return (
 		<Container>
 			{console.log("tt", timetable)}
-				{!timetable && notFound == false  && 
+			{!timetable && notFound == false && (
 				<Row className="my-3">
-					<Spinner className="mx-auto" style={{ width: "4rem", height: "4rem" }} animation="border" role="status">
+					<Spinner
+						className="mx-auto"
+						style={{ width: "4rem", height: "4rem" }}
+						animation="border"
+						role="status"
+					>
 						<span className="visually-hidden">Ladataan aikatauluja...</span>
 					</Spinner>
 					<h3 className="">Ladataan aikatauluja...</h3>
-				</Row>}
-				{(notFound == true)  && <Row className="my-5 w-50 mx-auto">
+				</Row>
+			)}
+			{notFound == true && (
+				<Row className="my-5 w-50 mx-auto">
 					<h3 className="w-100 text-center">Matkoja ei löytynyt.</h3>
 					<Link className="w-100" to="/">
-					<Button  className="w-100 btn btn-primary">Palaa takaisin etusivulle</Button>
-
+						<Button className="w-100 btn btn-primary">
+							Palaa takaisin etusivulle
+						</Button>
 					</Link>
-					</Row>  } 
- 
-			{reservedSeats && timetable &&
+				</Row>
+			)}
+
+			{reservedSeats && timetable && (
 				<div data-testid="Orders">
 					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
 						<Col className="d-flex" xs={3}>
-							<p className="mx-auto">
-								{timetable.departure} <br /> {timetable.destination}
+							<p className="">
+								{timetable.departure} <hr /> {timetable.destination}
 							</p>
 						</Col>
 						<Col className="d-flex" xs={6}>
@@ -202,9 +211,13 @@ const Orders = (props) => {
 						</Col>
 					</Row>
 					<Row className="my-5 mx-1 justify-content-between">
-						<Col className="p-5  shadow p-3 mb-5 bg-white rounded" xs={5}>
-							<div className="w-100">{timetable.departure}</div>
-							<div className="w-100">{timetable.startTime}</div>
+						<Col className="p-5 shadow p-3 mb-5 bg-white rounded" xs={5}>
+							<div className="w-100">
+								<p className="text-center">{timetable.departure}</p>{" "}
+							</div>
+							<div className="w-100">
+								<p className="text-center">{timetable.startTime}</p>{" "}
+							</div>
 						</Col>
 						<Col className="h-100 d-flex p-3 align-items-center " xs={2}>
 							<FontAwesomeIcon
@@ -215,10 +228,14 @@ const Orders = (props) => {
 							/>
 						</Col>
 						<Col className="p-5  shadow p-3 mb-5 bg-white rounded" xs={5}>
-							{" "}
 							<div className="w-100">
-								<div className="w-100">{timetable.destination}</div>
-								<div className="w-100">{timetable.endTime}</div>
+								<div className="w-100">
+									<p className="text-center">{timetable.destination}</p>
+								</div>
+								<div className="w-100">
+									{" "}
+									<p className="text-center">{timetable.endTime}</p>
+								</div>
 							</div>
 							<div className="w-100">{timetable.endTime.slice(11, 16)} </div>
 						</Col>
@@ -431,7 +448,12 @@ const Orders = (props) => {
 								<hr />
 								<Form>
 									<Form.Group className="mb-3" controlId="formBasicEmail">
-										<Form.Label>Nimi</Form.Label>
+										<Form.Label>Sähköposti</Form.Label>{" "}
+										{noNameError && customerName.length == 0 && (
+											<Form.Label className="text-bg-danger">
+												Tämä kenttä on pakollinen!
+											</Form.Label>
+										)}
 										<Form.Control
 											onChange={(e) => setCustomerName(e.target.value)}
 											type="email"
@@ -454,23 +476,26 @@ const Orders = (props) => {
 		</Button>*/}
 								</Form>
 								<StripeContainer
-									startTime={timetable.startTime}
-									endTime={timetable.endTime}
-									date={date}
-									expired={false}
-									departure={timetable.departure}
-									destination={timetable.destination}
-									name={customerName}
-									seat={seatClicked}
-									timetablesId={timetable.id.toString()}
-									appUserId={appToken}
+									ticket={{
+										startTime: timetable.startTime,
+										endTime: timetable.endTime,
+										date: date,
+										expired: false,
+										departure: timetable.departure,
+										destination: timetable.destination,
+										name: customerName,
+										seat: seatClicked,
+										timetablesId: timetable.id.toString(),
+										appUserId: appToken,
+									}}
+									noNameError={noNameError}
+									setNoNameError={setNoNameError}
 								/>
 							</div>
 						</Col>
 					</Row>
-			
-				</div>}
-
+				</div>
+			)}
 		</Container>
 	);
 };

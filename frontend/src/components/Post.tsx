@@ -25,7 +25,7 @@ const Post = (props: postInterface) => {
 			setBgColor("danger");
 		}
 		if (props.postType == "info") {
-			setBgColor("light");
+			setBgColor("primary");
 		}
 	};
 
@@ -44,7 +44,9 @@ const Post = (props: postInterface) => {
 	};
 
 	return (
-		<div className={`border p-2 my-3 border-${bgColor}`}>
+		<div
+			className={` p-2 my-4 shadow bg-white border-start border-5 border-${bgColor}`}
+		>
 			<Row className="w-100 justify-content-between">
 				<Col className="justify-content-start" xs={4}>
 					<h6>{new Date().toISOString().slice(0, 10)}</h6>

@@ -1,5 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Col, Container, Form, Row, Image, Toast, Spinner } from "react-bootstrap";
+import {
+	Col,
+	Container,
+	Form,
+	Row,
+	Image,
+	Toast,
+	Spinner,
+} from "react-bootstrap";
 import { Search } from "./Search";
 import Posts from "./Posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,10 +42,8 @@ const Home = () => {
 	const [startDate, setStartDate] = useState(new Date());
 	const [showToast, setShowToast] = useState(true);
 
-
-
 	return (
-		<Container fluid className="">
+		<Container fluid style={{ padding: 0 }} className="home">
 			{mobileScreen ? (
 				<Row
 					style={{
@@ -46,8 +52,6 @@ const Home = () => {
 						backgroundSize: "100% auto", // Ensures the image scales fluidly across the width
 						backgroundPosition: "center",
 						backgroundRepeat: "no-repeat",
-						margin: "0px",
-
 						minHeight: "200px", // Defines a minimum height for the row
 					}}
 				>
@@ -69,7 +73,8 @@ const Home = () => {
 				</div> */}
 				</Row>
 			) : (
-				<Row
+				<Container
+					fluid
 					style={{
 						backgroundImage: `url(${forest})`,
 						backgroundSize: "cover", // Ensures the image covers the entire area
@@ -78,36 +83,26 @@ const Home = () => {
 						minHeight: "500px", // Defines a minimum height for the row
 						position: "relative",
 					}}
-					className="image-container"
 				>
-					<Col md={6} lg={6} xl={6} style={{ zIndex: 1 }}>
-						<h1></h1>{" "}
-					</Col>
-					<Col md={6} lg={6} xl={5} style={{ zIndex: 1 }}>
-						<Search />
-					</Col>
+					<Container>
+						<Row className="image-container">
+							<Col md={6} lg={6} xl={6} style={{ zIndex: 1 }}>
+								<h1></h1>{" "}
+							</Col>
+							<Col md={6} lg={6} xl={6} style={{ zIndex: 1 }}>
+								<Search />
+							</Col>
+						</Row>
+						{/* Overlay Text 
+					{/*
 
-					{/* Overlay Text 
-		<div
-			className="overlay-text"
-			style={{
-				position: "absolute",
-				top: "50%",
-				left: "50%",
-				transform: "translate(-50%, -50%)",
-				color: "white",
-				backgroundColor: "rgba(0, 0, 0, 0.5)",
-				padding: "10px 20px",
-				borderRadius: "5px",
-			}}
-		>
-			<h3>This is an overlay text</h3>
-		</div> */}
-				</Row>
+				*/}
+					</Container>
+				</Container>
 			)}
-			<Container>
+			<Container fluid style={{ padding: 0 }}>
 				{mobileScreen && <Search />}
-				<Row className="w-100 my-5 mx-auto">
+				<Row className=" w-100  mx-auto">
 					<Posts />
 					<Offers />
 				</Row>

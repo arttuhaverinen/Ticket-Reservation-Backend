@@ -3,8 +3,8 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Footer = () => {
 	return (
-		<footer className="bg-dark text-white py-4 mt-5 ">
-			<Container className="w-100 ">
+		<footer className="bg-dark text-white py-4 ">
+			<Container className="">
 				<Row>
 					{/* Column 1: About Us */}
 					<Col md={6} sm={12}>
@@ -31,9 +31,13 @@ const Footer = () => {
 					{/* Column 2: Quick Links */}
 
 					{/* Column 3: Contact Info */}
-					<Col md={4} sm={12}>
-						<h5 className="my-3">Yhteystiedot</h5>
+					<Col
+						md={6}
+						sm={12}
+						className="d-flex justify-content-center align-items-center"
+					>
 						<address>
+							<h5 className="my-3">Yhteystiedot</h5>
 							Haverinen994@gmail.com
 							<br />
 							<a

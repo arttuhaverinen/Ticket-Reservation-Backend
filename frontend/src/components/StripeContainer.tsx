@@ -20,11 +20,19 @@ interface TicketInterface {
 	appUserId: string | null;
 }
 
-const StripeContainer = (ticket: TicketInterface) => {
+const StripeContainer = (props: {
+	ticket: TicketInterface;
+	noNameError: boolean;
+	setNoNameError: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	return (
 		<div>
 			<Elements stripe={stripePromise}>
-				<PaymentForm {...ticket}></PaymentForm>
+				<PaymentForm
+					ticket={props.ticket}
+					noNameError={props.noNameError}
+					setNoNameError={props.setNoNameError}
+				/>
 			</Elements>
 		</div>
 	);
