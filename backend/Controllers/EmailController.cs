@@ -51,8 +51,10 @@ public class EmailController : ControllerBase, IEmailSender
             }
             else if (subject.Contains("Confirm")) // rescendConfirmation endpoint
             {
+                var redirectedMessage = message.Replace("localhost:5001", "localhost:5173");
+                Console.WriteLine(message);
                 htmlBody = $@"
-                    <p>{message}</p>
+                    <p>{redirectedMessage}</p>
                     <p>If you did not request this, please ignore this email.</p>";
 
                 /*
@@ -65,6 +67,7 @@ public class EmailController : ControllerBase, IEmailSender
             }
             else if (subject.Contains("Purchase")) // rescendConfirmation endpoint
             {
+                
                 htmlBody = $@"
                     <p>{message}</p>
                     <p>If you did not request this, please ignore this email.</p>";
@@ -112,10 +115,43 @@ public class EmailController : ControllerBase, IEmailSender
         Console.WriteLine(customerEmail);
         var ticketsJson = JsonSerializer.Serialize(tickets); // This should return a string
         Console.WriteLine(ticketsJson);
+        var seatReservation = tickets.Seat == 0 ? "Ei varattu" : tickets.Seat.ToString();
+
+        var htmlContent = $@"
+                <html>
+                    <body>
+                        <h1 >Kiitos tilauksestasi! </h1>
+                        <p>Matkalippusi tiedot.</p>
+                        <table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; width: 50%;'>
+                            <thead>
+                                <tr>
+                                    <th style='background-color:#f2f2f2;'>Päivämäärä</th>
+                                    <th style='background-color: #f2f2f2;'>Lähtöaika</th>
+                                    <th style='background-color: #f2f2f2;'>Lähtöpaikka</th>
+                                    <th style='background-color: #f2f2f2;'>Saapumisaika</th>
+                                    <th style='background-color: #f2f2f2;'>Saapumispaikka</th>
+                                    <th style='background-color: #f2f2f2;'>Istumapaikka</th>
+                                    <th style='background-color: #f2f2f2;'>Sähköposti</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{tickets.Date}</td>
+                                    <td>{tickets.StartTime}</td>
+                                    <td>{tickets.Departure}</td>
+                                    <td>{tickets.EndTime}</td>
+                                    <td>{tickets.Destination}</td>
+                                    <td>{seatReservation}</td>
+                                    <td>{tickets.Name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </body>
+                </html>";
         try
         {
             // Call SendEmailAsync to send the email
-            await SendEmailAsync(customerEmail, "Purchase succeeded", ticketsJson);
+            await SendEmailAsync(customerEmail, "Purchase succeeded", htmlContent);
         }
         catch (Exception ex)
         {

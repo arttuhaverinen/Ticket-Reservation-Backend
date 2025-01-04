@@ -79,7 +79,7 @@ public class CheckoutController : ControllerBase
 
         };
 
-        await _emailController.SendOrderSucceededEmail(ticket, ticket.Name);
+        //await _emailController.SendOrderSucceededEmail(ticket, ticket.Name);
 
 
         var newTicket = await _ticketRepository.InsertTicket(ticket);

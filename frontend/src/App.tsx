@@ -29,6 +29,7 @@ import OwnTickets from "./components/OwnTickets";
 import Posts from "./components/Posts";
 import AdminCreatePost from "./components/AdminCreatePost";
 import ProfilePicture from "./components/ProfilePicture";
+import ConfirmEmail from "./components/ConfirmEmail";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
@@ -156,6 +157,7 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/tickets" element={<Tickets />} />
 						<Route path="/orders" element={<Orders />} />
+						<Route path="/confirmEmail" element={<ConfirmEmail />} />
 						<Route path="/profile" element={<AdminView />}>
 							<Route index element={<ProfilePicture />} />
 							<Route path="description" element={<ProfilePicture />} />
