@@ -29,6 +29,7 @@ import OwnTickets from "./components/OwnTickets";
 import Posts from "./components/Posts";
 import AdminCreatePost from "./components/AdminCreatePost";
 import ProfilePicture from "./components/ProfilePicture";
+import ConfirmEmail from "./components/ConfirmEmail";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
@@ -69,8 +70,6 @@ function App() {
 	console.log(baseurl);
 	console.log(appUserName);
 
-
-
 	useEffect(() => {
 		if (!appToken) {
 			if (localStorage.getItem("accesstoken")) {
@@ -86,7 +85,6 @@ function App() {
 		}
 	}, []);
 
-	
 	const fetchProfileImage = () => {
 		try {
 			fetch(`${baseurl}/api/minio`, {
@@ -111,8 +109,8 @@ function App() {
 					console.log("IMAGE: ", res);
 					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
 				})
-				.then(res => res.json())
-				.then(res => setProfilePicture(res.url))
+				.then((res) => res.json())
+				.then((res) => setProfilePicture(res.url));
 		}
 	}, [appToken]);
 
@@ -159,6 +157,7 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/tickets" element={<Tickets />} />
 						<Route path="/orders" element={<Orders />} />
+						<Route path="/confirmEmail" element={<ConfirmEmail />} />
 						<Route path="/profile" element={<AdminView />}>
 							<Route index element={<ProfilePicture />} />
 							<Route path="description" element={<ProfilePicture />} />
