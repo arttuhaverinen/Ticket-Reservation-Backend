@@ -26,7 +26,7 @@ namespace TicketReservationApp.Repositories
 
         public async Task<Tickets> GetTicketByID(int ticketId)
         {
-            Tickets ticket = _dataContext.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId);
+            var ticket = await _dataContext.Tickets.FirstOrDefaultAsync(ticket => ticket.Id == ticketId);
             return ticket;
         }
 

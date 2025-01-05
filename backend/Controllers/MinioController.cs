@@ -43,7 +43,7 @@ namespace TicketReservationApp.Controllers
         
     }*/
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPresignedUrlByKey(string id)
+        public Task<IActionResult> GetPresignedUrlByKey(string id)
         {
             //var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
             //var user = await _UserRepository.GetUserByID(userId);
@@ -71,7 +71,7 @@ namespace TicketReservationApp.Controllers
 
             }
             
-            return Ok(new { url });
+            return Task.FromResult<IActionResult>(Ok(new { url }));
         }
         /*
         [HttpGet]
@@ -132,7 +132,7 @@ namespace TicketReservationApp.Controllers
             var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
             Console.WriteLine($"User ID: {userId}");
 
-            var bucketExists = await AmazonS3Util.DoesS3BucketExistAsync(_s3Client, "test");
+            var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, "test");
 
             var uniqueFileName = Guid.NewGuid().ToString(); // Generates a unique UUID
             var fileExtension = Path.GetExtension(formFile.FileName);
@@ -169,7 +169,7 @@ namespace TicketReservationApp.Controllers
             var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
             Console.WriteLine($"User ID: {userId}");
 
-            var bucketExists = await AmazonS3Util.DoesS3BucketExistAsync(_s3Client, "test");
+            var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, "test");
 
 
             var uniqueFileName = Guid.NewGuid().ToString(); // Generates a unique UUID
