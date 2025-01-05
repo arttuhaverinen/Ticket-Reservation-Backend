@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "../App.css";
 import logo from "../images/logo.jpeg";
 import { Button, Col, Form, Row } from "react-bootstrap";
@@ -39,78 +39,113 @@ const Navigation = () => {
 	};
 
 	return (
-		<Navbar style={{ minHeight: "100px" }} className="bg-body-tertiary">
+		<Navbar
+			style={{ minHeight: "100px" }}
+			expand="lg"
+			className="bg-body-tertiary d-flex"
+		>
 			<Container style={{ width: "95%" }} fluid>
-				<Nav.Link className="mx-3">
-					<Link to={"/"}>
-						{" "}
-						<h5 className="navigation-link-hover text-dark">Etusivu</h5>
-					</Link>
-				</Nav.Link>
-				{!appToken ? (
-					<>
-						<Nav.Link className="mx-3">
-							<Link to={"/login"}>
-								{" "}
-								<h5 className="navigation-link-hover text-dark">
-									Kirjaudu sisään
-								</h5>
-							</Link>
-						</Nav.Link>
-						<Nav.Link className="mx-3">
-							<Link to={"/register"}>
-								{" "}
-								<h5 className="navigation-link-hover text-dark">
-									Rekisteröidy
-								</h5>
-							</Link>
-						</Nav.Link>
-					</>
-				) : (
-					<Nav.Link className="">
-						<Link
-							className=""
-							onClick={() => logoutClearLocalStorage()}
-							to={"/"}
-						>
-							{" "}
-							<h5 className="navigation-link-hover text-dark">Kirjaudu ulos</h5>
+				<Link to={"/profile"}>
+					{appToken && (
+						<>
+							<div className="d-flex d-block d-lg-none rounded navbar-profile-hover">
+								<Image
+									className="ms-auto"
+									src={
+										profilePicture
+											? profilePicture
+											: "https://placehold.co/100x100"
+									}
+									style={{
+										width: "75px",
+										height: "75px",
+										objectFit: "cover",
+										overflow: "hidden",
+									}}
+									key={profilePicture}
+									roundedCircle
+								/>{" "}
+								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
+									<p className="m-0 text-center">
+										<b>{appUserName}</b>
+									</p>
+								</Navbar.Text>
+							</div>
+						</>
+					)}
+				</Link>
+
+				<Navbar.Collapse className="justify-content-start">
+					{appToken && <hr className="d-block d-lg-none" />}
+					<Nav.Link className="me-3">
+						<Link to={"/"}>
+							<h5 className="navigation-link-hover text-dark">Etusivu</h5>
 						</Link>
 					</Nav.Link>
-				)}
-
-				<Navbar.Toggle />
-				<Navbar.Collapse className="justify-content-end">
-					<Link to={"/profile"}>
-						{appToken && (
-							<>
-								<div className="d-flex rounded navbar-profile-hover">
-									<Image
-										className="ms-auto"
-										src={
-											profilePicture
-												? profilePicture
-												: "https://placehold.co/100x100"
-										}
-										style={{
-											width: "75px",
-											height: "75px",
-											objectFit: "cover",
-											overflow: "hidden",
-										}}
-										key={profilePicture}
-										roundedCircle
-									/>{" "}
-									<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
-										<p className="m-0 text-center">
-											<b>{appUserName}</b>
-										</p>
-									</Navbar.Text>
-								</div>
-							</>
-						)}
-					</Link>
+					{!appToken ? (
+						<>
+							<Nav.Link className="me-3">
+								<Link to={"/login"}>
+									{" "}
+									<h5 className="navigation-link-hover text-dark">
+										Kirjaudu sisään
+									</h5>
+								</Link>
+							</Nav.Link>
+							<Nav.Link className="me-3">
+								<Link to={"/register"}>
+									{" "}
+									<h5 className="navigation-link-hover text-dark">
+										Rekisteröidy
+									</h5>
+								</Link>
+							</Nav.Link>
+						</>
+					) : (
+						<Nav.Link className="">
+							<Link
+								className=""
+								onClick={() => logoutClearLocalStorage()}
+								to={"/"}
+							>
+								{" "}
+								<h5 className="navigation-link-hover text-dark">
+									Kirjaudu ulos
+								</h5>
+							</Link>
+						</Nav.Link>
+					)}
 				</Navbar.Collapse>
+				<Link to={"/profile"}>
+					{appToken && (
+						<>
+							<div className="d-flex d-none d-lg-flex rounded navbar-profile-hover">
+								<Image
+									className="ms-auto"
+									src={
+										profilePicture
+											? profilePicture
+											: "https://placehold.co/100x100"
+									}
+									style={{
+										width: "75px",
+										height: "75px",
+										objectFit: "cover",
+										overflow: "hidden",
+									}}
+									key={profilePicture}
+									roundedCircle
+								/>{" "}
+								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
+									<p className="m-0 text-center">
+										<b>{appUserName}</b>
+									</p>
+								</Navbar.Text>
+							</div>
+						</>
+					)}
+				</Link>
+				<Navbar.Toggle className=" mx-3 my-4 position-absolute end-0 top-0" />
 			</Container>
 		</Navbar>
 	); /*

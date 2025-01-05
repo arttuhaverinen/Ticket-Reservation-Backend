@@ -158,6 +158,16 @@ h3 {
 		display: block;
 		text-align: start !important; /* Override Bootstrap’s text-end */
 	}
+	.navigation-link-hover:hover {
+		border-bottom: none; /* Active link indicator */
+		scale: 1;
+		margin-top: 0px;
+		border-radius: 0px;
+	}
+	.navigation-link-hover:active {
+		display: inline-block; /* Ensure the border aligns with the text */
+		border-bottom: 3px solid #0d6efd;
+	}
 }
 
 @media (max-width: 768px) {
