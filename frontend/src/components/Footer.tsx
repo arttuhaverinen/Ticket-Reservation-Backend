@@ -8,7 +8,7 @@ const Footer = () => {
 				<Row>
 					{/* Column 1: About Us */}
 					<Col md={6} sm={12}>
-						<h5 className=" my-3">Käytetyt teknologiat</h5>
+						<h5 className=" my-3">Tekninen toteutus</h5>
 						<Row>
 							<Col md={3}>
 								<h6 className="my-2">Frontend</h6>
