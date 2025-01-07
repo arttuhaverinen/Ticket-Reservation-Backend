@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Appcontext } from "../App";
+import Posts from "./Posts";
 const AdminCreatePost = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 
@@ -70,6 +71,8 @@ const AdminCreatePost = () => {
 					Submit
 				</Button>
 			</Form>
+			<hr className="my-5" />
+			<Posts />
 		</div>
 	);
 };

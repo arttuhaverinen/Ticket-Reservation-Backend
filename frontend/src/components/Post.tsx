@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { Appcontext } from "../App";
+import { useLocation } from "react-router-dom";
 
 interface postInterface {
 	postId: number;
@@ -11,7 +12,10 @@ interface postInterface {
 
 const Post = (props: postInterface) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
-	const [bgColor, setBgColor] = useState("black");
+	const [bgColor, setBgColor] = useState("primary");
+	const [inAdminPanel, setInAdminPanel] = useState(
+		location.pathname.includes("profile") ? true : false
+	);
 
 	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
 		useContext(Appcontext)!;
@@ -25,7 +29,7 @@ const Post = (props: postInterface) => {
 			setBgColor("danger");
 		}
 		if (props.postType == "info") {
-			setBgColor("primary");
+			setBgColor("warning");
 		}
 	};
 
@@ -47,20 +51,27 @@ const Post = (props: postInterface) => {
 		<div
 			className={` p-2 my-4 shadow bg-white border-start border-5 border-${bgColor}`}
 		>
+			{isAdmin && inAdminPanel && (
+				<div className="d-flex w-100">
+					<Button
+						onClick={() => handlePostDelete()}
+						className="btn btn-danger ms-auto    "
+					>
+						Poista ilmoitus
+					</Button>
+				</div>
+			)}
 			<Row className="w-100 justify-content-between">
-				<Col className="justify-content-start" xs={4}>
+				<Col className="justify-content-start" xs={10}>
 					<h6>{new Date().toISOString().slice(0, 10)}</h6>
 					<h5 style={{ color: bgColor }}>{props.postTitle}</h5>
 				</Col>
 				<Col xs={2} className="justify-content-end align-items-end">
 					{" "}
-					{isAdmin && (
-						<Button
-							onClick={() => handlePostDelete()}
-							className="btn btn-danger p-1 m-0"
-						>
-							Delete
-						</Button>
+					{bgColor == "danger" && (
+						<div className="d-flex justify-content-end">
+							<i className="bi bi-exclamation-triangle text-danger fs-1"></i>
+						</div>
 					)}
 				</Col>
 			</Row>
