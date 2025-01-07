@@ -25,9 +25,47 @@ const TimetableView = () => {
 			.catch((err) => console.log(err));
 	}, []);
 
+	const mapTimetablesMobile = () => {
+		if (timetables) {
+			return timetables.map((timetable) => (
+				<div className="card mb-3" key={timetable.id}>
+					<div className="card-body">
+						<h5 className="card-title">
+							{timetable.departure} → {timetable.destination}
+						</h5>
+						<p>
+							<strong>Lähtöaika:</strong> {timetable.startTime}
+						</p>
+						<p>
+							<strong>Saapumisaika:</strong> {timetable.endTime}
+						</p>
+						<p>
+							<strong>Hinta:</strong>{" "}
+							{timetable.priceDiscount ? (
+								<>
+									<s>{timetable.price}</s> | {timetable.priceDiscount}
+								</>
+							) : (
+								timetable.price
+							)}
+						</p>
+						<p>
+							<strong>Ajopäivät:</strong> {timetable.day.toString()}
+						</p>
+						<Link to={`modifytimetable?Timetable=${timetable.id}`}>
+							<Button className="btn btn-primary">Muokkaa</Button>
+						</Link>
+						<Button className="btn btn-danger">Poista</Button>
+					</div>
+				</div>
+			));
+		}
+	};
+
 	const mapTimetables = () => {
 		if (timetables) {
 			console.log(timetables);
+
 			return timetables.map((timetable) => {
 				return (
 					<tr key={timetable.id}>
@@ -66,7 +104,17 @@ const TimetableView = () => {
 			<Link to={"createtimetable"}>
 				<Button className="w-100 my-3">Lisää uusi vuoro</Button>
 			</Link>
-			<Table striped bordered hover>
+			{timetables && (
+				<div className="d-block d-lg-none ">{mapTimetablesMobile()}</div>
+			)}
+
+			<Table
+				striped
+				bordered
+				hover
+				className="table-responsive 				d-none
+				d-lg-block"
+			>
 				<thead>
 					<tr>
 						<th>Lähtö</th>
