@@ -65,7 +65,7 @@ namespace TicketReservationApp.Data
             new Timetables
             {
                 StartTime = new TimeSpan(9, 0, 0),
-                EndTime = new TimeSpan(9, 0, 0),
+                EndTime = new TimeSpan(12, 0, 0),
                 Price = 29.99,
                 Departure = "Joensuu",
                 Destination = "Tampere",
@@ -77,8 +77,8 @@ namespace TicketReservationApp.Data
             },
             new Timetables
             {
-                StartTime = new TimeSpan(9, 0, 0),
-                EndTime = new TimeSpan(9, 0, 0),
+                StartTime = new TimeSpan(16, 0, 0),
+                EndTime = new TimeSpan(19, 0, 0),
                 Price = 19.99,
                 Departure = "Joensuu",
                 Destination = "Kuopio",
@@ -92,7 +92,7 @@ namespace TicketReservationApp.Data
             new Timetables
             {
                 StartTime = new TimeSpan(17, 0, 0),
-                EndTime = new TimeSpan(17, 0, 0),
+                EndTime = new TimeSpan(20, 0, 0),
                 Price = 29.99,
                 Departure = "Joensuu",
                 Destination = "Kuopio",
@@ -107,7 +107,7 @@ namespace TicketReservationApp.Data
             new Timetables
             {
                 StartTime = new TimeSpan(9, 0, 0),
-                EndTime = new TimeSpan(9, 0, 0),
+                EndTime = new TimeSpan(12, 0, 0),
                 Price = 14.99,
                 Departure = "Joensuu",
                 Destination = "Nurmes",
@@ -116,30 +116,77 @@ namespace TicketReservationApp.Data
                 Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 AppUserId = userId,
                 PriceDiscount = 10.99
+            },
+            new Timetables
+            {
+                StartTime = new TimeSpan(18, 0, 0),
+                EndTime = new TimeSpan(21, 0, 0),
+                Price = 14.99,
+                Departure = "Joensuu",
+                Destination = "Kuopio",
+                Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday, saturday, sunday" },
+                Cancelled = new List<DateTime>(),
+                Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                AppUserId = userId,
+                PriceDiscount = 10.99
+            },
+            new Timetables
+            {
+                StartTime = new TimeSpan(15, 0, 0),
+                EndTime = new TimeSpan(18, 0, 0),
+                Price = 14.99,
+                Departure = "Kuopio",
+                Destination = "Tampere",
+                Day = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday, saturday, sunday" },
+                Cancelled = new List<DateTime>(),
+                Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                AppUserId = userId,
+                PriceDiscount = 10.99
+            },
+            new Timetables
+            {
+                StartTime = new TimeSpan(9, 0, 0),
+                EndTime = new TimeSpan(12, 0, 0),
+                Price = 20.99,
+                Departure = "Joensuu",
+                Destination = "Tampere",
+                Day = new List<string> {  "saturday", "sunday" },
+                Cancelled = new List<DateTime>(),
+                Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                AppUserId = userId,
+                PriceDiscount = 15.99
             });
             await _context.SaveChangesAsync();
 
             _context.Posts.AddRange(
                 new Posts
                 {
-                    PostContent = "seed 1",
-                    PostTitle = "first post",
-                    PostType = "info",
+                    PostContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc neque lacus, facilisis ac est in, hendrerit ultricies lacus. Pellentesque eget elit faucibus, consequat ligula vel, aliquet ex. Mauris sed vehicula augue. In rhoncus leo malesuada felis tincidunt egestas. Nullam et sollicitudin libero. Curabitur suscipit, augue quis finibus porta, sem nulla luctus felis, nec imperdiet dui enim vitae sapien. Sed ex odio, ullamcorper nec ante vel, vehicula mollis quam. Duis et massa felis.",
+                    PostTitle = "Lisäämme vuoroja Kuopion ja Tampereen välille",
+                    PostType = "normal",
                     AppUserId = userId
 
                 },
                 new Posts
                 {
-                    PostContent = "seed 2",
-                    PostTitle = "second post",
+                    PostContent = "Morbi sit amet mollis ipsum. Integer sed neque risus. Aliquam bibendum ex at scelerisque maximus. Vivamus eu ex ut magna efficitur ullamcorper. Curabitur pulvinar magna augue, sit amet suscipit magna consectetur sollicitudin. Suspendisse id neque orci. Fusce elementum purus vitae odio viverra pharetra. Phasellus sit amet laoreet eros.",
+                    PostTitle = "Onnettomuus Joensuun ja Kuopion välillä",
                     PostType = "warning",
                     AppUserId = userId
 
                 },
                 new Posts
                 {
-                    PostContent = "seed 3",
-                    PostTitle = "third post",
+                    PostContent = "Sed at eleifend ex, at ullamcorper velit. Vivamus viverra enim vel ornare lacinia. Nulla leo elit, congue et viverra vel, cursus vel purus. Phasellus eget ante a est mollis rhoncus id eu metus. Mauris sit amet metus augue. Pellentesque tincidunt dictum auctor. Fusce id faucibus lacus. Mauris lorem odio, suscipit vel sollicitudin in, pretium nec lorem.",
+                    PostTitle = "Tavoitteemme vuodelle 2025.",
+                    PostType = "normal",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Aenean sed leo ultricies, semper sem non, cursus nibh. In hac habitasse platea dictumst. In nec magna porttitor, vehicula nibh a, pellentesque nulla. Integer ex nunc, facilisis sit amet dolor porta, cursus facilisis lorem.",
+                    PostTitle = "Aikataulumuutoksia Joensuun ja Kuopion välille",
                     PostType = "info",
                     AppUserId = userId
 
@@ -188,7 +235,7 @@ namespace TicketReservationApp.Data
                 Expired = false,
                 Seat = 5,
                 EndTime = new TimeSpan(9, 0, 0),
-                Name = "name",
+                Name = "haverinen",
                 TimetablesId = 1,
                 Status = "paid"
 
@@ -203,7 +250,7 @@ namespace TicketReservationApp.Data
                 Expired = false,
                 Seat = 10,
                 EndTime = new TimeSpan(17, 0, 0),
-                Name = "name",
+                Name = "asiakas asiakasnen",
                 TimetablesId = 2,
                 Status = "paid"
 
@@ -218,7 +265,7 @@ namespace TicketReservationApp.Data
                 Expired = false,
                 Seat = 9,
                 EndTime = new TimeSpan(9, 0, 0),
-                Name = "name",
+                Name = "aku ankka",
                 TimetablesId = 2,
                 Status = "paid"
 
@@ -233,7 +280,7 @@ namespace TicketReservationApp.Data
                 Expired = false,
                 Seat = 12,
                 EndTime = new TimeSpan(17, 0, 0),
-                Name = "name",
+                Name = "mikki hiiri",
                 TimetablesId = 3,
                 Status = "paid"
             }
