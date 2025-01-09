@@ -20,6 +20,7 @@ interface Itimetable {
 	endTime: string;
 	price: number;
 	seats: string[];
+	priceDiscount: number | null;
 }
 
 const Orders = () => {
@@ -206,8 +207,18 @@ const Orders = () => {
 								{dayNames[day.getDay()]}
 							</p>
 						</Col>
-						<Col className="d-flex" xs={3}>
-							<h2 className="mx-auto">{timetable.price}€</h2>
+						<Col className="d-flex flex-column" xs={3}>
+							{timetable.priceDiscount ? (
+								<s>
+									<h2 className="mx-auto">{timetable.price}€</h2>
+								</s>
+							) : (
+								<h2 className="mx-auto">{timetable.price}€</h2>
+							)}
+
+							{timetable.priceDiscount && (
+								<h2 className="">{timetable.priceDiscount}€</h2>
+							)}
 						</Col>
 					</Row>
 					<Row className="my-5 mx-1 justify-content-between">

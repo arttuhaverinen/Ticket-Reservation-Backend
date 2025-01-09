@@ -109,7 +109,6 @@ const PaymentForm = ({
 
 	return (
 		<div>
-			{console.log(ticket.seat)}
 			<form
 				onSubmit={(e) => {
 					ticket.name != "" ? handleSubmit(e) : handleError(e);
