@@ -102,7 +102,7 @@ const Home = () => {
 			)}
 			<Container fluid style={{ padding: 0 }}>
 				{mobileScreen && <Search />}
-				<Row className=" w-100  mx-auto">
+				<Row className=" w-100 mx-auto">
 					<Posts />
 					<Offers />
 				</Row>

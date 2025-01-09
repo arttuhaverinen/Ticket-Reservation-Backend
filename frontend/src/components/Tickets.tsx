@@ -35,7 +35,9 @@ const Tickets = () => {
 	let destination = searchParams.get("destination");
 	let date = searchParams.get("date");
 
-	const [timetables, setTimetables] = useState<timetableInterface[] | null>(null);
+	const [timetables, setTimetables] = useState<timetableInterface[] | null>(
+		null
+	);
 	const [startTime, setStartTime] = useState();
 
 	useEffect(() => {
@@ -54,23 +56,32 @@ const Tickets = () => {
 	//http://localhost:5173/tickets?departure=Joensuu&destination=Nurmes&date=2024-12-26
 	return (
 		<Container>
-			{!timetables  && 
+			{!timetables && (
 				<Row className="my-3">
-					<Spinner className="mx-auto" style={{ width: "4rem", height: "4rem" }} animation="border" role="status">
+					<Spinner
+						className="mx-auto"
+						style={{ width: "4rem", height: "4rem" }}
+						animation="border"
+						role="status"
+					>
 						<span className="visually-hidden">Ladataan aikatauluja...</span>
 					</Spinner>
 					<h3 className="">Ladataan aikatauluja...</h3>
-				</Row>}
-				{(timetables?.length == 0)  && <Row className="my-5 w-50 mx-auto">
+				</Row>
+			)}
+			{timetables?.length == 0 && (
+				<Row className="my-5 w-50 mx-auto">
 					<h3 className="w-100 text-center">Matkoja ei löytynyt.</h3>
 					<Link className="w-100" to="/">
-					<Button  className="w-100 btn btn-primary">Palaa takaisin etusivulle</Button>
-
+						<Button className="w-100 btn btn-primary">
+							Palaa takaisin etusivulle
+						</Button>
 					</Link>
-					</Row>  } 
+				</Row>
+			)}
 
-				<div>
-			{(mobileScreen && timetables && timetables?.length > 0) &&
+			<div>
+				{mobileScreen && timetables && timetables?.length > 0 && (
 					<>
 						<Row data-testid="tickets-mobile-row" className="my-5">
 							<Col className="d-flex " xs={4} lg={3}>
@@ -113,7 +124,15 @@ const Tickets = () => {
 											state={{ timetable: timetable }}
 										>
 											<Button className="w-100 h-100">
-												Osta lippu <br /> {timetable.price}€
+												<h6>Osta lippu</h6>
+												{timetable.priceDiscount ? (
+													<s className="mx-auto">{timetable.price}€</s>
+												) : (
+													<p className="mx-auto">{timetable.price}€</p>
+												)}
+												{timetable.priceDiscount && (
+													<p>{timetable.priceDiscount}€</p>
+												)}
 											</Button>
 										</Link>{" "}
 									</Col>
@@ -121,8 +140,8 @@ const Tickets = () => {
 							);
 						})}
 					</>
-				}
-				{(!mobileScreen && timetables && timetables?.length > 0) &&
+				)}
+				{!mobileScreen && timetables && timetables?.length > 0 && (
 					<>
 						<Row data-testid="tickets-desktop-row" className="my-5">
 							<Col className=" " xs={3}>
@@ -152,7 +171,14 @@ const Tickets = () => {
 									</Col>
 
 									<Col className=" py-3" xs={3}>
-										{timetable.price}€
+										{timetable.priceDiscount ? (
+											<s className="mx-auto">{timetable.price}€</s>
+										) : (
+											<p className="mx-auto">{timetable.price}€</p>
+										)}
+										{timetable.priceDiscount && (
+											<p>{timetable.priceDiscount}€</p>
+										)}
 									</Col>
 
 									<Col className="" xs={3}>
@@ -170,7 +196,7 @@ const Tickets = () => {
 						})}
 						<hr></hr>
 					</>
-				}
+				)}
 			</div>
 
 			{/*

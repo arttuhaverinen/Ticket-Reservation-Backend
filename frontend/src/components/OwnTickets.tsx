@@ -35,21 +35,34 @@ const OwnTickets = () => {
 	return (
 		<div>
 			<Row className="gap-3 justify-content-center">
-				<h3>Ostetut liput</h3>
+				<h3>Ostamasi liput</h3>
 				{tickets &&
 					tickets.map((ticket) => {
 						return (
-							<Col className="shadow p-2 my-1 bg-white rounded" xs={5}>
-								<ul>
-									<li>Päivämäärä: {ticket.date.slice(0, 10)}</li>
-									<li>Lähtöaika: {ticket.startTime}</li>
-									<li>Saapumisaika: {ticket.endTime}</li>
-									<li>Lähtöpaikka: {ticket.departure}</li>
-									<li>Saapumispaikka: {ticket.destination}</li>
-									<li>Istumapaikka: {ticket.seat}</li>
-									<li>Käyttäjänimi: {ticket.name}</li>
-								</ul>
-							</Col>
+							<div className="bg-white rounded p-3">
+								<div className="card mb-3 p-3">
+									<div className="card-body">
+										<h5 className="card-title">
+											{ticket.departure} → {ticket.destination}
+										</h5>
+										<p>
+											<strong>Päivämäärä:</strong> {ticket.date.slice(0, 10)}
+										</p>
+										<p>
+											<strong>Lähtöaika:</strong> {ticket.startTime}
+										</p>
+										<p>
+											<strong>Saapumisaika:</strong> {ticket.endTime}
+										</p>
+										<p>
+											<strong>Käyttäjänimi:</strong> {ticket.name}
+										</p>
+										<p>
+											<strong>Istumapaikka:</strong> {ticket.seat}
+										</p>
+									</div>
+								</div>
+							</div>
 						);
 					})}
 			</Row>

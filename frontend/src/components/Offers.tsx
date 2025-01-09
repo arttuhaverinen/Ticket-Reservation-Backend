@@ -79,41 +79,59 @@ const Offers = () => {
 		if (timetables) {
 			return timetables.map((tt) => {
 				return (
-					<Col md={12} lg={5} className="shadow p-3 my-2 bg-white rounded">
-						<ul className="">
-							<li>
-								{<strike>{tt.price}€</strike>}{" "}
-								{Math.floor((tt.price - 5) * 100) / 100}€
-							</li>
-							<li>Päivämäärä: {mapDays(tt.day)}</li>
-							<li>Lähtöaika: {tt.startTime}</li>
-							<li>Saapumisaika: {tt.endTime}</li>
-							<li>Lähtöpaikka: {tt.departure}</li>
-							<li>Saapumispaikka: {tt.destination}</li>
-						</ul>
-						<Row className="">
-							{/** <!-- justify-content-center --> */}
-							<Col className=" d-flex align-items-center">
-								<Link
-									className="text-center btn btn-primary"
-									to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
-								>
-									Osta
-								</Link>
-							</Col>
-							<Col className="">
-								Päivämäärä
-								<DatePicker
-									className="datepicker"
-									locale="fi"
-									selected={startDate}
-									dateFormat="dd/MM/yyyy"
-									onChange={(date) =>
-										setStartDate(date?.toISOString().split("T")[0])
-									}
-								></DatePicker>
-							</Col>
-						</Row>
+					<Col md={12} lg={6} className="  ">
+						<div className="bg-white rounded p-3">
+							<div className="card mb-3 p-3" key={tt.id}>
+								<div className="card-body">
+									<h5 className="card-title">
+										{tt.departure} → {tt.destination}
+									</h5>
+									<p>
+										<strong>Lähtöaika:</strong> {tt.startTime}
+									</p>
+									<p>
+										<strong>Saapumisaika:</strong> {tt.endTime}
+									</p>
+									<p>
+										<strong>Hinta:</strong>{" "}
+										{tt.priceDiscount ? (
+											<>
+												<s>{tt.price}</s> | {tt.priceDiscount}
+											</>
+										) : (
+											tt.price
+										)}
+									</p>
+									<p>
+										<strong>Ajopäivät:</strong> {tt.day.toString()}
+									</p>
+								</div>
+							</div>
+
+							<Row className="">
+								{/** <!-- justify-content-center --> */}
+								<Col xs={3} sm={6} className="  ">
+									<Link
+										className="text-center btn btn-primary"
+										to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
+									>
+										Osta
+									</Link>
+								</Col>
+								<Col xs={9} sm={6} className="">
+									<span>Päivämäärä </span>
+									<DatePicker
+										className="datepicker"
+										locale="fi"
+										selected={startDate}
+										dateFormat="dd/MM/yyyy"
+										onChange={(date) =>
+											setStartDate(date?.toISOString().split("T")[0])
+										}
+									></DatePicker>
+								</Col>
+							</Row>
+						</div>
 					</Col>
 				);
 			});
@@ -151,9 +169,7 @@ const Offers = () => {
 				<h3 className="" style={{ color: "black" }}>
 					Tarjousliput
 				</h3>
-				<Row className=" justify-content-between align-items-center  ">
-					{mapTimetables()}
-				</Row>
+				<Row className=" g-5   ">{mapTimetables()}</Row>
 			</Container>
 		</Container>
 	);
