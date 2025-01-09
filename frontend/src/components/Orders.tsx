@@ -12,6 +12,7 @@ import StripeContainer from "./StripeContainer";
 import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons/faLessThanEqual";
 
 interface Itimetable {
+	id: number;
 	day: string;
 	departure: string;
 	destination: string;
@@ -21,7 +22,7 @@ interface Itimetable {
 	seats: string[];
 }
 
-const Orders = (props) => {
+const Orders = () => {
 	let baseurl = "";
 	if (import.meta.env.VITE_BASEURL) {
 		baseurl = import.meta.env.VITE_BASEURL;
@@ -40,7 +41,7 @@ const Orders = (props) => {
 	let destination = searchParams.get("destination");
 	let date = searchParams.get("date");
 	let time = searchParams.get("time");
-	let day = new Date(date?.toString());
+	let day = date ? new Date(date?.toString()) : null;
 	const [noNameError, setNoNameError] = useState(false);
 	console.log("day", day);
 	const dayNames = [
@@ -52,11 +53,11 @@ const Orders = (props) => {
 		"Perjantai",
 		"Lauantai" /* , … */,
 	];
-	console.log(dayNames[day.getDay()]);
+	//console.log(dayNames[day.getDay()]);
 
 	const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
 	const [seatClicked, setSeatClicked] = useState<string | null>();
-	const [reservedSeats, setReservedSeats] = useState<number[]>();
+	const [reservedSeats, setReservedSeats] = useState<number[]>([]);
 	const [notFound, setNotFound] = useState(false);
 
 	const { appToken, appUserName } = useContext(Appcontext)!;
@@ -91,7 +92,7 @@ const Orders = (props) => {
 				);*/
 			});
 	}, []);
-
+	/*
 	const handleCreateOrder = (e) => {
 		e.preventDefault();
 		fetch(`${baseurl}/api/Tickets`, {
@@ -114,17 +115,16 @@ const Orders = (props) => {
 			}),
 		})
 			.then((res) => res.json())
-			//.then((res) => /*console.log(res)*/)
+			//.then((res) => /*console.log(res))
 			.catch((err) => console.log(err));
 	};
-
+	*/
 	const seatButton = {
 		width: "40%",
 		borderRadius: "0px",
 		margin: "2px",
 		backgroundColor: "",
 		opacity: 0.5,
-		textOpacity: 1,
 	};
 	const seatButtonClicked = {
 		width: "40%",
@@ -144,6 +144,7 @@ const Orders = (props) => {
 		pointerEvents: "none",
 	};
 
+	/*
 	const handleSeatBtnOpacity = (e) => {
 		e.preventDefault();
 		//console.log("handleseatbtnopacity");
@@ -153,12 +154,12 @@ const Orders = (props) => {
 			e.target.style.opacity = 0.75;
 		}
 	};
-
+	*/
 	const handleButtonStyling = (num: number) => {
 		console.log(reservedSeats, num);
-		if (reservedSeats.includes(num.toString())) {
+		if (reservedSeats.includes(num)) {
 			return seatButtonGray;
-		} else if (seatClicked == num) {
+		} else if (seatClicked == num.toString()) {
 			return seatButtonClicked;
 		} else {
 			return seatButton;
@@ -167,7 +168,6 @@ const Orders = (props) => {
 
 	return (
 		<Container>
-			{console.log("tt", timetable)}
 			{!timetable && notFound == false && (
 				<Row className="my-3">
 					<Spinner
@@ -192,7 +192,7 @@ const Orders = (props) => {
 				</Row>
 			)}
 
-			{reservedSeats && timetable && (
+			{reservedSeats && timetable && day && (
 				<div data-testid="Orders">
 					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
 						<Col className="d-flex" xs={3}>
@@ -475,22 +475,24 @@ const Orders = (props) => {
 								Vahvista tilaus
 		</Button>*/}
 								</Form>
-								<StripeContainer
-									ticket={{
-										startTime: timetable.startTime,
-										endTime: timetable.endTime,
-										date: date,
-										expired: false,
-										departure: timetable.departure,
-										destination: timetable.destination,
-										name: customerName,
-										seat: seatClicked,
-										timetablesId: timetable.id.toString(),
-										appUserId: appToken,
-									}}
-									noNameError={noNameError}
-									setNoNameError={setNoNameError}
-								/>
+								{date && (
+									<StripeContainer
+										ticket={{
+											startTime: timetable.startTime,
+											endTime: timetable.endTime,
+											date: date,
+											expired: false,
+											departure: timetable.departure,
+											destination: timetable.destination,
+											name: customerName,
+											seat: Number(seatClicked),
+											timetablesId: timetable.id.toString(),
+											appUserId: appToken,
+										}}
+										noNameError={noNameError}
+										setNoNameError={setNoNameError}
+									/>
+								)}
 							</div>
 						</Col>
 					</Row>
