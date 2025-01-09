@@ -24,7 +24,7 @@ namespace TicketReservationApp.Repositories
             return user;
         }
 
-        public async Task<IEnumerable<AppUser>> GetUsers()
+        public  Task<IEnumerable<AppUser>> GetUsers()
         {
             //return await _dataContext.Users.ToListAsync();
             throw new NotImplementedException();
