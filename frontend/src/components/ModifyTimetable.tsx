@@ -58,6 +58,39 @@ const ModifyTimetable = () => {
 			.catch((err) => console.log(err));
 	}, []);
 
+	const mapTimetablesMobile = () => {
+		if (timetable) {
+			return (
+				<div className="card mb-3" key={timetable.id}>
+					<div className="card-body">
+						<h5 className="card-title">
+							{timetable.departure} → {timetable.destination}
+						</h5>
+						<p>
+							<strong>Lähtöaika:</strong> {timetable.startTime}
+						</p>
+						<p>
+							<strong>Saapumisaika:</strong> {timetable.endTime}
+						</p>
+						<p>
+							<strong>Hinta:</strong>{" "}
+							{timetable.priceDiscount ? (
+								<>
+									<s>{timetable.price}</s> | {timetable.priceDiscount}
+								</>
+							) : (
+								timetable.price
+							)}
+						</p>
+						<p>
+							<strong>Ajopäivät:</strong> {timetable.day.toString()}
+						</p>
+					</div>
+				</div>
+			);
+		}
+	};
+
 	const mapTimetables = () => {
 		if (timetable) {
 			console.log(timetable);
@@ -69,7 +102,6 @@ const ModifyTimetable = () => {
 					<td>{timetable.endTime}</td>
 					<td>{timetable.price}</td>
 					<td>{timetable.day.toString()}</td>
-					<td></td>
 				</tr>
 			);
 		}
@@ -120,7 +152,13 @@ const ModifyTimetable = () => {
 			{timetable ? (
 				<>
 					<h3>Muokattava ajovuoro</h3>
-					<Table striped bordered hover>
+					<div className="d-block d-lg-none">{mapTimetablesMobile()}</div>
+					<Table
+						className="d-none d-lg-block table-responsive mx-auto"
+						striped
+						bordered
+						hover
+					>
 						<thead>
 							<tr>
 								<th>Lähtö</th>
