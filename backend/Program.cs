@@ -84,7 +84,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
 
     }
-    else
+    else if (Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI") != null)
         {
         Console.WriteLine("else");
         //Console.WriteLine(context.Configuration["ElasticConfiguration:Uri"]);
