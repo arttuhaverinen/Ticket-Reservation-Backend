@@ -12,7 +12,7 @@ services:
     #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ELASTICSEARCH_URI: "http://elasticsearch:9200"
+      DEV_ELASTICSEARCH_URI: "http://elasticsearch:9200"
     volumes:
       - ./backend:/app # Mount your local code into the container
     #networks:
@@ -20,7 +20,6 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-
 
   #  networks:
   #    - busapp-network
@@ -51,13 +50,15 @@ services:
       - ./frontend:/app # Mount the frontend code directory into the container
       - /app/node_modules # Prevent overwriting node_modules in container with local version
     command: npm run dev
-    
+
     environment:
       - VITE_MINIO_URL=http://dev-minio:9000 # React app talks directly to MinIO
 
+  #Elasticsearch 7.10.2
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    #image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
@@ -74,7 +75,7 @@ services:
       retries: 5
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.8.0
+    image: docker.elastic.co/kibana/kibana:7.10.2
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200 # Use HTTP for development
