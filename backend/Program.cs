@@ -33,6 +33,7 @@ Env.Load();
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
 var excludePatterns = new[] {
     "Executing endpoint",
@@ -41,11 +42,17 @@ var excludePatterns = new[] {
     "Executed endpoint",
     "Executed DbCommand",
     "Executing OkObjectResult",
-    "Executing ObjectResult"
+    "Executing ObjectResult",
+    "CORS policy execution successful",
+    "Executing OkObjectResult",
+    "Request starting",
+    "ObjectResultExecuting",
+    "Executing {ObjectResultType}",
 };
 
 builder.Host.UseSerilog((context, services, configuration) =>
 {
+    Console.WriteLine("logging");
     //var environment = context.HostingEnvironment.EnvironmentName;
 
     //Local Console Logging (logs everything)
@@ -53,46 +60,45 @@ builder.Host.UseSerilog((context, services, configuration) =>
                  .Enrich.WithProperty("Environment", environment)
                  .WriteTo.Console();
     //configuration
-       //.Enrich.FromLogContext()
-       //.WriteTo.Console();
-       //.Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)));
-
-        if (Environment.GetEnvironmentVariable("ELASTICSEARCH_URI") != null)
+    //.Enrich.FromLogContext()
+    //.WriteTo.Console();
+    //.Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)));
+    Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
+    var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_URI");
+    Console.WriteLine(url);
+    if (url != null && environment == "Production")
         {
-        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI")))
+        Console.WriteLine("if");
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(url))
         {
-            IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+            //FailureCallback = e => Console.WriteLine("Unable to submit event " + e.MessageTemplate),
+            //IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+            //IndexFormat = "elasticsearch-logs-{0:yyyy-MM}",
+            ModifyConnectionSettings = settings => settings.RequestTimeout(TimeSpan.FromSeconds(30)),
             AutoRegisterTemplate = true,
             NumberOfShards = 1,
             NumberOfReplicas = 1,
+            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
         })
         .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
 
     }
-        else if (environment == "Production")
-    {
-
-        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI")))
+    else if (Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI") != null)
         {
-            IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
-            AutoRegisterTemplate = true,
-            NumberOfShards = 1,
-            NumberOfReplicas = 1,
-        })
-        .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
-        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
+        Console.WriteLine("else");
+        //Console.WriteLine(context.Configuration["ElasticConfiguration:Uri"]);
+        
 
-    }
-    else
-        {
-            configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI")))
             {
-                IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+                //IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
                 AutoRegisterTemplate = true,
                 NumberOfShards = 1,
                 NumberOfReplicas = 1,
-            })
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
+
+        })
         .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
 

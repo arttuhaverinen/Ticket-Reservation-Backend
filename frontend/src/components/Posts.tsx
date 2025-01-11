@@ -15,6 +15,7 @@ const Posts = (/*props: postInterface*/) => {
 	const placeholderArray = [1, 2, 3];
 	useEffect(() => {
 		console.log(localStorage.getItem("accesstoken"));
+		console.log("fetching posts");
 		fetch(`${baseurl}/api/posts`, {
 			method: "GET",
 			headers: {
