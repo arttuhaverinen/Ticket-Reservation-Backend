@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Appcontext } from "../App";
 
 const useTokenExpireMiddleware = () => {
-	console.log("auth")
+	console.log("auth");
 	const context = useContext(Appcontext);
 	if (!context) {
 		console.log("no context");
@@ -28,7 +28,7 @@ const useTokenExpireMiddleware = () => {
 			let expireTimeLeft =
 				(Number(currentTime) - Number(tokenCreatedTime)) / 10;
 			let refreshToken = localStorage.getItem("refreshtoken");
-			
+
 			console.log("auth", expireTimeLeft, expireTime);
 
 			if (expireTimeLeft > expireTime) {
@@ -38,7 +38,7 @@ const useTokenExpireMiddleware = () => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${accessToken}`,
+						//Authorization: `Bearer ${accessToken}`,
 					},
 					body: JSON.stringify({ refreshToken: refreshToken }),
 				})

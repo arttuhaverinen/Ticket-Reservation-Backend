@@ -166,10 +166,8 @@ const Offers = () => {
 	return (
 		<Container className="py-5" fluid style={{ backgroundColor: "#77b1d4" }}>
 			<Container className="">
-				<h3 className="" style={{ color: "black" }}>
-					Tarjousliput
-				</h3>
-				<Row className=" g-5   ">{mapTimetables()}</Row>
+				<h2 className="text-center">Tarjousliput</h2>
+				<Row className="  my-1  g-5   ">{mapTimetables()}</Row>
 			</Container>
 		</Container>
 	);

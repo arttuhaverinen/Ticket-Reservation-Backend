@@ -13,10 +13,10 @@ export const Search = () => {
 	);
 
 	return (
-		<Container className="w-100 my-3">
-			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded">
-				<Row>
-					<Col md={6}>
+		<Container className="w-100 my-3 overflow-hidden">
+			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded overflow-hidden">
+				<Row className="overflow-hidden">
+					<Col className="overflow-hidden" md={6}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
 							<Form.Label>Lähtö</Form.Label>
 							<Form.Select
