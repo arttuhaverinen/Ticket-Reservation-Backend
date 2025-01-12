@@ -99,7 +99,7 @@ services:
   #    - busapp-network
   test-minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
-    container_name: minio
+    container_name: test-minio
     environment:
       # Set up root user credentials here
       MINIO_ROOT_USER: admin
