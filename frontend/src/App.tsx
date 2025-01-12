@@ -8,7 +8,13 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import { Col, Container, Navbar, Row, Image } from "react-bootstrap";
 import Navigation from "./components/Navigation";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Link,
+	useSearchParams,
+} from "react-router-dom";
 import Home from "./components/Home";
 import Tickets from "./components/Tickets";
 import Orders from "./components/Orders";
@@ -70,6 +76,54 @@ function App() {
 	console.log(baseurl);
 	console.log(appUserName);
 
+	// Login with refreshtoken in url
+	useEffect(() => {
+		const queryString = window.location.search; // e.g., "?key=value&anotherKey=anotherValue"
+		const urlParams = new URLSearchParams(queryString);
+		const refreshToken = urlParams.get("token"); // Replace 'key' with the actual parameter name
+		console.log(refreshToken); // Outputs the value of 'key', e.g., "value"
+
+		if (refreshToken) {
+			// Fetch new accessToken
+			fetch(`${baseurl}/refresh`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ refreshToken: refreshToken }),
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					console.log("auth res", res);
+					localStorage.setItem("accesstoken", res.accessToken);
+					localStorage.setItem("refreshtoken", res.refreshToken);
+					localStorage.setItem("accessexpire", res.expiresIn);
+					localStorage.setItem("time", Date.now().toString());
+					setAppToken(res.accessToken);
+					setAppRefreshToken(res.refresToken);
+					return fetch(`${baseurl}/api/role`, {
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+						},
+					});
+				})
+				.then((res) => res.json())
+				.then((res) => {
+					console.log(res);
+					if (res.role == "Admin") {
+						console.log("is admin");
+						localStorage.setItem("username", res.username);
+						setIsAdmin(true);
+						setAppUserName(res.username);
+						fetchProfileImage();
+					}
+				})
+				.catch((error) => console.log(error));
+		}
+
+		// Fetch user role and username
+	}, []);
+
 	useEffect(() => {
 		if (!appToken) {
 			if (localStorage.getItem("accesstoken")) {
@@ -124,7 +178,7 @@ function App() {
 				.then((res) => res.json())
 				.then((res) => {
 					console.log(res);
-					if (res == "Admin") {
+					if (res.role == "Admin") {
 						console.log("is admin");
 						setIsAdmin(true);
 					}
