@@ -19,6 +19,7 @@ const Navigation = () => {
 		isAdmin,
 		setIsAdmin,
 		profilePicture,
+		setProfilePicture,
 	} = useContext(Appcontext)!;
 
 	const linkHover = {
@@ -66,7 +67,7 @@ const Navigation = () => {
 									roundedCircle
 								/>{" "}
 								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
-									<p className="m-0 text-center">
+									<p className="m-0 text-center navbar-profile-hover">
 										<b>{appUserName}</b>
 									</p>
 								</Navbar.Text>
@@ -127,6 +128,9 @@ const Navigation = () => {
 											? profilePicture
 											: "https://placehold.co/100x100"
 									}
+									onError={() => {
+										setProfilePicture("https://placehold.co/100x100");
+									}}
 									style={{
 										width: "75px",
 										height: "75px",
