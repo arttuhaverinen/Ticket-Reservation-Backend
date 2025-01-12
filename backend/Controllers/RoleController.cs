@@ -25,7 +25,7 @@ namespace TicketReservationApp.Controllers
             string username = User.FindFirstValue(ClaimTypes.Name);
             string role = User.FindFirstValue(ClaimTypes.Role);
 
-            var userInfo = {username = username, role = role};
+            var userInfo = new {username = username, role = role};
 
             return JsonSerializer.Serialize(userInfo);
         }
