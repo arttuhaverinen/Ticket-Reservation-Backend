@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 
 export const Search = () => {
-	let baseurl: string = import.meta.env.VITE_BASEURL;
+	//let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [departureLocation, setDepartureLocation] = useState("Joensuu");
 	const [destinationLocation, setDestinationLocation] = useState("Nurmes");
 	const [startDate, setStartDate] = useState<string | undefined>(

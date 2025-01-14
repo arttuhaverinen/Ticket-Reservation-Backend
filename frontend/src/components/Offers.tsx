@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Placeholder, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Col, Container, Placeholder, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 
@@ -66,6 +66,7 @@ const Offers = () => {
 			.catch((err) => console.log(err));
 	}, []);
 	// http://localhost:5173/orders?departure=Joensuu&destination=Tampere&date=2024-09-13&time=09:00:00
+	/*
 	const mapDays = (days: string[]) => {
 		let finnishDays = [];
 		for (let index = 0; index < days.length; index++) {
@@ -74,6 +75,7 @@ const Offers = () => {
 		console.log("finnishdays", finnishDays);
 		return finnishDays;
 	};
+	*/
 	const mapTimetables = () => {
 		console.log(timetables);
 		if (timetables) {
@@ -123,11 +125,15 @@ const Offers = () => {
 									<DatePicker
 										className="datepicker"
 										locale="fi"
-										selected={startDate}
+										selected={new Date(startDate)}
 										dateFormat="dd/MM/yyyy"
-										onChange={(date) =>
-											setStartDate(date?.toISOString().split("T")[0])
-										}
+										onChange={(date) => {
+											if (date) {
+												setStartDate(date.toISOString().split("T")[0]);
+											} else {
+												setStartDate(""); // Optionally handle the case when the date is cleared (null or undefined)
+											}
+										}}
 									></DatePicker>
 								</Col>
 							</Row>
@@ -136,7 +142,7 @@ const Offers = () => {
 				);
 			});
 		} else {
-			return Array.from([2]).map((item, index) => {
+			return Array.from([2]).map(() => {
 				return (
 					<Row>
 						<Col md={12} lg={6}>

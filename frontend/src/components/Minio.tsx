@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import minio from "minio";
 
 const Minio = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;

@@ -1,24 +1,12 @@
-import React, { useContext } from "react";
-import AdminCreatePost from "./AdminCreatePost";
-import { Row, Col, Container } from "react-bootstrap";
-import Posts from "./Posts";
-import OwnTickets from "./OwnTickets";
-import CreateTimetable from "./TimetableView";
-import TimetableView from "./TimetableView";
+import { useContext } from "react";
+import { Row, Container } from "react-bootstrap";
+
 import { Appcontext } from "../App";
-import ProfilePicture from "./ProfilePicture";
 import ProfileNavigation from "./ProfileNavigation";
 import { Outlet } from "react-router-dom";
 
 const AdminView = () => {
-	const {
-		appUserName,
-		setAppUserName,
-		appToken,
-		setAppToken,
-		isAdmin,
-		setIsAdmin,
-	} = useContext(Appcontext)!;
+	const { isAdmin } = useContext(Appcontext)!;
 
 	return (
 		<Container className=" my-3 mx-auto">

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Row, Spinner } from "react-bootstrap";
-import { setTime } from "react-datepicker/dist/date_utils";
 import { Link, useSearchParams } from "react-router-dom";
 
 const ConfirmEmail = () => {

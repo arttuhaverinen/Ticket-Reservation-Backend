@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Post from "./Post";
-import { Card, Col, Container, Placeholder, Row } from "react-bootstrap";
+import { Container, Placeholder } from "react-bootstrap";
 
 interface postInterface {
 	postId: number;
@@ -12,7 +12,6 @@ interface postInterface {
 const Posts = (/*props: postInterface*/) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [posts, setPosts] = useState<postInterface[]>();
-	const placeholderArray = [1, 2, 3];
 	useEffect(() => {
 		console.log(localStorage.getItem("accesstoken"));
 		console.log("fetching posts");
@@ -31,7 +30,7 @@ const Posts = (/*props: postInterface*/) => {
 			<h2 className="text-center">Ilmoitukset</h2>
 			{!posts && (
 				<div>
-					{Array.from([2]).map((item, index) => {
+					{Array.from([2]).map(() => {
 						return (
 							<Container className="p-3 mb-5 bg-white rounded">
 								{/* Placeholder Text */}

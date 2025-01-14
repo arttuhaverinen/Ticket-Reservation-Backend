@@ -9,8 +9,7 @@ const AdminCreatePost = () => {
 	const [postContent, setPostContent] = useState<string>("");
 	const [postType, setPostType] = useState<string>("");
 
-	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext)!;
+	const { appToken } = useContext(Appcontext)!;
 
 	const handleCreatePost = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();

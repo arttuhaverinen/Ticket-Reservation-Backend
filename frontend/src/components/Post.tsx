@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { Appcontext } from "../App";
-import { useLocation } from "react-router-dom";
 
 interface postInterface {
 	postId: number;
@@ -13,12 +12,11 @@ interface postInterface {
 const Post = (props: postInterface) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [bgColor, setBgColor] = useState("primary");
-	const [inAdminPanel, setInAdminPanel] = useState(
+	const [inAdminPanel] = useState(
 		location.pathname.includes("profile") ? true : false
 	);
 
-	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext)!;
+	const { appToken, isAdmin } = useContext(Appcontext)!;
 
 	useEffect(() => {
 		handleBgColor();
