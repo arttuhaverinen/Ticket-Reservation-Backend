@@ -32,6 +32,11 @@ public class EmailController : ControllerBase, IEmailSender
         {
             var emailSettings = _configuration.GetSection("EmailSettings").Get<EmailSettings>();
 
+            if (emailSettings == null)
+            {
+                throw new Exception($"Error sending email");
+            }
+
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(emailSettings.SenderName, emailSettings.SenderEmail));
             emailMessage.To.Add(new MailboxAddress("", email));

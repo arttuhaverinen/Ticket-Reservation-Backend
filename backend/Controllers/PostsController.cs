@@ -25,8 +25,8 @@ namespace TicketReservationApp.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<PostsDto>> getPosts()
         {
-            string authorizationHeader = Request.Headers["Authorization"];
-            var id = User.Identity.IsAuthenticated;
+            //string authorizationHeader = Request.Headers["Authorization"];
+            //var id = User.Identity.IsAuthenticated;
 
             var posts = await _postsRepository.GetPosts();
 
@@ -45,14 +45,15 @@ namespace TicketReservationApp.Controllers
         public async Task<ActionResult<PostsDto>> addPosts([FromBody] PostsDto post)
         {
 
-            post.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //post.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Posts addpost = new Posts()
             {
                 PostType = post.PostType,
                 PostContent = post.PostContent,
                 PostTitle = post.PostTitle,
-                AppUserId = post.AppUserId
+                AppUserId = username
             };
 
             var newPost = await _postsRepository.InsertPost(addpost);

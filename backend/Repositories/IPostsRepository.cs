@@ -8,9 +8,9 @@ namespace TicketReservationApp.Repositories
 
 
         Task<IEnumerable<Posts>> GetPosts();
-        Task<Posts> GetPostByID(int postId);
+        Task<Posts?> GetPostByID(int postId);
         Task<Posts> InsertPost(Posts post);
-        Task<Posts> DeletePost(int postId);
+        Task<Posts?> DeletePost(int postId);
         Task<Posts> UpdatePost(int id, Posts post);
 
 

@@ -23,13 +23,13 @@ namespace TicketReservationApp.Models
         public bool Expired { get; set; }
 
         [Required]
-        public string Departure { get; set; }
+        public required string Departure { get; set; }
 
         [Required]
-        public string Destination { get; set; }
+        public required string Destination { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
         public int Seat { get; set; }
@@ -37,12 +37,12 @@ namespace TicketReservationApp.Models
         [Required]
         public int TimetablesId { get; set; }
 
-        public Timetables Timetables { get; set; }
+        public  Timetables? Timetables { get; set; }
 
         public string? AppUserId { get; set; }
 
         public AppUser? AppUser { get; set; }
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }

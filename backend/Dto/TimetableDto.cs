@@ -11,11 +11,11 @@
 
         public double? PriceDiscount { get; set; }
 
-        public string Departure { get; set; }
+        public required string Departure { get; set; }
 
-        public string Destination { get; set; }
+        public required string Destination { get; set; }
 
-        public List<string> Day { get; set; }
+        public required List<string> Day { get; set; }
 
 
 

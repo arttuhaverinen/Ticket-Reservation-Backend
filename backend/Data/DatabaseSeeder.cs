@@ -44,10 +44,10 @@ namespace TicketReservationApp.Data
                 Email = userEmail,
                 NormalizedEmail = userEmail.ToUpper(),
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Admin@123"),
                 SecurityStamp = string.Empty,
 
             };
+            user.PasswordHash = hasher.HashPassword(user, "Admin@123");
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             

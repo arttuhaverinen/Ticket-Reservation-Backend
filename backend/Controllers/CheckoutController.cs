@@ -22,7 +22,7 @@ public class CheckoutController : ControllerBase
 {
     private readonly IConfiguration _configuration;
 
-    private static string s_wasmClientURL = string.Empty;
+    private static string? s_wasmClientURL = string.Empty;
 
     private readonly ITicketRepository _ticketRepository;
 
@@ -56,7 +56,7 @@ public class CheckoutController : ControllerBase
             Console.WriteLine(thisApiUrl);
         }
 
-        var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+        var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
 
         Console.WriteLine(product);
         Console.WriteLine(JsonSerializer.Serialize(product));
@@ -169,15 +169,25 @@ public class CheckoutController : ControllerBase
             var sessionService = new SessionService();
             var session = sessionService.Get(sessionId);
 
-            
+        if (session.AmountTotal.HasValue)
+        {
             var total = session.AmountTotal.Value;
-            var customerEmail = session.CustomerDetails.Email;
+
+        }
+
+        var customerEmail = session.CustomerDetails.Email;
 
             // Create new ticket after payment
 
             var ticketId = int.Parse(session.Metadata["ticketId"]);
 
             var pendingTicket = await _ticketRepository.GetTicketByID(ticketId);
+
+            if (pendingTicket == null)
+            {
+                // This should never happen, but handle it gracefully if it does.
+                throw new InvalidOperationException($"No ticket found with ID {ticketId}. This should not happen.");
+            }
 
             pendingTicket.Status = "paid";
 

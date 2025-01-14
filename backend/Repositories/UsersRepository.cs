@@ -18,9 +18,13 @@ namespace TicketReservationApp.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<AppUser> GetUserByID(string userId)
+        public async Task<AppUser?> GetUserByID(string userId)
         {
             var user = await _dataContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
+            if (user == null)
+            {
+                return null;
+            }
             return user;
         }
 

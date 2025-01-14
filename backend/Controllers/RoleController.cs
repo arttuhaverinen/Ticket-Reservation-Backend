@@ -22,8 +22,8 @@ namespace TicketReservationApp.Controllers
             Console.WriteLine("Last name: " + User.FindFirstValue("lastname"));
             Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
             
-            string username = User.FindFirstValue(ClaimTypes.Name);
-            string role = User.FindFirstValue(ClaimTypes.Role);
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var role = User.FindFirstValue(ClaimTypes.Role);
 
             var userInfo = new {username = username, role = role};
 

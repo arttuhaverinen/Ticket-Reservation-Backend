@@ -26,21 +26,21 @@ namespace TicketReservationApp.Models
         public double? PriceDiscount { get; set; }
 
         [Required]
-        public string Departure { get; set; }
+        public required string Departure { get; set; }
 
         [Required]
-        public string Destination { get; set; }
+        public required string Destination { get; set; }
 
         [Required]
-        public List<string> Day { get; set; }
+        public required List<string> Day { get; set; }
 
-        public List<DateTime> Cancelled { get; set; }
+        public required List<DateTime> Cancelled { get; set; }
 
-        public ICollection<Tickets> Tickets { get; }
+        public ICollection<Tickets>? Tickets { get; }
 
-        public string AppUserId { get; set; }
+        public string? AppUserId { get; set; }
 
-        public AppUser AppUser { get; set; }
+        public AppUser? AppUser { get; set; }
 
 
     }

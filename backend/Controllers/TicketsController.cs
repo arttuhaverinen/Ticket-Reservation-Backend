@@ -56,6 +56,10 @@ namespace TicketReservationApp.Controllers
         public async Task<ActionResult<IEnumerable<TicketDto>>> GetTicketsByUser()
         {
             var AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (AppUserId == null)
+            {
+                return Unauthorized();
+            }
             Console.WriteLine(AppUserId);
             Console.WriteLine("123");
             var tickets = await _ticketRepository.GetTicketByUser(AppUserId);
@@ -131,11 +135,11 @@ namespace TicketReservationApp.Controllers
         public async Task<ActionResult<TicketDto>> PostTickets(TicketDto ticket)
         {
 
-            Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Console.WriteLine(User.Identity);
-            Console.WriteLine(User.Identity.IsAuthenticated);
+            //Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //Console.WriteLine(User.Identity);
+            //Console.WriteLine(User.Identity.IsAuthenticated);
 
-            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+            var userId = User.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
 
             Tickets addTicket = new Tickets()
             {
@@ -164,20 +168,30 @@ namespace TicketReservationApp.Controllers
         {
             var deletedTicket = await _ticketRepository.DeleteTicket(id);
 
-            var deletedTicketDto = new TicketDto()
+            if (deletedTicket != null)
             {
-                Date = deletedTicket.Date,
-                Departure = deletedTicket.Departure,
-                Destination = deletedTicket.Destination,
-                EndTime = deletedTicket.EndTime,
-                Expired = deletedTicket.Expired,
-                Name = deletedTicket.Name,
-                Seat = deletedTicket.Seat,
-                StartTime = deletedTicket.StartTime,
-                TimetablesId = deletedTicket.TimetablesId
-            };
+                var deletedTicketDto = new TicketDto()
+                {
+                    Date = deletedTicket.Date,
+                    Departure = deletedTicket.Departure,
+                    Destination = deletedTicket.Destination,
+                    EndTime = deletedTicket.EndTime,
+                    Expired = deletedTicket.Expired,
+                    Name = deletedTicket.Name,
+                    Seat = deletedTicket.Seat,
+                    StartTime = deletedTicket.StartTime,
+                    TimetablesId = deletedTicket.TimetablesId
+                };
 
-            return Ok(deletedTicketDto);
+                return Ok(deletedTicketDto);
+            } else
+            {
+                return NotFound();
+            }
+
+            
+
+
         }
         /*
 
