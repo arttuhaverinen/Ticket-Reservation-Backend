@@ -1,15 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
-import { json, Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Appcontext } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faArrowLeft,
-	faArrowRight,
-	faArrowRightLong,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import StripeContainer from "./StripeContainer";
-import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons/faLessThanEqual";
 
 interface Itimetable {
 	id: number;
@@ -31,10 +26,10 @@ const Orders = () => {
 		baseurl = "http://localhost:5001";
 	}
 	//let baseurl: string = import.meta.env.VITE_BASEURL;
-	const location = useLocation();
+	//const location = useLocation();
 	const [timetable, setTimetable] = useState<Itimetable | null>(null);
 	//console.log(JSON.stringify(timetable));
-	const seats = Array.from({ length: 20 }, (_, i) => i + 1);
+	//const seats = Array.from({ length: 20 }, (_, i) => i + 1);
 
 	const [searchParams] = useSearchParams();
 
@@ -56,15 +51,15 @@ const Orders = () => {
 	];
 	//console.log(dayNames[day.getDay()]);
 
-	const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
+	//const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
 	const [seatClicked, setSeatClicked] = useState<string | null>();
 	const [reservedSeats, setReservedSeats] = useState<number[]>([]);
 	const [notFound, setNotFound] = useState(false);
 
-	const { appToken, appUserName } = useContext(Appcontext)!;
+	const { appToken } = useContext(Appcontext)!;
 
 	const [customerName, setCustomerName] = useState("");
-	const [customerInfo, setCustomerInfo] = useState();
+	//const [customerInfo, setCustomerInfo] = useState();
 
 	useEffect(() => {
 		//let id = timetable.id.toString();

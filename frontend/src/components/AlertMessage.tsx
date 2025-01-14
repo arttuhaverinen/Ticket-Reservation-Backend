@@ -1,5 +1,5 @@
 import React from "react";
-import { Toast, Button, Col, Row, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import "../App.css";
 interface alertInterface {
 	message: string;
@@ -13,7 +13,6 @@ interface alertInterface {
 const AlertMessage = ({
 	message,
 	theme,
-	showToast,
 	setShowToast,
 	setTheme,
 	setMessage,
@@ -35,7 +34,7 @@ const AlertMessage = ({
 		>
 			{message}
 			<Button
-				onClick={(e) => setShowToast(false)}
+				onClick={() => setShowToast(false)}
 				className="ms-auto btn btn-danger btn-close"
 			></Button>
 		</Alert>

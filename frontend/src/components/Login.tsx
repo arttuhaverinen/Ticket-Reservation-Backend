@@ -7,14 +7,8 @@ const Login = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [userName, setUserName] = useState<string>("null");
 	const [password, setPassword] = useState<string>("null");
-	const {
-		appUserName,
-		setAppUserName,
-		appToken,
-		setAppToken,
-		appRefreshToken,
-		setAppRefreshToken,
-	} = useContext(Appcontext)!;
+	const { setAppUserName, setAppToken, setAppRefreshToken } =
+		useContext(Appcontext)!;
 	const [alert, setAlert] = useState(false);
 	const [alertTheme, setAlertTheme] = useState("");
 	const [alertMessage, setAlertMessage] = useState("");

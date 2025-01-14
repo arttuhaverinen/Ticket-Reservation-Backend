@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Link, useSearchParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
 const Tickets = () => {
@@ -38,7 +37,6 @@ const Tickets = () => {
 	const [timetables, setTimetables] = useState<timetableInterface[] | null>(
 		null
 	);
-	const [startTime, setStartTime] = useState();
 
 	useEffect(() => {
 		console.log(

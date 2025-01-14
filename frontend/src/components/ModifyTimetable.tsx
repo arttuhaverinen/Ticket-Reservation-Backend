@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { setTime } from "react-datepicker/dist/date_utils";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const ModifyTimetable = () => {
 	interface timetableInterface {
@@ -21,7 +20,6 @@ const ModifyTimetable = () => {
 	const [startTime, setStartTime] = useState<string | null>();
 	const [endTime, setEndTime] = useState<string | null>();
 	const [price, setPrice] = useState<string | null>();
-	const [days, setDays] = useState<string[] | null>();
 	const [priceDiscount, setPriceDiscount] = useState<string | null>();
 	const [monday, setMonday] = useState(false);
 	const [tuesday, setTuesday] = useState(false);
@@ -241,7 +239,7 @@ const ModifyTimetable = () => {
 							label="Maanantai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setMonday(!monday)}
+							onChange={() => setMonday(!monday)}
 							defaultChecked={timetable && monday}
 						/>
 						<Form.Check
@@ -249,7 +247,7 @@ const ModifyTimetable = () => {
 							label="Tiistai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setTuesday(!tuesday)}
+							onChange={() => setTuesday(!tuesday)}
 							defaultChecked={timetable && tuesday}
 						/>
 						<Form.Check
@@ -257,7 +255,7 @@ const ModifyTimetable = () => {
 							label="Keskiviikko"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setWednesday(!wednesday)}
+							onChange={() => setWednesday(!wednesday)}
 							defaultChecked={timetable && wednesday}
 						/>
 						<Form.Check
@@ -265,7 +263,7 @@ const ModifyTimetable = () => {
 							label="Torstai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setThursday(!thursday)}
+							onChange={() => setThursday(!thursday)}
 							defaultChecked={timetable && thursday}
 						/>
 						<Form.Check
@@ -273,7 +271,7 @@ const ModifyTimetable = () => {
 							label="Perjantai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setFriday(!friday)}
+							onChange={() => setFriday(!friday)}
 							defaultChecked={timetable && friday}
 						/>
 						<Form.Check
@@ -281,7 +279,7 @@ const ModifyTimetable = () => {
 							label="Lauantai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setSaturday(!saturday)}
+							onChange={() => setSaturday(!saturday)}
 							defaultChecked={timetable && saturday}
 						/>
 						<Form.Check
@@ -289,7 +287,7 @@ const ModifyTimetable = () => {
 							label="Sunnuntai"
 							name="checkboxGroup"
 							id="option1"
-							onChange={(e) => setSunday(!sunday)}
+							onChange={() => setSunday(!sunday)}
 							defaultChecked={timetable && sunday}
 						/>
 						<hr />

@@ -1,46 +1,23 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-	Col,
-	Container,
-	Form,
-	Row,
-	Image,
-	Toast,
-	Spinner,
-} from "react-bootstrap";
+import { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import { Search } from "./Search";
 import Posts from "./Posts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import { fi } from "date-fns/locale/fi";
 import Offers from "./Offers";
-import Footer from "./Footer";
-import mountains from "../images/outputcrop.jpg";
 import forest from "../images/uusi.jpeg";
 
 import "../App.css";
-import ToastMessage from "./AlertMessage";
-import AlertMessage from "./AlertMessage";
 import useTokenExpireMiddleware from "../middleware/useTokenExpireMiddleware";
-import Success from "./Success";
-import ImageOverlay from "./ImageOverlay";
 import { useMediaQuery } from "react-responsive";
-import ProfilePicture from "./ProfilePicture";
-import Minio from "./Minio";
 
 registerLocale("fi", fi);
 
 const Home = () => {
 	useTokenExpireMiddleware();
 	const mobileScreen = useMediaQuery({ query: "(max-width: 991px)" });
-	const [imageUrl, setImageUrl] = useState("");
-	const minioUrl = "http://localhost:9000/test/image.png";
 	//setImageUrl(minioUrl);
-	const [startDate, setStartDate] = useState(new Date());
-	const [showToast, setShowToast] = useState(true);
 
 	return (
 		<Container fluid style={{ padding: 0 }} className="home">

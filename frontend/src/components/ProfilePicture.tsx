@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { Appcontext } from "../App";
-import minio from "minio";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
@@ -10,17 +9,8 @@ import { Form, Button } from "react-bootstrap";
 const ProfilePicture = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [file, setFile] = useState<null | Blob>(null);
-	const [picture, setPicture] = useState<null | string>(null);
-	const {
-		appUserName,
-		setAppUserName,
-		appToken,
-		setAppToken,
-		isAdmin,
-		setIsAdmin,
-		profilePicture,
-		setProfilePicture,
-	} = useContext(Appcontext)!;
+	const { appUserName, appToken, profilePicture, setProfilePicture } =
+		useContext(Appcontext)!;
 
 	const fetchUpdatedProfileImage = () => {
 		if (appUserName && appToken) {
@@ -51,11 +41,12 @@ const ProfilePicture = () => {
 					body: formData,
 				})
 					.then((res) => res.json())
-					.then((res) => fetchUpdatedProfileImage());
+					.then(() => fetchUpdatedProfileImage());
 			} catch (error) {}
 		}
 	};
 
+	/*
 	const fetchProfileImage = () => {
 		try {
 			fetch(`${baseurl}/api/minio`, {
@@ -83,7 +74,7 @@ const ProfilePicture = () => {
 				.then((res) => console.log(res));
 		} catch (error) {}
 	};
-
+*/
 	return (
 		<Container className="shadow p-3 my-3 mb-5 bg-white rounded">
 			<Row>
@@ -110,14 +101,19 @@ const ProfilePicture = () => {
 					<Form.Control
 						type="file"
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setFile(e.target.files[0]);
+							e.target.files && setFile(e.target.files[0]);
 						}}
 					/>
 				</Form.Group>
-
-				<Button variant="primary" type="submit">
-					Vaihda profiilikuva
-				</Button>
+				{file ? (
+					<Button variant="primary" type="submit">
+						Vaihda profiilikuva
+					</Button>
+				) : (
+					<Button disabled variant="primary" type="submit">
+						Vaihda profiilikuva
+					</Button>
+				)}
 			</Form>
 		</Container>
 	);

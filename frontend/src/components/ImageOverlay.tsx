@@ -1,11 +1,8 @@
-import React from "react";
-import { Col, Container, Image, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import forest from "../images/uusi.jpeg";
 
 const ImageOverlay = () => {
-	const imageSrc = forest; //"https://via.placeholder.com/800x400";
-
 	return (
 		<Container fluid className="">
 			<Row
@@ -20,7 +17,7 @@ const ImageOverlay = () => {
 				<Col md={6}>
 					<p>123</p>
 				</Col>
-				Overlay Text 
+				Overlay Text
 				<div
 					className="overlay-text"
 					style={{
@@ -37,7 +34,6 @@ const ImageOverlay = () => {
 					<h3>This is an overlay text</h3>
 				</div>
 			</Row>
-			
 		</Container>
 	);
 };

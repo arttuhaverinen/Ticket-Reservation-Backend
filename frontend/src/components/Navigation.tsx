@@ -1,14 +1,11 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import { Appcontext } from "../App";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../App.css";
-import logo from "../images/logo.jpeg";
-import { Button, Col, Form, Row } from "react-bootstrap";
 
 const Navigation = () => {
 	const {
@@ -16,17 +13,10 @@ const Navigation = () => {
 		setAppUserName,
 		appToken,
 		setAppToken,
-		isAdmin,
 		setIsAdmin,
 		profilePicture,
 		setProfilePicture,
 	} = useContext(Appcontext)!;
-
-	const linkHover = {
-		color: "red",
-	};
-
-	const [expanded, setExpanded] = useState(false);
 
 	const logoutClearLocalStorage = () => {
 		localStorage.removeItem("accesstoken");

@@ -8,7 +8,6 @@ const CreateTimetable = () => {
 	const [startTime, setStartTime] = useState<string>("");
 	const [endTime, setEndTime] = useState<string>("");
 	const [price, setPrice] = useState<string>("");
-	const [days, setDays] = useState<string>("");
 	const [priceDiscount, setPriceDiscount] = useState<string | null>(null);
 	const [monday, setMonday] = useState(false);
 	const [tuesday, setTuesday] = useState(false);
@@ -126,49 +125,49 @@ const CreateTimetable = () => {
 					label="Maanantai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setMonday(!monday)}
+					onChange={() => setMonday(!monday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Tiistai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setTuesday(!tuesday)}
+					onChange={() => setTuesday(!tuesday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Keskiviikko"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setWednesday(!wednesday)}
+					onChange={() => setWednesday(!wednesday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Torstai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setThursday(!thursday)}
+					onChange={() => setThursday(!thursday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Perjantai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setFriday(!friday)}
+					onChange={() => setFriday(!friday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Lauantai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setSaturday(!saturday)}
+					onChange={() => setSaturday(!saturday)}
 				/>
 				<Form.Check
 					type="checkbox"
 					label="Sunnuntai"
 					name="checkboxGroup"
 					id="option1"
-					onChange={(e) => setSunday(!sunday)}
+					onChange={() => setSunday(!sunday)}
 				/>
 				<hr />
 				<Button className="w-100" variant="primary" type="submit">

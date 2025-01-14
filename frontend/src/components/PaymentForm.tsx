@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { Card, Form } from "react-bootstrap";
+import { useElements, useStripe } from "@stripe/react-stripe-js";
 import "../App.css";
 import { Appcontext } from "../App";
 
@@ -51,8 +50,7 @@ const PaymentForm = ({
 	const stripe = useStripe();
 	const elements = useElements();
 
-	const { appUserName, setAppUserName, appToken, setAppToken, isAdmin } =
-		useContext(Appcontext)!;
+	const { appToken } = useContext(Appcontext)!;
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -102,7 +100,7 @@ const PaymentForm = ({
 		}
 	};
 
-	const handleError = (e) => {
+	const handleError = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setNoNameError(true);
 	};
