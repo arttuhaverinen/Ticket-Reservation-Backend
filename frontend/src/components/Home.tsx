@@ -11,6 +11,7 @@ import forest from "../images/uusi.jpeg";
 import "../App.css";
 import useTokenExpireMiddleware from "../middleware/useTokenExpireMiddleware";
 import { useMediaQuery } from "react-responsive";
+import Info from "./Info";
 
 registerLocale("fi", fi);
 
@@ -82,6 +83,7 @@ const Home = () => {
 				<Row className=" w-100 mx-auto">
 					<Posts />
 					<Offers />
+					<Info />
 				</Row>
 				{/*
 			<Row className="justify-content-between">
