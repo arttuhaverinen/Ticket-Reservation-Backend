@@ -76,7 +76,7 @@ namespace TicketReservationApp.Controllers
         }
         [HttpGet]
         [Route("{departure}/{destination}/{date}/{time?}")]
-        public async Task<ActionResult<IEnumerable<TimetableWithTicketsDto>>> GetTimetablesByLocations(string departure, string destination, string date = null, string time = null)
+        public async Task<ActionResult<IEnumerable<TimetableWithTicketsDto>>> GetTimetablesByLocations(string departure, string destination, string date, string time )
         {
 
             string[] yearMonthDay = date.Split("-");
@@ -93,7 +93,15 @@ namespace TicketReservationApp.Controllers
 
             var timetables = await _timetablesRepository.GetTimetablesByLocation(departure, destination, weekday, date, time);
 
-            var timetableDTO = timetables.Select(t => new TimetableWithTicketsDto
+            if (  timetables == null )
+            {
+                return NotFound();
+            }
+
+
+            #pragma warning disable CS8602 // Dereference of a possibly null reference
+            var timetableDTO = timetables
+            .Select(t => new TimetableWithTicketsDto
             {
                 Id = t.Id,
                 Date = t.Date,
@@ -105,7 +113,7 @@ namespace TicketReservationApp.Controllers
                 Day = t.Day,
                 Cancelled = t.Cancelled,
                 PriceDiscount = t.PriceDiscount,
-                Seats = t.Tickets.Select(ticket => ticket.Seat.ToString()).ToList()
+                Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList()
             });
 
             return Ok(timetableDTO);
@@ -215,6 +223,10 @@ namespace TicketReservationApp.Controllers
 
             var deletedTimetable = await _timetablesRepository.DeleteTimetable(id);
 
+            if (deletedTimetable == null)
+            {
+                return NotFound();
+            }
 
             var timetableDto = new TimetableDto()
             {

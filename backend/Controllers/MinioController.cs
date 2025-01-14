@@ -11,6 +11,7 @@ using System.Security.Claims;
 using TicketReservationApp.Repositories;
 using TicketReservationApp.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TicketReservationApp.Controllers
 {
@@ -126,11 +127,11 @@ namespace TicketReservationApp.Controllers
                 return BadRequest("No file uploaded or file is empty.");
             }
 
-            Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Console.WriteLine(User.Identity);
-            Console.WriteLine(User.Identity.IsAuthenticated);
-            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
-            Console.WriteLine($"User ID: {userId}");
+            //Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //Console.WriteLine(User.Identity);
+            //Console.WriteLine(User.Identity.IsAuthenticated);
+            //var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
+            //Console.WriteLine($"User ID: {userId}");
 
             var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, "test");
 
@@ -163,10 +164,11 @@ namespace TicketReservationApp.Controllers
                     return BadRequest("No file uploaded or file is empty.");
                 }
 
-            Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Console.WriteLine(User.Identity);
-            Console.WriteLine(User.Identity.IsAuthenticated);
-            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
+            //Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //Console.WriteLine(User.Identity);
+            //Console.WriteLine(User.Identity.IsAuthenticated);
+            var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+
             Console.WriteLine($"User ID: {userId}");
 
             var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, "test");
@@ -188,15 +190,28 @@ namespace TicketReservationApp.Controllers
                 };
             var response = await _s3Client.PutObjectAsync(objectRequest);
 
-            var user = await _UserRepository.GetUserByID(userId);
-            //user.ProfileImage = $"{userId}{formFile.FileName}";
-            user.ProfileImage = uniqueFileWithExtension;
-            Console.WriteLine($"user profileimage {user.ProfileImage}");
+            if (userId != null)
+            {
+                var user = await _UserRepository.GetUserByID(userId);
+                if (user != null)
+                {
+                    //user.ProfileImage = $"{userId}{formFile.FileName}";
+                    user.ProfileImage = uniqueFileWithExtension;
+                    Console.WriteLine($"user profileimage {user.ProfileImage}");
 
-            var newUser = await _UserRepository.UpdateUser(user);    
+                    var newUser = await _UserRepository.UpdateUser(user);
+                    return Ok(response);
+                }
+                return BadRequest();
 
-            return Ok(response);
-           
+
+            }
+            else
+            {
+                return Ok(response);
+            }
+
+
         }
 
     }

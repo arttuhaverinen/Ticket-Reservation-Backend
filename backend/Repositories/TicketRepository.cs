@@ -12,7 +12,7 @@ namespace TicketReservationApp.Repositories
         { 
             _dataContext = datacontext;
         }
-        public async Task<Tickets> DeleteTicket(int ticketId)
+        public async Task<Tickets?> DeleteTicket(int ticketId)
         {
             var timetable = await _dataContext.Tickets.FindAsync(ticketId);
             if (timetable == null)
@@ -24,7 +24,7 @@ namespace TicketReservationApp.Repositories
             return timetable;
         }
 
-        public async Task<Tickets> GetTicketByID(int ticketId)
+        public async Task<Tickets?> GetTicketByID(int ticketId)
         {
             var ticket = await _dataContext.Tickets.FirstOrDefaultAsync(ticket => ticket.Id == ticketId);
             return ticket;

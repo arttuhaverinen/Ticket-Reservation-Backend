@@ -15,7 +15,7 @@ namespace TicketReservationApp.Repositories
         public TimetableRepository(DataContext datacontext) { 
             _dataContext = datacontext;
         }
-        public async Task<Timetables> DeleteTimetable(int timetableId)
+        public async Task<Timetables?> DeleteTimetable(int timetableId)
         {
             var timetable = await _dataContext.Timetables.FindAsync(timetableId);
             if (timetable == null)
@@ -41,13 +41,17 @@ namespace TicketReservationApp.Repositories
 
         }
 
-        public async Task<Timetables> GetTimetabletByID(int timetableId)
+        public async Task<Timetables?> GetTimetabletByID(int timetableId)
         {
             var timetable = await _dataContext.Timetables.FirstOrDefaultAsync(timetable => timetable.Id == timetableId);
+            if (timetable == null)
+            {
+                return null;
+            }
             return timetable;
         }
 
-        public async Task<IEnumerable<Timetables>> GetTimetablesByLocation(string departure, string destination, string weekday, string date, string time)
+        public async Task<IEnumerable<Timetables?>> GetTimetablesByLocation(string departure, string destination, string weekday, string date, string time)
         {
             Console.WriteLine(departure);
             Console.WriteLine(destination);
@@ -71,12 +75,13 @@ namespace TicketReservationApp.Repositories
                 query = query.Where(timetable => timetable.StartTime.ToString() == time);
                 //query = query.Include(t => t.Tickets.Where(ticket => ticket.Date.ToShortDateString() == date));
             }
-
-            return await query
+            
+                return await query
                 .Include(t => t.Tickets.Where(ticket => ticket.Date.Date == dt.Date))
                 .ToListAsync();
-            //return timetable;
-            // .Where(ticket => ticket.Date.ToShortDateString() == time)
+                //return timetable;
+                // .Where(ticket => ticket.Date.ToShortDateString() == time)
+    
         }
 
         public async Task<Timetables> InsertTimetable(Timetables timetable)

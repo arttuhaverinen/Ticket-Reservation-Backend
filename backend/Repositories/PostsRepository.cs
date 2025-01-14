@@ -25,7 +25,7 @@ namespace TicketReservationApp.Repositories
             return post;
         }
 
-        public async Task<Posts> DeletePost(int postId)
+        public async Task<Posts?> DeletePost(int postId)
         {
             var post = await _dataContext.Posts.FindAsync(postId);
             if (post == null) 
@@ -38,7 +38,7 @@ namespace TicketReservationApp.Repositories
         }
 
 
-        public async Task<Posts> GetPostByID(int studentId)
+        public async Task<Posts?> GetPostByID(int studentId)
         {
             var post = await _dataContext.Posts.FirstOrDefaultAsync(post => post.Id == studentId);
             return post;

@@ -24,7 +24,15 @@ namespace TicketReservationApp.Controllers
         [HttpGet]
         public async Task<ActionResult> getUserById()
         {
-            var userId = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : "anon";
+            var userId = User?.Identity?.IsAuthenticated == true
+            ? User.FindFirstValue(ClaimTypes.NameIdentifier)
+            : null;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             Console.WriteLine(userId);
 
             var user = await _usersRepository.GetUserByID(userId);

@@ -10,15 +10,15 @@
 
         public double Price { get; set; }
 
-        public string Departure { get; set; }
+        public required string Departure { get; set; }
 
-        public string Destination { get; set; }
+        public required string Destination { get; set; }
 
-        public List<string> Day { get; set; }
+        public required List<string> Day { get; set; }
 
-        public List<DateTime> Cancelled { get; set; }
+        public List<DateTime>? Cancelled { get; set; }
 
-        public List<string> Seats { get; set; }
+        public List<string>? Seats { get; set; }
 
         public double? PriceDiscount { get; set; }
     }

@@ -45,16 +45,5 @@ public class ProductsController : ControllerBase
         return Ok(updatedProduct);
     }
 
-    [HttpDelete]
-    [Route("{productToDeleteId}")]
-    public async Task<IActionResult> Update(string productToDeleteId)
-    {
-        var productToDelete = await _appDbContext.Tickets.FindAsync(productToDeleteId);
 
-        _appDbContext.Remove(productToDelete);
-
-        await _appDbContext.SaveChangesAsync();
-
-        return NoContent();
-    }
 }

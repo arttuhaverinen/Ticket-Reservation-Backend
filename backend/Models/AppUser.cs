@@ -8,11 +8,11 @@ namespace TicketReservationApp.Models
     {
 
         public int TicketsId { get; set; }
-        public ICollection<Tickets> Tickets { get; set; }
+        public ICollection<Tickets>? Tickets { get; set; }
 
 
         public int PostsId { get; set; }
-        public ICollection<Posts> Posts { get; set; }
+        public ICollection<Posts>? Posts { get; set; }
 
         public string? ProfileImage {  get; set; }
     }

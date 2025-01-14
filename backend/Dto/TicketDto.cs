@@ -16,17 +16,17 @@ namespace TicketReservationApp.Dto
 
         public bool Expired { get; set; }
 
-        public string Departure { get; set; }
+        public required string Departure { get; set; }
 
-        public string Destination { get; set; }
+        public required string Destination { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public int Seat { get; set; }
 
         public int TimetablesId { get; set; }
 
-        public string AppUserId { get; set; }
+        public string? AppUserId { get; set; }
 
         public string? Status { get; set; }
 

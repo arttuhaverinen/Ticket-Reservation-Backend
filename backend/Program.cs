@@ -22,6 +22,7 @@ using Amazon.S3;
 using Amazon.Runtime;
 using TicketReservationApp.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Data;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -66,6 +67,8 @@ builder.Host.UseSerilog((context, services, configuration) =>
     Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
     var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_URI");
     Console.WriteLine(url);
+    var elasticsearchUri = Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI");
+
     if (url != null && environment == "Production")
         {
         Console.WriteLine("if");
@@ -84,13 +87,13 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
 
     }
-    else if (Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI") != null)
+    else if (!string.IsNullOrEmpty(elasticsearchUri))
         {
         Console.WriteLine("else");
         //Console.WriteLine(context.Configuration["ElasticConfiguration:Uri"]);
         
 
-        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI")))
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticsearchUri))
             {
                 //IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
                 AutoRegisterTemplate = true,
@@ -122,11 +125,12 @@ Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
 
 Console.WriteLine(environment);
 
-if (environment != "Test")
+var DB_CONNECTION_STRING = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+if (environment != "Test" && !string.IsNullOrEmpty(DB_CONNECTION_STRING))
 {
-    builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+    builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
 {
-    { "ConnectionStrings:DefaultConnection", Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") }
+    { "ConnectionStrings:DefaultConnection", DB_CONNECTION_STRING }
 
 });
 }
@@ -148,7 +152,7 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var apiKey = Environment.GetEnvironmentVariable("SECRET_KEY");
 StripeConfiguration.ApiKey = apiKey;
 
-builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
 {
     { "EmailSettings:Password", Environment.GetEnvironmentVariable("EMAIL_PASSWORD") }
 });
