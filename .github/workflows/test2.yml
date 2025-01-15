@@ -34,7 +34,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test.yml"
-          up-flags: "--build test-webapp "
+          up-flags: "--build test-client-unit "
 
       - name: Run Frontend e2e tests
         uses: hoverkraft-tech/compose-action@v2.0.1

@@ -76,7 +76,7 @@ namespace TicketReservationApp.Controllers
         }
         [HttpGet]
         [Route("{departure}/{destination}/{date}/{time?}")]
-        public async Task<ActionResult<IEnumerable<TimetableWithTicketsDto>>> GetTimetablesByLocations(string departure, string destination, string date, string time )
+        public async Task<ActionResult<IEnumerable<TimetableWithTicketsDto>>> GetTimetablesByLocations(string departure, string destination, string date, string? time = null )
         {
 
             string[] yearMonthDay = date.Split("-");
