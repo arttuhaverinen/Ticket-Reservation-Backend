@@ -1,4 +1,4 @@
-name: Docker Compose Action
+name: Docker - Unit tests
 
 on:
   pull_request:
@@ -12,13 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.yml"
-          up-flags: "--build"
-
-      - name: Start test frontend and backend
+      - name: Start frontend unit tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test-unit.yml"
