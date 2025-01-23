@@ -19,6 +19,16 @@ namespace TicketReservationApp.Data
 
         public async Task Seed()
         {
+
+            var SEED_ADMIN_USERNAME = Environment.GetEnvironmentVariable("SEED_ADMIN_USERNAME")!;
+            var SEED_ADMIN_PASSWORD = Environment.GetEnvironmentVariable("SEED_ADMIN_PASSWORD")!;
+            var SEED_USER_USERNAME = Environment.GetEnvironmentVariable("SEED_USER_USERNAME")!;
+            var SEED_USER_PASSWORD = Environment.GetEnvironmentVariable("SEED_USER_PASSWORD")!; 
+            var SEED_TEST_ADMIN_USERNAME = Environment.GetEnvironmentVariable("SEED_TEST_ADMIN_USERNAME")!;
+            var SEED_TEST_ADMIN_PASSWORD = Environment.GetEnvironmentVariable("SEED_TEST_ADMIN_PASSWORD")!;
+
+
+
             string roleId = Guid.NewGuid().ToString();
             string adminRoleName = "Admin";
 
@@ -30,9 +40,9 @@ namespace TicketReservationApp.Data
             });
             await _context.SaveChangesAsync();
 
-            // Seed Users
+            // Seed ADMIN
             string userId = Guid.NewGuid().ToString();
-            string userEmail = "admin@example.com";
+            string userEmail = SEED_ADMIN_USERNAME;
 
             var hasher = new PasswordHasher<AppUser>();
             
@@ -47,7 +57,7 @@ namespace TicketReservationApp.Data
                 SecurityStamp = string.Empty,
 
             };
-            user.PasswordHash = hasher.HashPassword(user, "Admin@123");
+            user.PasswordHash = hasher.HashPassword(user, SEED_ADMIN_PASSWORD);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             
@@ -58,6 +68,58 @@ namespace TicketReservationApp.Data
                 RoleId = roleId,
                 UserId = userId
             });
+
+            // Seed TEST ADMIN
+            string testAdminUserId = Guid.NewGuid().ToString();
+            string testAdminuserEmail = SEED_TEST_ADMIN_USERNAME;
+
+
+            var testAdmin = new AppUser
+            {
+                Id = testAdminUserId,
+                UserName = testAdminuserEmail,
+                NormalizedUserName = testAdminuserEmail.ToUpper(),
+                Email = testAdminuserEmail,
+                NormalizedEmail = testAdminuserEmail.ToUpper(),
+                EmailConfirmed = true,
+                SecurityStamp = string.Empty,
+
+            };
+            testAdmin.PasswordHash = hasher.HashPassword(testAdmin, SEED_TEST_ADMIN_PASSWORD);
+            _context.Users.Add(testAdmin);
+            await _context.SaveChangesAsync();
+
+
+            // Assign User to Role
+            _context.UserRoles.Add(new IdentityUserRole<string>
+            {
+                RoleId = roleId,
+                UserId = testAdminUserId
+            });
+
+            // Seed TEST USER
+            string testUserUserId = Guid.NewGuid().ToString();
+            string testUseruserEmail = SEED_USER_USERNAME;
+
+
+            var testUser = new AppUser
+            {
+                Id = testUserUserId,
+                UserName = testUseruserEmail,
+                NormalizedUserName = testUseruserEmail.ToUpper(),
+                Email = testUseruserEmail,
+                NormalizedEmail = testUseruserEmail.ToUpper(),
+                EmailConfirmed = true,
+                SecurityStamp = string.Empty,
+
+            };
+            testUser.PasswordHash = hasher.HashPassword(testUser, SEED_USER_PASSWORD);
+            _context.Users.Add(testUser);
+            await _context.SaveChangesAsync();
+
+
+            // Assign User to Role
+
 
             await _context.SaveChangesAsync();
 

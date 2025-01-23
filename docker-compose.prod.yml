@@ -1,11 +1,12 @@
 version: "3"
 
 services:
-  webapp:
-    image: busapp
+  backend:
     build:
       context: . # Path to the backend folder
       dockerfile: ./backend/Dockerfile.prod # Dockerfile inside the backend folder
+    env_file:
+      - ./backend/.env # Specify the path to the .env file
     ports:
       - "5001:5001"
     #volumes:
@@ -29,11 +30,11 @@ services:
       - ./nginx/static-files:/usr/share/nginx/html # Optionally, if you have static files to serve
   minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
-    container_name: minio
+    container_name: minio-prod
     environment:
       # Set up root user credentials here
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: your-secret-password
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports:
       - "9000:9000" # MinIO API port
       - "9001:9001" # MinIO web console port

@@ -33,6 +33,7 @@ var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+Console.WriteLine(environment);
 
 Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
@@ -126,14 +127,18 @@ Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
 Console.WriteLine(environment);
 
 var DB_CONNECTION_STRING = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
 if (environment != "Test" && !string.IsNullOrEmpty(DB_CONNECTION_STRING))
 {
+    Console.WriteLine("using in memory db");
     builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
 {
     { "ConnectionStrings:DefaultConnection", DB_CONNECTION_STRING }
 
 });
 }
+
+
 
 /*
 else
@@ -288,12 +293,19 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 
     }
-    else
+    else if (environment == "Production")
+    {
+        Console.WriteLine("using prod db");
+        Console.WriteLine(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_PROD"));
+        options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_PROD"));
+
+    }
+    else if (environment == "Development")
     {
         Console.WriteLine("DEV ENV");
         //Console.WriteLine("Seeding completed.");
 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
 
 
     }
