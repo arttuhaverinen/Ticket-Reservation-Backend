@@ -28,7 +28,7 @@ jobs:
           cd ${{ secrets.VPS_PROJECT_PATH_ENV }} &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' > .env &&
-          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' > .env &&
+          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING_PROD }}' > .env &&
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' > .env &&
           echo 'ELASTICSEARCH_URI=${{ secrets.ELASTICSEARCH_URI }}' > .env &&
           echo 'EMAIL_FRONTEND_PROD=${{ secrets.EMAIL_FRONTEND_PROD }}' > .env &&
@@ -36,4 +36,4 @@ jobs:
           cd ${{ secrets.VPS_PROJECT_PATH }} &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
           sudo docker network prune -f &&  # Prunes unused networks
-          sudo docker-compose -f docker-compose.prod.yml up -d --build"  # Use production file
+          sudo docker-compose -f docker-compose.prod.yml up -d"  # Use production file
