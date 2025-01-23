@@ -15,7 +15,7 @@ services:
     environment:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
     depends_on:
-      test-webapp:
+      test-client-vite:
         condition: service_healthy
   #  networks:
   #    - busapp-network
@@ -57,6 +57,11 @@ services:
     #command: npm run test:unit #npm run testmode
     environment:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     depends_on:
       test-webapp:
         condition: service_healthy
