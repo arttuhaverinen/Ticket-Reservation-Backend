@@ -329,7 +329,7 @@ if (environment == "Test")
 {
     using (var scope = app.Services.CreateScope())
     {
-        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeederTest>();
         await seeder.Seed();
         Console.WriteLine("Seeding completed.");
     }
