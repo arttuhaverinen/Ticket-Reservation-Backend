@@ -15,7 +15,7 @@ services:
     environment:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
     depends_on:
-      test-client-vite:
+      test-webapp:
         condition: service_healthy
   #  networks:
   #    - busapp-network
@@ -31,8 +31,8 @@ services:
       - "5002:5002"
     #volumes:
     #  - ./backend:/app # Mount the backend folder to the /app directory in the container
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+    #environment:
+    #  ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
       - ./backend:/app # Mount your local code into the container
     healthcheck:
@@ -57,11 +57,7 @@ services:
     #command: npm run test:unit #npm run testmode
     environment:
       - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - VITE_BASEURL=http://localhost:5002
     depends_on:
       test-webapp:
         condition: service_healthy

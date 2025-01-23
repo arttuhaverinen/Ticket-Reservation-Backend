@@ -34,6 +34,7 @@ const Navigation = () => {
 			style={{ minHeight: "100px" }}
 			expand="lg"
 			className="bg-body-tertiary d-flex"
+			data-testid="navbar"
 		>
 			<Container style={{ width: "95%" }} fluid>
 				<Link to={"/profile"}>
