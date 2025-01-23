@@ -27,10 +27,28 @@ public class EmailController : ControllerBase, IEmailSender
     {
         Console.WriteLine(subject);
         Console.WriteLine(message);
-        
+        var client_email = "";
+        var environment = _configuration["Environment"];
+        if (environment == "Development")
+        {
+            var EMAIL_FRONTEND_DEV = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_DEV");
+            if (EMAIL_FRONTEND_DEV != null) { client_email = EMAIL_FRONTEND_DEV; };
+        } else if (environment == "Production")
+        {
+            var EMAIL_FRONTEND_PROD = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_PROD");
+            if (EMAIL_FRONTEND_PROD != null) { client_email = EMAIL_FRONTEND_PROD; };
+
+        }
+        Console.WriteLine($"Current Environment: {environment}");
+
+        Console.WriteLine($"client email: {client_email}");
+
         try
         {
             var emailSettings = _configuration.GetSection("EmailSettings").Get<EmailSettings>();
+
+
+
 
             if (emailSettings == null)
             {
@@ -56,7 +74,20 @@ public class EmailController : ControllerBase, IEmailSender
             }
             else if (subject.Contains("Confirm")) // rescendConfirmation endpoint
             {
-                var redirectedMessage = message.Replace("localhost:5001", "localhost:5173");
+                var redirectedMessage = "";
+                if (environment == "Production")
+                {
+                    Console.WriteLine("Email Production");
+                     redirectedMessage = message.Replace("localhost", client_email);
+
+                }
+                else
+                {
+                    Console.WriteLine("Email Dev");
+                    redirectedMessage = message.Replace("localhost:5001", client_email);
+
+                }
+                Console.WriteLine(redirectedMessage);
                 Console.WriteLine(message);
                 htmlBody = $@"
                     <p>{redirectedMessage}</p>

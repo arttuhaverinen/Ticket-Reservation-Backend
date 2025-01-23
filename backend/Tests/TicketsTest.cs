@@ -55,7 +55,7 @@ namespace TicketReservationApp.Tests
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            var seeder = new DatabaseSeeder(context);
+            var seeder = new DatabaseSeederTest(context);
             await seeder.Seed();
             _output.WriteLine("Database seeded for testing.");
 

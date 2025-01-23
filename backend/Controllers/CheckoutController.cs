@@ -196,8 +196,18 @@ public class CheckoutController : ControllerBase
             Console.WriteLine(JsonSerializer.Serialize(paidTicket));
             await _emailController.SendOrderSucceededEmail(paidTicket, paidTicket.Name);
 
+        Console.WriteLine("wasmclienturl");
+        Console.WriteLine(s_wasmClientURL);
 
-
+        var environment = _configuration["Environment"];
+        Console.WriteLine(environment);
+        if (environment == "Production" ) {
+            var prod_client_url = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_PROD");
+            return Redirect(s_wasmClientURL + "success");
+        } 
+        else 
+        {
         return Redirect(s_wasmClientURL + "success");
+        }
     }
 }

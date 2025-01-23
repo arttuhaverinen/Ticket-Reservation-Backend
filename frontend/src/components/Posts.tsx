@@ -23,7 +23,11 @@ const Posts = (/*props: postInterface*/) => {
 			},
 		})
 			.then((res) => res.json())
-			.then((res) => setPosts(res));
+			.then((res) => setPosts(res))
+			.catch((err) => {
+				console.error("Error fetching posts:", err);
+				setPosts([]); // Set fallback state or handle error UI
+			});
 	}, []);
 	return (
 		<Container className="py-5">

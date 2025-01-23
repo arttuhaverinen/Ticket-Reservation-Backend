@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace TicketReservationApp.Data
 {
-    public class DatabaseSeeder
+    public class DatabaseSeederTest
     {
         private readonly DataContext _context;
 
-        public DatabaseSeeder(DataContext context)
+        public DatabaseSeederTest(DataContext context)
         {
             _context = context;
         }
@@ -20,12 +20,12 @@ namespace TicketReservationApp.Data
         public async Task Seed()
         {
 
-            var SEED_ADMIN_USERNAME = Environment.GetEnvironmentVariable("SEED_ADMIN_USERNAME")!;
-            var SEED_ADMIN_PASSWORD = Environment.GetEnvironmentVariable("SEED_ADMIN_PASSWORD")!;
-            var SEED_USER_USERNAME = Environment.GetEnvironmentVariable("SEED_USER_USERNAME")!;
-            var SEED_USER_PASSWORD = Environment.GetEnvironmentVariable("SEED_USER_PASSWORD")!; 
-            var SEED_TEST_ADMIN_USERNAME = Environment.GetEnvironmentVariable("SEED_TEST_ADMIN_USERNAME")!;
-            var SEED_TEST_ADMIN_PASSWORD = Environment.GetEnvironmentVariable("SEED_TEST_ADMIN_PASSWORD")!;
+            var SEED_ADMIN_USERNAME = "test-admin-user@example.com";
+            var SEED_ADMIN_PASSWORD = "test-admin-password";
+            var SEED_USER_USERNAME = "test-user-user@example.com";
+            var SEED_USER_PASSWORD = "test-user-password";
+            var SEED_TEST_ADMIN_USERNAME = "test-admin2-password@example.com";
+            var SEED_TEST_ADMIN_PASSWORD = "test-admin2-password";
 
 
 
@@ -45,7 +45,7 @@ namespace TicketReservationApp.Data
             string userEmail = SEED_ADMIN_USERNAME;
 
             var hasher = new PasswordHasher<AppUser>();
-            
+
             var user = new AppUser
             {
                 Id = userId,
@@ -60,7 +60,7 @@ namespace TicketReservationApp.Data
             user.PasswordHash = hasher.HashPassword(user, SEED_ADMIN_PASSWORD);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            
+
 
             // Assign User to Role
             _context.UserRoles.Add(new IdentityUserRole<string>
@@ -212,7 +212,7 @@ namespace TicketReservationApp.Data
                 Price = 20.99,
                 Departure = "Joensuu",
                 Destination = "Tampere",
-                Day = new List<string> {  "saturday", "sunday" },
+                Day = new List<string> { "saturday", "sunday" },
                 Cancelled = new List<DateTime>(),
                 Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 AppUserId = userId,
@@ -353,5 +353,5 @@ namespace TicketReservationApp.Data
         }
 
     }
-    }
+}
 
