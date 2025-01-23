@@ -281,6 +281,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<DatabaseSeeder>(); // Assuming you have a DatabaseSeeder class
+builder.Services.AddScoped<DatabaseSeederTest>(); // Assuming you have a DatabaseSeeder class
 
 builder.Services.AddDbContext<DataContext>(options =>
 
