@@ -17,6 +17,7 @@ services:
     build:
       context: . # Adjust this to point to your React app's directory
       dockerfile: ./frontend/Dockerfile.prod
+
     ports:
       - "3000:3000"
   nginx:
