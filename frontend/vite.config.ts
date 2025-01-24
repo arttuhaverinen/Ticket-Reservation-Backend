@@ -18,6 +18,7 @@ export default defineConfig({
 		watch: {
 			usePolling: true, // Necessary for hot reloads inside Docker
 		},
+		cors: true, // Enable CORS for all origins
 	},
 	test: {
 		environment: "jsdom", // Set the test environment to jsdom
