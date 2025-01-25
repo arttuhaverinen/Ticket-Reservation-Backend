@@ -36,4 +36,4 @@ jobs:
           cd ${{ secrets.VPS_PROJECT_PATH }} &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
           sudo docker network prune -f &&  # Prunes unused networks
-          sudo docker-compose -f docker-compose.prod.yml up -d"  # Use production file
+          sudo docker-compose -f docker-compose.prod.yml up --build -d"  # Use production file
