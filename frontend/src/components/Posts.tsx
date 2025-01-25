@@ -13,13 +13,13 @@ const Posts = (/*props: postInterface*/) => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [posts, setPosts] = useState<postInterface[]>();
 	useEffect(() => {
-		console.log(localStorage.getItem("accesstoken"));
+		//console.log(localStorage.getItem("accesstoken"));
 		console.log("fetching posts");
 		fetch(`${baseurl}/api/posts`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+				//Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
 			},
 		})
 			.then((res) => res.json())

@@ -49,19 +49,20 @@ const Offers = () => {
 		fetch(`${baseurl}/api/Timetables?offers=true`)
 			.then((res) => res.json())
 			.then((data) => {
+				console.log(data);
 				setTimetables(data);
-				setDestination(data.destination);
-				setDeparture(data.departure);
-				setStartTime(data.startTime);
-				setEndTime(data.endTime);
-				setPrice(data.price);
-				setMonday(data.day.includes("monday") ? true : false);
-				setTuesday(data.day.includes("tuesday") ? true : false);
-				setWednesday(data.day.includes("wednesday") ? true : false);
-				setThursday(data.day.includes("thursday") ? true : false);
-				setFriday(data.day.includes("friday") ? true : false);
-				setSaturday(data.day.includes("saturday") ? true : false);
-				setSunday(data.day.includes("sunday") ? true : false);
+				//setDestination(data.destination);
+				//setDeparture(data.departure);
+				//setStartTime(data.startTime);
+				//setEndTime(data.endTime);
+				//setPrice(data.price);
+				//setMonday(data.day.includes("monday") ? true : false);
+				//setTuesday(data.day.includes("tuesday") ? true : false);
+				//setWednesday(data.day.includes("wednesday") ? true : false);
+				//setThursday(data.day.includes("thursday") ? true : false);
+				//setFriday(data.day.includes("friday") ? true : false);
+				//setSaturday(data.day.includes("saturday") ? true : false);
+				//setSunday(data.day.includes("sunday") ? true : false);
 			})
 			.catch((err) => console.log(err));
 	}, []);
