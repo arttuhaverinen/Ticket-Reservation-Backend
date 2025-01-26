@@ -70,9 +70,12 @@ namespace TicketReservationApp.Controllers
             {
                 Console.WriteLine(url); 
                 if (environment == "Production") {
+                    var minio_prod_url = Environment.GetEnvironmentVariable("ELASTICSEARCH_URI");
                     url = url.Replace("https://", "http://");
-                    //url = url.Replace("http://localhost:9000", "http://prod-minio:9000");
-                } else
+                    url = url.Replace("http://prod-minio:9000", minio_prod_url);
+
+                }
+                else
                 {
                     url = url.Replace("https://", "http://");
                     url = url.Replace("http://dev-minio:9000", "http://localhost:9000");
