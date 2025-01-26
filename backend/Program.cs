@@ -23,6 +23,7 @@ using Amazon.Runtime;
 using TicketReservationApp.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Data;
+using static System.Net.WebRequestMethods;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -197,7 +198,7 @@ var accessKey = "";
 var secretKey = "";
 if (environment == "Production")
 {
-     endpoint = Environment.GetEnvironmentVariable("MINIO_PROD_URL"); // Your MinIO endpoint (use the correct URL here)
+     endpoint = "http://prod-minio:9000"; // Your MinIO endpoint (use the correct URL here)
      accessKey = Environment.GetEnvironmentVariable("MINIO_ROOT_USER");          // Your MinIO access key
      secretKey = Environment.GetEnvironmentVariable("MINIO_ROOT_PASSWORD");        // Your MinIO secret key
 
