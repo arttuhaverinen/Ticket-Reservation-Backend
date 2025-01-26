@@ -4,7 +4,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.e2e
     ports:
-      - "3001:3001"
+      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
