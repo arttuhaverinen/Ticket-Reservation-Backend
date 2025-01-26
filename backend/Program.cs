@@ -195,10 +195,9 @@ builder.Services.AddCors(options =>
 var endpoint = "";
 var accessKey = "";
 var secretKey = "";
-
 if (environment == "Production")
 {
-     endpoint = "http://prod-minio:9000"; // Your MinIO endpoint (use the correct URL here)
+     endpoint = Environment.GetEnvironmentVariable("MINIO_PROD_URL"); // Your MinIO endpoint (use the correct URL here)
      accessKey = Environment.GetEnvironmentVariable("MINIO_ROOT_USER");          // Your MinIO access key
      secretKey = Environment.GetEnvironmentVariable("MINIO_ROOT_PASSWORD");        // Your MinIO secret key
 
