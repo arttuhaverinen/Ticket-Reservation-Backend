@@ -31,7 +31,7 @@ services:
       - ./nginx/static-files:/usr/share/nginx/html # Optionally, if you have static files to serve
   minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
-    container_name: minio-prod
+    container_name: prod-minio
     environment:
       # Set up root user credentials here
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}

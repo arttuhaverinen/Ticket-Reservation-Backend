@@ -52,7 +52,8 @@ namespace TicketReservationApp.Controllers
             //Console.WriteLine(user.ProfileImage);
 
             //Console.WriteLine(user);
-            
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             // Generate a presigned URL for the specified object
             var presignedUrlRequest = new GetPreSignedUrlRequest
             {
@@ -67,8 +68,16 @@ namespace TicketReservationApp.Controllers
 
             if (url.StartsWith("https://"))
             {
-                url = url.Replace("https://", "http://");
-                url = url.Replace("http://dev-minio:9000", "http://localhost:9000");
+                if (environment == "Production") {
+                    url = url.Replace("https://", "http://");
+                    url = url.Replace("http://prod-minio:9000", "http://localhost:9000");
+                } else
+                {
+                    url = url.Replace("https://", "http://");
+                    url = url.Replace("http://dev-minio:9000", "http://localhost:9000");
+
+                }
+
 
             }
             
