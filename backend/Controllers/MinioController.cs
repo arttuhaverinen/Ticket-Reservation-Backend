@@ -53,7 +53,7 @@ namespace TicketReservationApp.Controllers
 
             //Console.WriteLine(user);
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
+            Console.WriteLine(environment);
             // Generate a presigned URL for the specified object
             var presignedUrlRequest = new GetPreSignedUrlRequest
             {
@@ -68,6 +68,7 @@ namespace TicketReservationApp.Controllers
 
             if (url.StartsWith("https://"))
             {
+                Console.WriteLine(url); 
                 if (environment == "Production") {
                     url = url.Replace("https://", "http://");
                     url = url.Replace("http://prod-minio:9000", "http://localhost:9000");
