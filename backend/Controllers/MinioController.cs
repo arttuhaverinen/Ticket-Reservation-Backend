@@ -71,7 +71,7 @@ namespace TicketReservationApp.Controllers
                 Console.WriteLine(url); 
                 if (environment == "Production") {
                     url = url.Replace("https://", "http://");
-                    url = url.Replace("http://prod-minio:9000", "http://localhost:9000");
+                    //url = url.Replace("http://localhost:9000", "http://prod-minio:9000");
                 } else
                 {
                     url = url.Replace("https://", "http://");
@@ -81,7 +81,10 @@ namespace TicketReservationApp.Controllers
 
 
             }
-            
+
+            Console.WriteLine(url);
+
+
             return Task.FromResult<IActionResult>(Ok(new { url }));
         }
         /*

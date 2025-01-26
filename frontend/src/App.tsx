@@ -140,7 +140,25 @@ function App() {
 	}, []);
 
 	const fetchProfileImage = () => {
-		if (localStorage.getItem("accesstoken")) {
+		console.log("vite mode ", import.meta.env.MODE);
+		if (
+			localStorage.getItem("accesstoken") &&
+			import.meta.env.MODE == "development"
+		) {
+			try {
+				fetch(`${baseurl}/api/minio`, {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+					},
+				})
+					.then((res) => res.json())
+					.then((res) => setProfilePicture(res.url));
+			} catch (error) {}
+		}
+		if (
+			localStorage.getItem("accesstoken") &&
+			import.meta.env.MODE == "production"
+		) {
 			try {
 				fetch(`${baseurl}/api/minio`, {
 					headers: {
@@ -166,7 +184,10 @@ function App() {
 					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
 				})
 				.then((res) => res.json())
-				.then((res) => setProfilePicture(res.url));
+				.then((res) => {
+					console.log(res.url);
+					setProfilePicture(res.url);
+				});
 		}
 	}, [appToken]);
 
