@@ -140,15 +140,17 @@ function App() {
 	}, []);
 
 	const fetchProfileImage = () => {
-		try {
-			fetch(`${baseurl}/api/minio`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((res) => setProfilePicture(res.url));
-		} catch (error) {}
+		if (localStorage.getItem("accesstoken")) {
+			try {
+				fetch(`${baseurl}/api/minio`, {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+					},
+				})
+					.then((res) => res.json())
+					.then((res) => setProfilePicture(res.url));
+			} catch (error) {}
+		}
 	};
 
 	useEffect(() => {
