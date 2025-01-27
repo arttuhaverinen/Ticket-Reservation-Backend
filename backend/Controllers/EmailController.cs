@@ -78,13 +78,15 @@ public class EmailController : ControllerBase, IEmailSender
                 if (environment == "Production")
                 {
                     Console.WriteLine("Email Production");
-                     redirectedMessage = message.Replace("localhost", client_email);
+                     redirectedMessage = message.Replace("http://localhost", client_email);
+                    Console.WriteLine(redirectedMessage);
 
                 }
                 else
                 {
                     Console.WriteLine("Email Dev");
-                    redirectedMessage = message.Replace("localhost:5001", client_email);
+                    redirectedMessage = message.Replace("http://localhost:5001", client_email);
+                    Console.WriteLine(redirectedMessage);
 
                 }
                 Console.WriteLine(redirectedMessage);

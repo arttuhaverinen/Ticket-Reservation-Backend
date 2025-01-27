@@ -383,10 +383,17 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Test"
 //app.MapIdentityApi<IdentityUser>();
 app.MapIdentityApi<AppUser>();
 
+app.UseWhen(context => !context.Request.Path.StartsWithSegments("/refresh"), appBuilder =>
+{
+    appBuilder.UseAuthentication();
+    appBuilder.UseAuthorization();
+});
+
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 
