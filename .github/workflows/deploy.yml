@@ -23,10 +23,10 @@ jobs:
           else
             cd ${{ secrets.VPS_PROJECT_PATH }} && git pull origin master;
           fi &&
-          echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' >> .env &&
+          echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
           cd ${{ secrets.VPS_PROJECT_PATH_ENV }} &&
-          echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' >> .env &&
+          echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
           echo 'DB_CONNECTION_STRING_PROD=${{ secrets.DB_CONNECTION_STRING_PROD }}' >> .env &&
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> .env &&
