@@ -203,7 +203,10 @@ public class CheckoutController : ControllerBase
         Console.WriteLine(environment);
         if (environment == "Production" ) {
             var prod_client_url = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_PROD");
-            return Redirect(s_wasmClientURL + "success");
+            //HttpContext.Response.Redirect(prod_client_url + "/success", permanent: false);
+            //return new EmptyResult(); // End execution after redirect
+            return Redirect(prod_client_url + "/success");
+
         } 
         else 
         {

@@ -62,6 +62,7 @@ namespace TicketReservationApp.Controllers
                 Key = id,
                 Expires = DateTime.Now.AddMinutes(10) // URL expires in 10 minutes
             };
+            
             Console.WriteLine(presignedUrlRequest);
             var url = _s3Client.GetPreSignedURL(presignedUrlRequest);
             Console.WriteLine(url);
@@ -71,8 +72,8 @@ namespace TicketReservationApp.Controllers
                 Console.WriteLine(url); 
                 if (environment == "Production") {
                     var minio_prod_url = Environment.GetEnvironmentVariable("MINIO_PROD_URL");
-                    url = url.Replace("https://", "http://");
-                    url = url.Replace("http://prod-minio:9000", minio_prod_url);
+                    //url = url.Replace("https://", "http://");
+                    url = url.Replace("https://prod-minio:9000", minio_prod_url);
                     
                 }
                 else
@@ -83,6 +84,13 @@ namespace TicketReservationApp.Controllers
                 }
 
 
+            }
+            // Quick fix before actual new implementation to remove presigned urls. 
+            Console.WriteLine("modifying url");
+            int indexOfQuestionMark = url.IndexOf('?');
+            if (indexOfQuestionMark >= 0)
+            {
+                url = url.Substring(0, indexOfQuestionMark);
             }
 
             Console.WriteLine(url);
