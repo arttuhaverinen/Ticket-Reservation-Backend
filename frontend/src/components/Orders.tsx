@@ -53,7 +53,7 @@ const Orders = () => {
 
 	//const [seatBtnOpacity, setSeatBtnOpacity] = useState(0.75);
 	const [seatClicked, setSeatClicked] = useState<string | null>();
-	const [reservedSeats, setReservedSeats] = useState<number[]>([]);
+	const [reservedSeats, setReservedSeats] = useState<string[]>([]);
 	const [notFound, setNotFound] = useState(false);
 
 	const { appToken } = useContext(Appcontext)!;
@@ -153,9 +153,12 @@ const Orders = () => {
 	*/
 	const handleButtonStyling = (num: number) => {
 		console.log(reservedSeats, num);
-		if (reservedSeats.includes(num)) {
+		console.log("seat clicked", seatClicked);
+		if (reservedSeats.includes(num.toString())) {
+			console.log("gray ", num);
 			return seatButtonGray;
 		} else if (seatClicked == num.toString()) {
+			console.log("seat was clicked");
 			return seatButtonClicked;
 		} else {
 			return seatButton;
@@ -262,92 +265,112 @@ const Orders = () => {
 									<Col className="" xs={4}>
 										{" "}
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "1"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(1)}
 											value={1}
 										>
 											1
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "2"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(2)}
 											value={2}
 										>
 											2
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "5"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(5)}
 											value={5}
 										>
 											5
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "6"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(6)}
 											value={6}
 										>
 											6
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "9"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(9)}
 											value={9}
 										>
 											9
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "10"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(10)}
 											value={10}
 										>
 											10
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "13"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(13)}
 											value={13}
 										>
 											13
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "14"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(14)}
 											value={14}
 										>
 											14
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "17"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(17)}
 											value={17}
 										>
 											17
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "18"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(18)}
-											value={17}
+											value={18}
 										>
 											18
 										</Button>
@@ -355,90 +378,110 @@ const Orders = () => {
 									<Col className="m-0 p-0" xs={1}></Col>
 									<Col className="m-0 p-0" xs={4}>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "3"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(3)}
 											value={3}
 										>
 											3
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "4"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(4)}
 											value={4}
 										>
 											4
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "7"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(7)}
 											value={7}
 										>
 											7
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "8"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(8)}
 											value={8}
 										>
 											8
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "11"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(11)}
 											value={11}
 										>
 											11
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "12"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(12)}
 											value={12}
 										>
 											12
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "15"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(15)}
 											value={15}
 										>
 											15
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "16"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(16)}
 											value={16}
 										>
 											16
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "19"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(19)}
 											value={19}
 										>
 											19
 										</Button>
 										<Button
-											onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-												setSeatClicked(e.currentTarget.value)
-											}
+											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+												seatClicked == "20"
+													? setSeatClicked(null)
+													: setSeatClicked(e.currentTarget.value);
+											}}
 											style={handleButtonStyling(20)}
 											value={20}
 										>
@@ -469,7 +512,7 @@ const Orders = () => {
 									</Form.Group>
 									<Form.Group className="mb-2" controlId="formBasicPassword">
 										<Form.Label>Muut tiedot</Form.Label>
-										<Form.Control type="password" placeholder="" />
+										<Form.Control type="" placeholder="" />
 									</Form.Group>
 									{/*
 							<Button
