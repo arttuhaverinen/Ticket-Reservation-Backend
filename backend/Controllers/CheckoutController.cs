@@ -42,6 +42,8 @@ public class CheckoutController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CheckoutOrder([FromBody] TicketDto product, [FromServices] IServiceProvider sp)
     {
+        var BACKEND_URL = Environment.GetEnvironmentVariable("BACKEND_URL");
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         try
         {
             var timetable = await _timetableRepository.GetTimetabletByID(product.TimetablesId);
@@ -53,6 +55,7 @@ public class CheckoutController : ControllerBase
             var referer = Request.Headers.Referer;
             s_wasmClientURL = referer[0];
 
+
             // Build the URL to which the customer will be redirected after paying.
             var server = sp.GetRequiredService<IServer>();
 
@@ -63,7 +66,14 @@ public class CheckoutController : ControllerBase
             if (serverAddressesFeature is not null)
             {
                 //thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
-                thisApiUrl = "http://localhost:5001";
+                if (environment == "Production")
+                {
+                    thisApiUrl = BACKEND_URL;
+                } else
+                {
+                    thisApiUrl = "http://localhost:5001";
+
+                }
                 Console.WriteLine("thisApiUrl");
                 Console.WriteLine(thisApiUrl);
             }
