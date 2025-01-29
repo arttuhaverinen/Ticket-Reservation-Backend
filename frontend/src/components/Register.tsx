@@ -46,6 +46,7 @@ const Register = () => {
 	return (
 		<div className="w-75 mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
 			<h3>Rekisteröidy</h3>
+
 			{alert && (
 				<AlertMessage
 					message={alertMessage}
@@ -77,7 +78,15 @@ const Register = () => {
 						data-testid="register-password-label"
 					/>
 				</Form.Group>
+				<h6 className="my-1">Salasanassa täytyy olla:</h6>
+				<p className="my-0">{"1. Ainakin yksi numero (0-9)"}</p>
+				<p className="my-0">{"2. Ainakin yksi iso kirjain (A-Z)"}</p>
+				<p className="my-0">
+					{"3. Ainakin yksi ei-aakkosnumeerinen merkki (@ # % ?)"}
+				</p>
+
 				<Button
+					className="my-3"
 					data-testid="register-submit-button"
 					variant="primary"
 					type="submit"

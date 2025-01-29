@@ -31,18 +31,38 @@ const Navigation = () => {
 
 	return (
 		<Navbar
-			style={{ minHeight: "100px" }}
 			expand="lg"
-			className="bg-body-tertiary d-flex"
+			className="bg-body-tertiary d-flex "
 			data-testid="navbar"
+			style={{ minHeight: "100px" }}
 		>
 			<Container style={{ width: "95%" }} fluid>
+				<Nav.Link className="me-3">
+					<Link to={"/"}>
+						<div
+							className="d-flex align-items-center"
+							style={{ minHeight: "100px" }}
+						>
+							<h5 className="navigation-link-hover text-dark roboto-slab-font ">
+								<i>Joensuun liikenne</i>
+							</h5>
+						</div>
+					</Link>
+				</Nav.Link>
+				<Navbar.Toggle
+					style={{ marginTop: "30px" }}
+					className="navbar-toggler mx-3  position-absolute end-0 top-0"
+				/>
+
 				<Link to={"/profile"}>
 					{appToken && (
 						<>
-							<div className="d-flex d-block d-lg-none rounded navbar-profile-hover">
+							<div
+								className="d-flex justify-content-start d-block d-lg-none rounded navbar-profile-hover "
+								style={{ height: "100px" }}
+							>
 								<Image
-									className="ms-auto"
+									className=""
 									src={
 										profilePicture
 											? profilePicture
@@ -53,12 +73,16 @@ const Navigation = () => {
 										height: "75px",
 										objectFit: "cover",
 										overflow: "hidden",
+										position: "absolute",
+										top: "15px",
+										left: "50%",
+										zIndex: 1,
 									}}
 									key={profilePicture}
 									roundedCircle
 								/>{" "}
-								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
-									<p className="m-0 text-center navbar-profile-hover">
+								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center d-none d-lg-block ">
+									<p className="m-0 text-center navbar-profile-hover ">
 										<b>{appUserName}</b>
 									</p>
 								</Navbar.Text>
@@ -68,12 +92,8 @@ const Navigation = () => {
 				</Link>
 
 				<Navbar.Collapse className="justify-content-start">
-					{appToken && <hr className="d-block d-lg-none" />}
-					<Nav.Link className="me-3">
-						<Link to={"/"}>
-							<h5 className="navigation-link-hover text-dark">Etusivu</h5>
-						</Link>
-					</Nav.Link>
+					<hr className="d-block d-lg-none mt-0" />
+
 					{!appToken ? (
 						<>
 							<Nav.Link className="me-3">
@@ -131,16 +151,15 @@ const Navigation = () => {
 									key={profilePicture}
 									roundedCircle
 								/>{" "}
-								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center ">
-									<p className="m-0 text-center">
-										<b>{appUserName}</b>
+								<Navbar.Text className="mx-2 d-flex align-items-center justify-content-center   ">
+									<p className="m-0 text-center d-flex d-none d-lg-flex  ">
+										<b className="d-none d-sm-block ">{appUserName}</b>
 									</p>
 								</Navbar.Text>
 							</div>
 						</>
 					)}
 				</Link>
-				<Navbar.Toggle className=" mx-3 my-4 position-absolute end-0 top-0" />
 			</Container>
 		</Navbar>
 	); /*

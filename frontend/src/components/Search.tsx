@@ -15,6 +15,9 @@ export const Search = () => {
 	return (
 		<Container className="w-100 my-3 overflow-hidden">
 			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded overflow-hidden">
+				<h5 className="d-none d-lg-block text-center mb-3">Matkahaku</h5>
+				<h3 className="d-lg-none text-center mb-3">Matkahaku</h3>
+
 				<Row className="overflow-hidden">
 					<Col className="overflow-hidden" md={6}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">

@@ -79,6 +79,10 @@ const Tickets = () => {
 			)}
 
 			<div>
+				{timetables && timetables?.length > 0 && (
+					<h2 className="text-center my-3">Aikataulut</h2>
+				)}
+
 				{mobileScreen && timetables && timetables?.length > 0 && (
 					<>
 						<Row data-testid="tickets-mobile-row" className="my-5">
