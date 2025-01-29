@@ -16,7 +16,9 @@
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
 }
-
+.bg-darker {
+	background-color: red; /* Pure black */
+}
 a {
 	font-weight: 500;
 	color: #646cff;

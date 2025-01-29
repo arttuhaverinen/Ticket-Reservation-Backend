@@ -59,6 +59,8 @@ interface AppContextType {
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 	profilePicture: string | null;
 	setProfilePicture: React.Dispatch<React.SetStateAction<string | null>>;
+	darkMode: boolean;
+	setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Appcontext = createContext<AppContextType | undefined>(undefined);
@@ -71,6 +73,7 @@ function App() {
 	const [appRefreshToken, setAppRefreshToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
+	const [darkMode, setDarkMode] = useState(false);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	console.log(baseurl);
@@ -210,6 +213,24 @@ function App() {
 		}
 	}, [appToken]);
 
+	useEffect(() => {
+		document.body.style.backgroundColor = darkMode ? "#212529" : "white";
+		document.body.style.color = darkMode ? "white" : "black";
+		const headings = document.querySelectorAll(
+			"h1, h2, h3, h4, h5, h6, p, strong"
+		);
+
+		headings.forEach((heading) => {
+			heading.style.color = darkMode ? "white" : "black";
+		});
+
+		//const divs = document.querySelectorAll("div");
+
+		//headings.forEach((div) => {
+		//	div.style.background = darkMode ? "black" : "white";
+		//});
+	}, [darkMode]);
+
 	return (
 		<Appcontext.Provider
 			value={{
@@ -223,6 +244,8 @@ function App() {
 				setIsAdmin,
 				profilePicture,
 				setProfilePicture,
+				darkMode,
+				setDarkMode,
 			}}
 		>
 			<Router basename={basename}>

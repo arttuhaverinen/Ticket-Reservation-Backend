@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Col, Container, Placeholder, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import { Appcontext } from "../App";
 
 const Offers = () => {
 	interface timetableInterface {
@@ -14,6 +15,7 @@ const Offers = () => {
 		priceDiscount: number | null;
 		day: string[];
 	}
+	const { appToken, isAdmin, darkMode } = useContext(Appcontext)!;
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [destination, setDestination] = useState();
@@ -83,9 +85,22 @@ const Offers = () => {
 			return timetables.map((tt) => {
 				return (
 					<Col md={12} lg={6} className="  ">
-						<div className="bg-white rounded p-3">
-							<div className="card mb-3 p-3" key={tt.id}>
-								<div className="card-body">
+						<div
+							className={`${
+								darkMode ? "bg-secondary" : "bg-white"
+							} rounded p-3`}
+						>
+							<div
+								className={`${
+									darkMode ? "bg-secondary" : "bg-white"
+								} card mb-3 p-3`}
+								key={tt.id}
+							>
+								<div
+									className={`${
+										darkMode ? "bg-secondary" : "bg-white"
+									} card-body mb-3 p-3`}
+								>
 									<h5 className="card-title">
 										{tt.departure} → {tt.destination}
 									</h5>

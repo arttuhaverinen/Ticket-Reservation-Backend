@@ -16,7 +16,7 @@ const Post = (props: postInterface) => {
 		location.pathname.includes("profile") ? true : false
 	);
 
-	const { appToken, isAdmin } = useContext(Appcontext)!;
+	const { appToken, isAdmin, darkMode } = useContext(Appcontext)!;
 
 	useEffect(() => {
 		handleBgColor();
@@ -47,7 +47,9 @@ const Post = (props: postInterface) => {
 
 	return (
 		<div
-			className={` p-2 my-4 shadow bg-white border-start border-5 border-${bgColor}`}
+			className={` p-2 my-4 shadow ${
+				darkMode ? "bg-secondary" : "bg-white"
+			} border-start border-5 border-${bgColor}`}
 		>
 			{isAdmin && inAdminPanel && (
 				<div className="d-flex w-100">

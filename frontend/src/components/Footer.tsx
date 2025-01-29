@@ -1,8 +1,13 @@
 import { Col, Container, Row } from "react-bootstrap";
+import { Appcontext } from "../App";
+import { useContext } from "react";
 
 const Footer = () => {
+	const { darkMode } = useContext(Appcontext)!;
 	return (
-		<footer className="bg-dark text-white py-4 ">
+		<footer
+			className={`{${darkMode ? "bg-darker" : "bg-darker"} text-white py-4 `}
+		>
 			<Container className="">
 				<h5 className="text-center my-3">Sovelluksen tekninen toteutus</h5>
 

@@ -12,6 +12,10 @@ body {
 	background-color: red;
 }
 
+.bg-darker {
+	background-color: red;
+}
+
 .logo {
 	height: 6em;
 	padding: 1.5em;

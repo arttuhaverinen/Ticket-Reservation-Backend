@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 import "../App.css";
+import DarkLightModeToggle from "./DarkModeToggle";
 
 const Navigation = () => {
 	const {
@@ -49,6 +50,7 @@ const Navigation = () => {
 						</div>
 					</Link>
 				</Nav.Link>
+				<DarkLightModeToggle />
 				<Navbar.Toggle
 					style={{ marginTop: "30px" }}
 					className="navbar-toggler mx-3  position-absolute end-0 top-0"
