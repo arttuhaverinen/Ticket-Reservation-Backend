@@ -145,6 +145,19 @@ h3 {
 .navbar-profile-hover:hover img {
 	border: 3px solid #0d6efd;
 }
+
+.roboto-slab-font {
+	font-family: "Roboto Slab", serif;
+	font-optical-sizing: auto;
+	font-weight: 900;
+	font-style: normal;
+	font-size: x-large;
+	color: rgb(34, 34, 34); /* A nice dark gray for the text color */
+	text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+
+	border-radius: 8px; /* Soft rounded edges */
+}
+
 /*
 .image-constrain-height {
 	width: 100%; 
@@ -176,6 +189,16 @@ h3 {
 	.navigation-link-hover:active {
 		display: inline-block; /* Ensure the border aligns with the text */
 		border-bottom: 3px solid #0d6efd;
+	}
+	.hide-when-mobile {
+		display: block;
+		margin: 100px;
+		padding: 100px;
+		visibility: hidden;
+		color: red !important;
+	}
+	.roboto-slab-font {
+		font-size: medium;
 	}
 }
 
