@@ -28,98 +28,133 @@ public class CheckoutController : ControllerBase
 
     private readonly EmailController _emailController;
 
+    private readonly ITimetablesRepository _timetableRepository;
 
-    public CheckoutController(IConfiguration configuration, ITicketRepository ticketRepository, EmailController emailController)
+
+    public CheckoutController(IConfiguration configuration, ITicketRepository ticketRepository, EmailController emailController, ITimetablesRepository timetablesRepository)
     {
         _configuration = configuration;
         _ticketRepository = ticketRepository;
         _emailController = emailController;
+        _timetableRepository = timetablesRepository;
     }
     //[Authorize]
     [HttpPost]
     public async Task<ActionResult> CheckoutOrder([FromBody] TicketDto product, [FromServices] IServiceProvider sp)
     {
-        var referer = Request.Headers.Referer;
-        s_wasmClientURL = referer[0];
-
-        // Build the URL to which the customer will be redirected after paying.
-        var server = sp.GetRequiredService<IServer>();
-
-        var serverAddressesFeature = server.Features.Get<IServerAddressesFeature>();
-
-        string? thisApiUrl = null;
-
-        if (serverAddressesFeature is not null)
+        try
         {
-            //thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
-            thisApiUrl = "http://localhost:5001";
-            Console.WriteLine(thisApiUrl);
-        }
-
-        var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
-
-        Console.WriteLine(product);
-        Console.WriteLine(JsonSerializer.Serialize(product));
-
-        // Create a pending tickeg
-
-        Tickets ticket = new Tickets()
-        {
-            StartTime = new TimeSpan(10, 0, 0),
-            EndTime = new TimeSpan(12, 0, 0),
-            Departure = product.Departure,
-            Destination = product.Destination,
-            AppUserId = userId,
-            Name = product.Name,
-            TimetablesId = product.TimetablesId,
-            Expired = false,
-            Seat = product.Seat,
-            Date = product.Date,
-            Status = "pending"
-
-        };
-
-        //await _emailController.SendOrderSucceededEmail(ticket, ticket.Name);
-
-
-        var newTicket = await _ticketRepository.InsertTicket(ticket);
-
-        Console.WriteLine(ticket.Id);
-
-        if (thisApiUrl is not null)
-        {
-            var sessionId = await CheckOut(product, thisApiUrl, ticket.Id);
-            var pubKey = _configuration["Stripe:PubKey"];
-
-            Console.WriteLine(sessionId);
-            Console.WriteLine(pubKey);
-
-            var checkoutOrderResponse = new CheckoutOrderResponse()
+            var timetable = await _timetableRepository.GetTimetabletByID(product.TimetablesId);
+            if (timetable == null)
             {
-                SessionId = sessionId,
-                PubKey = pubKey
+                throw new Exception("Timetable not found."); // Manually throw an exception
+            }
+
+            var referer = Request.Headers.Referer;
+            s_wasmClientURL = referer[0];
+
+            // Build the URL to which the customer will be redirected after paying.
+            var server = sp.GetRequiredService<IServer>();
+
+            var serverAddressesFeature = server.Features.Get<IServerAddressesFeature>();
+
+            string? thisApiUrl = null;
+
+            if (serverAddressesFeature is not null)
+            {
+                //thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
+                thisApiUrl = "http://localhost:5001";
+                Console.WriteLine(thisApiUrl);
+            }
+
+            var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+
+            Console.WriteLine(product);
+            Console.WriteLine(JsonSerializer.Serialize(product));
+
+            // Create a pending ticket
+
+            Tickets ticket = new Tickets()
+            {
+                StartTime = timetable.StartTime,
+                EndTime = timetable.EndTime,
+                Departure = timetable.Departure,
+                Destination = timetable.Destination,
+                AppUserId = userId,
+                Name = product.Name,
+                TimetablesId = timetable.Id,
+                Expired = false,
+                Seat = product.Seat,
+                Date = product.Date,
+                Status = "pending"
+
             };
 
+            //await _emailController.SendOrderSucceededEmail(ticket, ticket.Name);
+
+
+            var newTicket = await _ticketRepository.InsertTicket(ticket);
+
+            Console.WriteLine(ticket.Id);
+
+            if (thisApiUrl is not null)
+            {
+                var sessionId = await CheckOut(product, thisApiUrl, ticket.Id);
+                var pubKey = _configuration["Stripe:PubKey"];
+
+                Console.WriteLine(sessionId);
+                Console.WriteLine(pubKey);
+
+                var checkoutOrderResponse = new CheckoutOrderResponse()
+                {
+                    SessionId = sessionId,
+                    PubKey = pubKey
+                };
 
 
 
 
-            return Ok(checkoutOrderResponse);
+
+                return Ok(checkoutOrderResponse);
             }
             else
             {
                 return StatusCode(500);
             }
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return StatusCode(500);
         }
+        }
+
         //[Authorize]
         [NonAction]
         public async Task<string> CheckOut(TicketDto product, string thisApiUrl, int ticketId)
         {
             Console.WriteLine("checkout");
+            Console.WriteLine(ticketId.ToString());
+        try
+        {
+            var timetable = await _timetableRepository.GetTimetabletByID(product.TimetablesId);
+            if (timetable == null)
+            {
+                throw new Exception("Timetable not found."); // Manually throw an exception
+            }
 
-        // Create a payment flow from the items in the cart.
-        // Gets sent to Stripe API.
-        var options = new SessionCreateOptions
+            var finalPrice = 00.00;
+
+
+            if (timetable != null) {
+
+                finalPrice = timetable.PriceDiscount ?? timetable.Price;
+
+            }
+            var finalPriceLong = Convert.ToInt64(finalPrice * 100); 
+
+            // Create a payment flow from the items in the cart.
+            // Gets sent to Stripe API.
+            var options = new SessionCreateOptions
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
@@ -128,8 +163,8 @@ public class CheckoutController : ControllerBase
 
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId={CHECKOUT_SESSION_ID}",
 
-            CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> 
+                CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
+                PaymentMethodTypes = new List<string>
                 {
                     "card"
                 },
@@ -139,11 +174,11 @@ public class CheckoutController : ControllerBase
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmount = 2000, // cents
+                            UnitAmount = finalPriceLong, // cents
                             Currency = "USD",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
-                                Name = $"{product.Departure} ({product.StartTime}) - {product.Destination} ({product.EndTime}) | Pvm: {product.Date} | Istumapaikka: {product.Seat}"
+                                Name = $"{timetable!.Departure} ({timetable.StartTime}) - {timetable.Destination} ({timetable.EndTime}) | Pvm: {product.Date} | Istumapaikka: {product.Seat}"
 
                             },
                         },
@@ -158,6 +193,11 @@ public class CheckoutController : ControllerBase
             var session = await service.CreateAsync(options);
 
             return session.Id;
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            throw;
+        }
         }
 
         [HttpGet("success")]
