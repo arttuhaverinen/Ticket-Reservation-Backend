@@ -64,6 +64,7 @@ public class CheckoutController : ControllerBase
             {
                 //thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
                 thisApiUrl = "http://localhost:5001";
+                Console.WriteLine("thisApiUrl");
                 Console.WriteLine(thisApiUrl);
             }
 
@@ -205,6 +206,7 @@ public class CheckoutController : ControllerBase
         public async Task<ActionResult> CheckoutSuccess(string sessionId)
         {
             Console.WriteLine("success");
+        Console.WriteLine(sessionId);
 
             var sessionService = new SessionService();
             var session = sessionService.Get(sessionId);
@@ -220,8 +222,11 @@ public class CheckoutController : ControllerBase
             // Create new ticket after payment
 
             var ticketId = int.Parse(session.Metadata["ticketId"]);
+        Console.WriteLine("ticketId");
+        Console.WriteLine(ticketId.ToString());
 
-            var pendingTicket = await _ticketRepository.GetTicketByID(ticketId);
+
+        var pendingTicket = await _ticketRepository.GetTicketByID(ticketId);
 
             if (pendingTicket == null)
             {
