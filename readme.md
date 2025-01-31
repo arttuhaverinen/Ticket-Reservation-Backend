@@ -1,12 +1,6 @@
 # Bus service app
 
-<a href="https://example.com" target="_blank" style="display: inline-block; padding: 10px 20px; font-size: 32px; color: white; background-color: #007BFF; text-align: center; text-decoration: none; border-radius: 5px;">Click here to check out the live version!</a>
-
-Table of contents
-
-1. [Description](#1-description)
-   1.1 [Images](#11-images)
-2. [Prerequisites](#prerequisites) 2. [Steps](#steps)
+<a href="https://arttuhaverinen.dev/client" target="_blank" style="display: inline-block; padding: 10px 20px; font-size: 32px; color: white; background-color: #007BFF; text-align: center; text-decoration: none; border-radius: 5px;">Click here to check out the live version!</a>
 
 # 1. Description
 
