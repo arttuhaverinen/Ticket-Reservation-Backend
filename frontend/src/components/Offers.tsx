@@ -82,7 +82,7 @@ const Offers = () => {
 		if (timetables) {
 			return timetables.map((tt) => {
 				return (
-					<Col md={12} lg={6} className="  ">
+					<Col md={12} lg={6}>
 						<div className="bg-white rounded p-3">
 							<div className="card mb-3 p-3" key={tt.id}>
 								<div className="card-body">

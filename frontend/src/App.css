@@ -12,6 +12,91 @@ body {
 	background-color: red;
 }
 
+/* DARK MODE */
+
+/* Dark Mode Styles */
+/* Dark Mode Styles */
+body.dark-mode {
+	--primary-bg: #212529;
+	--primary-text: #fff; /* White text for dark mode */
+	--secondary-bg: #343a40;
+	--link-color: #66b3ff;
+	--button-bg: #007bff;
+	--button-text: #fff;
+	--input-bg: #3c4248;
+	--input-text: #fff;
+	--border-color: #666;
+	--footer-bg: #f1f1f1; /* Light footer color */
+	--footer-text: #333; /* Light footer text color */
+
+	background-color: var(--primary-bg);
+	color: var(--primary-text); /* This makes all text white by default */
+}
+
+body.dark-mode.gray-div {
+	--primary-bg: #343a40; /* Lighter background */
+
+	background-color: var(--primary-bg); /* Set background for the container */
+	color: var(--primary-text); /* Set text color for the container */
+}
+
+body.dark-mode a {
+	color: var(--link-color); /* Light blue links */
+}
+
+body.dark-mode button {
+	background-color: var(--button-bg);
+	color: var(--button-text); /* White text on button */
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+	background-color: var(--input-bg);
+	color: var(--input-text); /* White text inside inputs */
+	border: 1px solid var(--border-color);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+	color: var(--primary-text); /* Ensures headers also have white text */
+}
+
+body.dark-mode .card {
+	background-color: var(
+		--secondary-bg
+	); /* Background color for the card in dark mode */
+	color: var(--primary-text); /* Text color for the card */
+}
+body.dark-mode .card {
+	background-color: var(
+		--secondary-bg
+	); /* Background color for the card in dark mode */
+	color: var(--primary-text); /* Text color for the card */
+}
+/* Focus and hover states for dark mode */
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+	border-color: var(--button-bg);
+}
+
+body.dark-mode button:hover {
+	background-color: var(--link-color);
+}
+
+body .footer {
+	background-color: var(--footer-bg);
+	background-color: red;
+	color: var(--footer-text);
+	padding: 20px;
+	text-align: center;
+}
+
 .logo {
 	height: 6em;
 	padding: 1.5em;

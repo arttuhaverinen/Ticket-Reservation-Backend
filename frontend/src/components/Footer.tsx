@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Footer = () => {
 	return (
-		<footer className="bg-dark text-white py-4 ">
+		<footer className="bg-dark  py-4 ">
 			<Container className="">
 				<h5 className="text-center my-3">Sovelluksen tekninen toteutus</h5>
 
@@ -14,7 +14,7 @@ const Footer = () => {
 						<p className="m-0">Bootstrap 5</p>
 						<p className="m-0">TypeScript</p>
 					</Col>
-					<Col className="text-center my-3" lg={2} xs={6}>
+					<Col className=" text-center my-3" lg={2} xs={6}>
 						<h6 className="my-2">Backend</h6>
 						<p className="m-0">.Net 8 (C#)</p>
 						<p className="m-0">Entity Framework Core</p>

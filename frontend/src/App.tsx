@@ -210,6 +210,11 @@ function App() {
 		}
 	}, [appToken]);
 
+	useEffect(() => {
+		console.log("toggle dark mde");
+		document.body.classList.add("dark-mode");
+	});
+
 	return (
 		<Appcontext.Provider
 			value={{
