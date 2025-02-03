@@ -76,7 +76,7 @@ const ProfilePicture = () => {
 	};
 */
 	return (
-		<Container className="shadow p-3 my-3 mb-5 bg-white rounded">
+		<Container className="shadow p-3 my-3 mb-5 gray-div rounded">
 			<Row>
 				<Col xs={6} md={4}>
 					<Image

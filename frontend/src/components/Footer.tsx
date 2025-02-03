@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Footer = () => {
 	return (
-		<footer className="bg-dark  py-4 ">
+		<footer className=" footer  py-4 mt-5 ">
 			<Container className="">
 				<h5 className="text-center my-3">Sovelluksen tekninen toteutus</h5>
 
@@ -70,14 +70,14 @@ const Footer = () => {
 						<div>
 							<h5 className="">Muut projektini</h5>
 							<a
-								className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+								className="link link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
 								href="https://yahtzee-app.onrender.com/"
 							>
 								Yahtzee-noppapeli
 							</a>{" "}
 							<br />
 							<a
-								className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+								className="link link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
 								href="https://audio-classification-app-g3ek.onrender.com/"
 							>
 								Ihmisen puhetta luokitteleva sovellus

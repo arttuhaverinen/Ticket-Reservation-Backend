@@ -59,6 +59,8 @@ interface AppContextType {
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 	profilePicture: string | null;
 	setProfilePicture: React.Dispatch<React.SetStateAction<string | null>>;
+	darkMode: boolean;
+	setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Appcontext = createContext<AppContextType | undefined>(undefined);
@@ -71,6 +73,7 @@ function App() {
 	const [appRefreshToken, setAppRefreshToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
+	const [darkMode, setDarkMode] = useState(false);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	console.log(baseurl);
@@ -212,7 +215,7 @@ function App() {
 
 	useEffect(() => {
 		console.log("toggle dark mde");
-		document.body.classList.add("dark-mode");
+		document.body.classList.toggle("dark-mode", darkMode);
 	});
 
 	return (
@@ -228,6 +231,8 @@ function App() {
 				setIsAdmin,
 				profilePicture,
 				setProfilePicture,
+				darkMode,
+				setDarkMode,
 			}}
 		>
 			<Router basename={basename}>

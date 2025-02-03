@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import { Appcontext } from "../App";
 
 export const Search = () => {
 	//let baseurl: string = import.meta.env.VITE_BASEURL;
+	const { darkMode } = useContext(Appcontext);
 	const [departureLocation, setDepartureLocation] = useState("Joensuu");
 	const [destinationLocation, setDestinationLocation] = useState("Nurmes");
 	const [startDate, setStartDate] = useState<string | undefined>(
@@ -14,7 +16,10 @@ export const Search = () => {
 
 	return (
 		<Container className="w-100 my-3 overflow-hidden">
-			<Form className="w-100 mx-auto p-2 shadow p-3 mb-5 bg-white rounded overflow-hidden">
+			<Form
+				className="w-100 mx-auto p-2 shadow p-3 mb-5 rounded overflow-hidden"
+				style={{ backgroundColor: darkMode ? "var(--input-bg)" : "white" }}
+			>
 				<h5 className="d-none d-lg-block text-center mb-3">Matkahaku</h5>
 				<h3 className="d-lg-none text-center mb-3">Matkahaku</h3>
 

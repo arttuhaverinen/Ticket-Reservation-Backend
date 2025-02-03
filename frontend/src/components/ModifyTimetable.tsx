@@ -59,7 +59,7 @@ const ModifyTimetable = () => {
 	const mapTimetablesMobile = () => {
 		if (timetable) {
 			return (
-				<div className="card mb-3" key={timetable.id}>
+				<div className="card gray-div mb-3" key={timetable.id}>
 					<div className="card-body">
 						<h5 className="card-title">
 							{timetable.departure} → {timetable.destination}
@@ -146,11 +146,11 @@ const ModifyTimetable = () => {
 	};
 
 	return (
-		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
+		<div className=" mx-auto my-5 shadow p-3 mb-5 gray-div  rounded">
 			{timetable ? (
 				<>
 					<h3>Muokattava ajovuoro</h3>
-					<div className="d-block d-lg-none">{mapTimetablesMobile()}</div>
+					<div className="d-block  d-lg-none">{mapTimetablesMobile()}</div>
 					<Table
 						className="d-none d-lg-block table-responsive mx-auto"
 						striped

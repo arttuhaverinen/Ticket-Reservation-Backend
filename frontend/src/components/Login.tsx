@@ -49,7 +49,7 @@ const Login = () => {
 	};
 
 	return (
-		<div className="w-75 mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
+		<div className="w-75 mx-auto my-5 shadow p-3 mb-5 gray-div rounded">
 			{alert && (
 				<AlertMessage
 					message={alertMessage}

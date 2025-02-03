@@ -33,7 +33,7 @@ const AdminCreatePost = () => {
 	};
 
 	return (
-		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
+		<div className=" mx-auto my-5 shadow p-3 mb-5 gray-div rounded">
 			<h3>Lisää uusi ilmoitus</h3>
 			<Form
 				onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleCreatePost(e)}

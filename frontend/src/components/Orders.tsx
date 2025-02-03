@@ -193,7 +193,7 @@ const Orders = () => {
 
 			{reservedSeats && timetable && day && (
 				<div data-testid="Orders">
-					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 bg-white rounded">
+					<Row className="mx-1 my-5 justify-content-between shadow p-3 mb-5 gray-div rounded">
 						<Col className="d-flex" xs={3}>
 							<p className="">
 								{timetable.departure} <hr /> {timetable.destination}
@@ -220,7 +220,7 @@ const Orders = () => {
 						</Col>
 					</Row>
 					<Row className="my-5 mx-1 justify-content-between">
-						<Col className="p-5 shadow p-3 mb-5 bg-white rounded" xs={5}>
+						<Col className="p-5 shadow p-3 mb-5 gray-div rounded" xs={5}>
 							<div className="w-100">
 								<p className="text-center">{timetable.departure}</p>{" "}
 							</div>
@@ -236,7 +236,7 @@ const Orders = () => {
 								style={{ opacity: "0.8" }}
 							/>
 						</Col>
-						<Col className="p-5  shadow p-3 mb-5 bg-white rounded" xs={5}>
+						<Col className="p-5  shadow p-3 mb-5 gray-div rounded" xs={5}>
 							<div className="w-100">
 								<div className="w-100">
 									<p className="text-center">{timetable.destination}</p>
@@ -258,7 +258,7 @@ const Orders = () => {
 					</Row>
 					<Row className="h-100  gx-5 gy-5 justify-content-between">
 						<Col className="" xs={12} md={6}>
-							<div className="h-100 cornered justify-content-center shadow p-3 bg-white rounded">
+							<div className="h-100 cornered justify-content-center shadow p-3 gray-div rounded">
 								<h5 className="">Paikanvaraus</h5>
 								<Row className="p-0 m-0 justify-content-center  ">
 									<hr />
@@ -492,7 +492,7 @@ const Orders = () => {
 							</div>
 						</Col>
 						<Col className="" xs={12} md={6}>
-							<div className="h-100 cornered justify-content-center shadow p-3 bg-white rounded">
+							<div className="h-100 cornered justify-content-center gray-div shadow p-3  rounded">
 								<h5>Asiakkaan tiedot</h5>
 								<hr />
 								<Form>

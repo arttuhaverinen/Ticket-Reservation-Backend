@@ -5,6 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle";
 import "../App.css";
 
 const Navigation = () => {
@@ -16,6 +17,7 @@ const Navigation = () => {
 		setIsAdmin,
 		profilePicture,
 		setProfilePicture,
+		darkMode,
 	} = useContext(Appcontext)!;
 
 	const logoutClearLocalStorage = () => {
@@ -32,7 +34,9 @@ const Navigation = () => {
 	return (
 		<Navbar
 			expand="lg"
-			className="bg-body-tertiary d-flex "
+			className={` "navbar" "d-flex" ${
+				darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
+			}   `}
 			data-testid="navbar"
 			style={{ minHeight: "100px" }}
 		>
@@ -43,12 +47,13 @@ const Navigation = () => {
 							className="d-flex align-items-center"
 							style={{ minHeight: "100px" }}
 						>
-							<h5 className="navigation-link-hover text-dark roboto-slab-font ">
+							<h5 className="navigation-link-hover roboto-slab-font ">
 								<i>Joensuun liikenne</i>
 							</h5>
 						</div>
 					</Link>
 				</Nav.Link>
+
 				<Navbar.Toggle
 					style={{ marginTop: "30px" }}
 					className="navbar-toggler mx-3  position-absolute end-0 top-0"
@@ -99,33 +104,35 @@ const Navigation = () => {
 							<Nav.Link className="me-3">
 								<Link to={"/login"}>
 									{" "}
-									<h5 className="navigation-link-hover text-dark">
-										Kirjaudu sisään
-									</h5>
+									<h5 className="navigation-link-hover ">Kirjaudu sisään</h5>
 								</Link>
 							</Nav.Link>
 							<Nav.Link className="me-3">
 								<Link to={"/register"}>
 									{" "}
-									<h5 className="navigation-link-hover text-dark">
-										Rekisteröidy
-									</h5>
+									<h5 className="navigation-link-hover ">Rekisteröidy</h5>
 								</Link>
 							</Nav.Link>
+							<div className="me-3">
+								<DarkModeToggle />
+							</div>{" "}
 						</>
 					) : (
-						<Nav.Link className="">
-							<Link
-								className=""
-								onClick={() => logoutClearLocalStorage()}
-								to={"/"}
-							>
-								{" "}
-								<h5 className="navigation-link-hover text-dark">
-									Kirjaudu ulos
-								</h5>
-							</Link>
-						</Nav.Link>
+						<>
+							<Nav.Link className="ms-3">
+								<Link
+									className=""
+									onClick={() => logoutClearLocalStorage()}
+									to={"/"}
+								>
+									{" "}
+									<h5 className="navigation-link-hover ">Kirjaudu ulos</h5>
+								</Link>
+							</Nav.Link>
+							<div className="ms-3">
+								<DarkModeToggle />
+							</div>
+						</>
 					)}
 				</Navbar.Collapse>
 				<Link to={"/profile"}>
