@@ -1,0 +1,57 @@
+name: Run Cypress Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "*"
+jobs:
+  test:
+    runs-on: ubuntu-latest # GitHub Actions runner
+
+    steps:
+      - name: Start frontend e2e tests
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker-compose.test-e2e.yml test-webapp"
+          up-flags: "--build --remove-orphans --abort-on-container-exit"
+
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20" # Use the latest stable Node.js version
+
+      # Step 3: Install frontend dependencies
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Step 6: Start the Vite app (frontend)
+      - name: Start Vite frontend
+        run: |
+          cd frontend
+          npm run dev &  # Starts Vite in the background
+
+      # Step 7: Wait for the servers to be ready
+      - name: Wait for Vite and backend to start
+        run: |
+          npx wait-on http://localhost:5002  # Backend API
+          npx wait-on http://localhost:5173  # Vite App
+
+      # Step 8: Run Cypress tests
+      - name: Run Cypress tests
+        run: |
+          cd frontend
+          npx cypress run --headless  # Run tests in headless mode using Electron (default)
+
+      - name: Shut down docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker-compose.test-e2e.yml"
+          down-flags: ""
