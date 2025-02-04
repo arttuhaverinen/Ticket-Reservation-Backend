@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Post from "./Post";
-import { Container, Placeholder } from "react-bootstrap";
+import { Button, Container, Placeholder } from "react-bootstrap";
 
 interface postInterface {
 	postId: number;
@@ -10,6 +10,7 @@ interface postInterface {
 }
 
 const Posts = (/*props: postInterface*/) => {
+	const [page, setPage] = useState<number>(1);
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [posts, setPosts] = useState<postInterface[]>();
 	useEffect(() => {
@@ -23,7 +24,9 @@ const Posts = (/*props: postInterface*/) => {
 			},
 		})
 			.then((res) => res.json())
-			.then((res) => setPosts(res))
+			.then((res) => {
+				setPosts(res);
+			})
 			.catch((err) => {
 				console.error("Error fetching posts:", err);
 				setPosts([]); // Set fallback state or handle error UI
@@ -78,17 +81,39 @@ const Posts = (/*props: postInterface*/) => {
 				</div>
 			)}
 			{posts && (
-				<Container className="p-3 mb-5  rounded">
+				<Container className="p-3 mb-1  rounded">
 					{posts &&
-						posts.map((post) => {
-							return (
-								<Post
-									postId={post.postId}
-									postTitle={post.postTitle}
-									postContent={post.postContent}
-									postType={post.postType}
-								/>
-							);
+						posts.map((post, index) => {
+							if (page * 4 > index && (page - 1) * 4 <= index) {
+								return (
+									<Post
+										postId={post.postId}
+										postTitle={post.postTitle}
+										postContent={post.postContent}
+										postType={post.postType}
+									/>
+								);
+							}
+						})}
+				</Container>
+			)}
+			{posts && (
+				<Container className="d-flex justify-content-center align-items-center  p-3 mb-5  rounded ">
+					<h3 className="mx-3">Sivut: </h3>
+					{posts &&
+						posts.map((post, index) => {
+							if (index % 4 == 0) {
+								return (
+									<Button
+										onClick={() => setPage(index / 4 + 1)}
+										variant={page == index / 4 + 1 ? "primary" : "info"}
+										className="rounded-circle mx-1"
+										style={{ width: "50px", height: "50px" }}
+									>
+										{index / 4 + 1}
+									</Button>
+								);
+							}
 						})}
 				</Container>
 			)}

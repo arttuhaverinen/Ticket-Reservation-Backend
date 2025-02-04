@@ -252,7 +252,72 @@ namespace TicketReservationApp.Data
                     PostType = "info",
                     AppUserId = userId
 
-                });
+                },
+                new Posts
+                {
+                    PostContent = "Sed at eleifend ex, at ullamcorper velit. Vivamus viverra enim vel ornare lacinia. Nulla leo elit, congue et viverra vel, cursus vel purus. Phasellus eget ante a est mollis rhoncus id eu metus. Mauris sit amet metus augue. Pellentesque tincidunt dictum auctor. Fusce id faucibus lacus. Mauris lorem odio, suscipit vel sollicitudin in, pretium nec lorem.",
+                    PostTitle = "Page 2 title.",
+                    PostType = "normal",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Aenean sed leo ultricies, semper sem non, cursus nibh. In hac habitasse platea dictumst. In nec magna porttitor, vehicula nibh a, pellentesque nulla. Integer ex nunc, facilisis sit amet dolor porta, cursus facilisis lorem.",
+                    PostTitle = "Aikataulumuutoksia Tampereen ja Kuopion välille",
+                    PostType = "info",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Sed at eleifend ex, at ullamcorper velit. Vivamus viverra enim vel ornare lacinia. Nulla leo elit, congue et viverra vel, cursus vel purus. Phasellus eget ante a est mollis rhoncus id eu metus. Mauris sit amet metus augue. Pellentesque tincidunt dictum auctor. Fusce id faucibus lacus. Mauris lorem odio, suscipit vel sollicitudin in, pretium nec lorem.",
+                    PostTitle = "Aikataulumuutoksia Joensuun ja Nurmeksen välille.",
+                    PostType = "normal",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Aenean sed leo ultricies, semper sem non, cursus nibh. In hac habitasse platea dictumst. In nec magna porttitor, vehicula nibh a, pellentesque nulla. Integer ex nunc, facilisis sit amet dolor porta, cursus facilisis lorem.",
+                    PostTitle = "Tiedote",
+                    PostType = "info",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Sed at eleifend ex, at ullamcorper velit. Vivamus viverra enim vel ornare lacinia. Nulla leo elit, congue et viverra vel, cursus vel purus. Phasellus eget ante a est mollis rhoncus id eu metus. Mauris sit amet metus augue. Pellentesque tincidunt dictum auctor. Fusce id faucibus lacus. Mauris lorem odio, suscipit vel sollicitudin in, pretium nec lorem.",
+                    PostTitle = "Page 3 title.",
+                    PostType = "normal",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Aenean sed leo ultricies, semper sem non, cursus nibh. In hac habitasse platea dictumst. In nec magna porttitor, vehicula nibh a, pellentesque nulla. Integer ex nunc, facilisis sit amet dolor porta, cursus facilisis lorem.",
+                    PostTitle = "Aikataulumuutoksia Tampereen ja Joensuun välille",
+                    PostType = "info",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Sed at eleifend ex, at ullamcorper velit. Vivamus viverra enim vel ornare lacinia. Nulla leo elit, congue et viverra vel, cursus vel purus. Phasellus eget ante a est mollis rhoncus id eu metus. Mauris sit amet metus augue. Pellentesque tincidunt dictum auctor. Fusce id faucibus lacus. Mauris lorem odio, suscipit vel sollicitudin in, pretium nec lorem.",
+                    PostTitle = "Tiedote #1.",
+                    PostType = "info",
+                    AppUserId = userId
+
+                },
+                new Posts
+                {
+                    PostContent = "Aenean sed leo ultricies, semper sem non, cursus nibh. In hac habitasse platea dictumst. In nec magna porttitor, vehicula nibh a, pellentesque nulla. Integer ex nunc, facilisis sit amet dolor porta, cursus facilisis lorem.",
+                    PostTitle = "Tiedote #2",
+                    PostType = "info",
+                    AppUserId = userId
+
+                }
+                );
             await _context.SaveChangesAsync();
 
 
