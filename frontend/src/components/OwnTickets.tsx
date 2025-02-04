@@ -38,8 +38,8 @@ const OwnTickets = () => {
 				{tickets &&
 					tickets.map((ticket) => {
 						return (
-							<div className="bg-white rounded p-3">
-								<div className="card mb-3 p-3">
+							<div className="gray-div rounded p-3">
+								<div className="card gray-div mb-3 p-3">
 									<div className="card-body">
 										<h5 className="card-title">
 											{ticket.departure} → {ticket.destination}

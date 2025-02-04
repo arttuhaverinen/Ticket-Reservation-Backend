@@ -59,12 +59,13 @@ const CreateTimetable = () => {
 	};
 
 	return (
-		<div className=" mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
+		<div className=" mx-auto my-5 shadow p-3 mb-5  rounded">
 			<h3>Lisää uusi ajovuoro</h3>
 			<Form
 				onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
 					handleCreateTimetable(e)
 				}
+				className=""
 			>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Lähtö</Form.Label>

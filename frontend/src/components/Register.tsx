@@ -32,7 +32,9 @@ const Register = () => {
 			.then((res) => {
 				console.log(res);
 				setAlert(true);
-				setAlertMessage("Käyttäjän rekisteröinti onnistui.");
+				setAlertMessage(
+					"Käyttäjän rekisteröinti onnistui. Viimeistele rekisteröinti sähköpostiisi lähetetyn vahvistuslinkin kautta."
+				);
 				setAlertTheme("success");
 			})
 			.catch((error) => {
@@ -44,7 +46,7 @@ const Register = () => {
 	};
 
 	return (
-		<div className="w-75 mx-auto my-5 shadow p-3 mb-5 bg-white rounded">
+		<div className="w-75 mx-auto my-5 gray-div shadow p-3 mb-5 rounded">
 			<h3>Rekisteröidy</h3>
 
 			{alert && (

@@ -47,7 +47,7 @@ const Post = (props: postInterface) => {
 
 	return (
 		<div
-			className={` p-2 my-4 shadow bg-white border-start border-5 border-${bgColor}`}
+			className={` p-2 my-4 gray-div shadow border-start border-5 border-${bgColor}`}
 		>
 			{isAdmin && inAdminPanel && (
 				<div className="d-flex w-100">

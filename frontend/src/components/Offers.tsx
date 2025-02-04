@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Col, Container, Placeholder, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import { Appcontext } from "../App";
 
 const Offers = () => {
 	interface timetableInterface {
@@ -16,6 +17,7 @@ const Offers = () => {
 	}
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
+	const { darkMode } = useContext(Appcontext);
 	const [destination, setDestination] = useState();
 	const [departure, setDeparture] = useState();
 	const [startTime, setStartTime] = useState();
@@ -82,10 +84,10 @@ const Offers = () => {
 		if (timetables) {
 			return timetables.map((tt) => {
 				return (
-					<Col md={12} lg={6} className="  ">
-						<div className="bg-white rounded p-3">
-							<div className="card mb-3 p-3" key={tt.id}>
-								<div className="card-body">
+					<Col className="" md={12} lg={6}>
+						<div className="gray-div  rounded p-3">
+							<div className="card gray-div mb-3 p-3" key={tt.id}>
+								<div className="">
 									<h5 className="card-title">
 										{tt.departure} → {tt.destination}
 									</h5>
@@ -171,10 +173,14 @@ const Offers = () => {
 	};
 
 	return (
-		<Container className="py-5" fluid style={{ backgroundColor: "#77b1d4" }}>
+		<Container
+			className="py-5"
+			fluid
+			style={{ backgroundColor: darkMode ? "#263062" : "#77b1d4" }}
+		>
 			<Container className="">
 				<h2 className="text-center">Tarjousliput</h2>
-				<Row className="  my-1  g-5   ">{mapTimetables()}</Row>
+				<Row className=" my-1  g-5  gx-5  ">{mapTimetables()}</Row>
 			</Container>
 		</Container>
 	);

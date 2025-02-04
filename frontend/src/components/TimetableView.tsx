@@ -28,7 +28,7 @@ const TimetableView = () => {
 	const mapTimetablesMobile = () => {
 		if (timetables) {
 			return timetables.map((timetable) => (
-				<div className="card mb-3" key={timetable.id}>
+				<div className="card gray-div mb-3" key={timetable.id}>
 					<div className="card-body">
 						<h5 className="card-title">
 							{timetable.departure} → {timetable.destination}
@@ -99,7 +99,7 @@ const TimetableView = () => {
 	};
 
 	return (
-		<div className="shadow p-3 my-5 mb-5 bg-white rounded">
+		<div className="shadow p-3 my-5 mb-5 gray-div rounded">
 			<h3>Ajovuorot</h3>
 			<Link to={"createtimetable"}>
 				<Button className="w-100 my-3">Lisää uusi vuoro</Button>
@@ -115,7 +115,7 @@ const TimetableView = () => {
 				className="table-responsive 				d-none
 				d-lg-block"
 			>
-				<thead>
+				<thead className="">
 					<tr>
 						<th>Lähtö</th>
 						<th>Kohde</th>

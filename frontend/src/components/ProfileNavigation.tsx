@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 const ProfileNavigation = () => {
 	const location = useLocation();
 	return (
-		<Container className="p-0 mx-auto my-3 shadow p-3 bg-white rounded">
+		<Container className="p-0 mx-auto my-3 shadow p-3 gray-div rounded">
 			<Row className=" ">
 				<Col>
 					<Link to={"/profile/"}>

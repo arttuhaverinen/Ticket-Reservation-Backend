@@ -4,12 +4,117 @@
 	padding: 0;
 }
 
+:root {
+	--primary-bg: #ffffff;
+	--primary-text: #000; /* Black text for light mode */
+	--secondary-bg: #f8f9fa;
+	--link-color: #007bff;
+	--button-bg: #007bff;
+	--button-text: #fff;
+	--input-bg: #fff;
+	--input-text: #000;
+	--border-color: #ccc;
+	--footer-bg: #f1f1f1;
+	--footer-text: #333;
+}
+
 body {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
+	background-color: var(--primary-bg);
+	color: var(--primary-text);
 	box-sizing: border-box;
 	margin: 0;
-	background-color: red;
+	padding: 0;
+}
+
+/* DARK MODE */
+
+/* Dark Mode Styles */
+/* Dark Mode Styles */
+body.dark-mode {
+	--primary-bg: #212529;
+	--primary-text: #fff; /* White text for dark mode */
+	--secondary-bg: #343a40;
+	--link-color: #66b3ff;
+	--button-bg: #007bff;
+	--button-text: #fff;
+	--input-bg: #3c4248;
+	--input-text: #fff;
+	--border-color: #666;
+	--footer-bg: #f1f1f1; /* Light footer color */
+	--footer-text: #333; /* Light footer text color */
+
+	background-color: var(--primary-bg);
+	color: var(--primary-text); /* This makes all text white by default */
+}
+
+body.dark-mode .gray-div {
+	background-color: #343a40 !important; /* Just set a different color without affecting variables */
+	color: var(--primary-text);
+}
+body .gray-div {
+	background-color: white !important; /* Just set a different color without affecting variables */
+	color: var(--primary-text);
+}
+
+body.dark-mode a {
+	color: var(--input-text);
+}
+
+button {
+	background-color: var(--button-bg);
+	color: var(--button-text); /* White text on button */
+}
+
+input,
+select,
+textarea {
+	background-color: var(--input-bg) !important;
+	color: var(--input-text) !important; /* White text inside inputs */
+	border: 1px solid var(--border-color);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: var(--secondary-bg); /* Ensure dark mode applies */
+	color: var(--primary-text); /* Ensures text color is correct */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--primary-text); /* Ensures headers also have white text */
+}
+
+.card .card-body {
+	background-color: var(
+		--secondary-bg
+	); /* Background color for the card in dark mode */
+	color: var(--primary-text); /* Text color for the card */
+}
+
+/* Focus and hover states for dark mode */
+input:focus,
+select:focus,
+textarea:focus {
+	border-color: var(--button-bg);
+}
+
+button:hover {
+	background-color: var(--link-color);
+}
+
+body.dark-mode .footer {
+	background-color: black;
+	color: var(--footer-text) inherit;
+	text-align: center;
+}
+
+.footer {
+	background-color: white;
 }
 
 .logo {
@@ -124,11 +229,15 @@ h3 {
 	text-align: end !important; /* Override Bootstrap’s text-end */
 }
 
+.navigation-link-hover {
+	color: var(--input-text);
+}
+
 .navigation-link-hover:hover {
 	margin-top: 3px;
 	border-bottom: 3px solid #0d6efd;
 	border-radius: 1px;
-	scale: 1.05;
+	scale: 1.02;
 }
 
 .navbar-profile-hover:hover p {
@@ -152,7 +261,7 @@ h3 {
 	font-weight: 900;
 	font-style: normal;
 	font-size: x-large;
-	color: rgb(34, 34, 34); /* A nice dark gray for the text color */
+	color: var(--input-text);
 	text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
 
 	border-radius: 8px; /* Soft rounded edges */
