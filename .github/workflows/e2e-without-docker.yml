@@ -13,8 +13,8 @@ jobs:
       - name: Start frontend e2e tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: "./docker-compose.test-e2e.yml test-webapp"
-          up-flags: "--build --remove-orphans --abort-on-container-exit"
+          compose-file: "./docker-compose.test-e2e.yml"
+          up-flags: "test-webapp --build --remove-orphans --abort-on-container-exit"
 
       # Step 1: Checkout the code
       - name: Checkout code
@@ -34,9 +34,10 @@ jobs:
 
       # Step 6: Start the Vite app (frontend)
       - name: Start Vite frontend
-        run: |
-          cd frontend
-          npm run dev &  # Starts Vite in the background
+        working-directory: ./frontend # Instead of 'cd frontend'
+        env:
+          VITE_BASEURL: http://localhost:5002 # Set environment variable
+        run: npm run dev & # Starts Vite in the background
 
       # Step 7: Wait for the servers to be ready
       - name: Wait for Vite and backend to start
