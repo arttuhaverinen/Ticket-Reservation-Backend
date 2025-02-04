@@ -23,7 +23,7 @@ jobs:
 
       - name: Start backend services
         run: |
-          docker-compose -f docker-compose.test-e2e.yml up test-webapp  --build -d
+          docker-compose -f docker-compose.test-e2e.yml up --build -d test-webapp
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
