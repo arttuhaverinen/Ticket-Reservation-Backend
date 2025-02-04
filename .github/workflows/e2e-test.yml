@@ -18,11 +18,19 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
 
-      - name: Start frontend e2e tests
-        uses: hoverkraft-tech/compose-action@v2.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          compose-file: "./docker-compose.test-e2e.yml"
-          up-flags: "--build --remove-orphans --abort-on-container-exit"
+          node-version: "18" # Specify the Node.js version you're using for the app
+
+      - name: Install dependencies for the frontend
+        run: |
+          cd frontend
+          npm install
+
+      - name: Start Vite app
+        run: |
+          npm run testmode
 
       - name: Shut down docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
