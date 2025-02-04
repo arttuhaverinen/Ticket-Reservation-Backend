@@ -18,11 +18,9 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
 
-      - name: Start frontend e2e tests
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.test-e2e.yml"
-          up-flags: "test-webapp --build --remove-orphans --abort-on-container-exit"
+      - name: Start backend services
+        run: |
+          docker-compose -f docker-compose.test-e2e.yml test-webapp up --build -d
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
@@ -55,8 +53,5 @@ jobs:
           cd frontend
           npx cypress run --headless  # Run tests in headless mode using Electron (default)
 
-      - name: Shut down docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.test-e2e.yml"
-          down-flags: ""
+      - name: Stop and clean up containers
+        run: docker-compose -f docker-compose.test-e2e.yml down
