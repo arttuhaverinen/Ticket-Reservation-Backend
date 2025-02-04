@@ -10,15 +10,19 @@ jobs:
     runs-on: ubuntu-latest # GitHub Actions runner
 
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Create env file
+        run: |
+          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' >> ./backend/.env &&
+          echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
+
       - name: Start frontend e2e tests
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.test-e2e.yml"
           up-flags: "test-webapp --build --remove-orphans --abort-on-container-exit"
-
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
