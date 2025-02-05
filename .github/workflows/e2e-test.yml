@@ -18,14 +18,12 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
 
-      - name: Start frontend e2e tests
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.test-e2e.yml"
-          up-flags: "--build --remove-orphans --abort-on-container-exit"
+      - name: Install Docker Compose # ✅ Fix: Install docker-compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
 
-      - name: Shut down docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.test-e2e.yml"
-          down-flags: ""
+      - name: Start backend services
+        run: |
+          docker-compose -f docker-compose.test-e2e.yml up --build --abort-on-container-exit
+
+      - name: Stop and clean up containers
+        run: docker-compose -f docker-compose.test-e2e.yml down

@@ -10,6 +10,8 @@ services:
     depends_on:
       test-webapp:
         condition: service_healthy
+    environment:
+      - CYPRESS_baseUrl=http://test-client-vite:5173 # This is the base URL for Cypress
     networks:
       - busapp-network
 
