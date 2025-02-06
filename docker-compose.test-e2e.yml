@@ -3,18 +3,15 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.e2e
-    ports:
-      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - ./cypress/screenshots:/app/cypress/screenshots
-    environment:
-      - VITE_MINIO_URL=http://minio:9000
-      - VITE_BASEURL=http://localhost:5002
+      - ./frontend/cypress/screenshots:/app/cypress/screenshots
     depends_on:
       test-webapp:
         condition: service_healthy
+    environment:
+      - CYPRESS_baseUrl=http://test-client-vite:5173 # This is the base URL for Cypress
     networks:
       - busapp-network
 
@@ -47,10 +44,10 @@ services:
       - /app/node_modules
     environment:
       - VITE_MINIO_URL=http://minio:9000
-      - VITE_BASEURL=http://localhost:5002
-    depends_on:
-      test-webapp:
-        condition: service_healthy
+      - VITE_BASEURL=http://test-webapp:5002
+    #depends_on:
+    #  test-webapp:
+    #    condition: service_healthy
     networks:
       - busapp-network
 

@@ -55,7 +55,7 @@ describe("Orders Component", () => {
 			<Appcontext.Provider value={mockAppContext}>
 				<MemoryRouter
 					initialEntries={[
-						`/api/Timetables?departure=Joensuu&destination=Tampere&time=09:00:00`, // Proper URL structure
+						`/api/Timetables?Joensuu&destination=Nurmes&date=2025-02-05&time=09:00:00`, // Proper URL structure
 					]}
 				>
 					<Orders />

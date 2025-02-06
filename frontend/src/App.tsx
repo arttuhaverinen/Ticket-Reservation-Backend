@@ -196,14 +196,17 @@ function App() {
 
 	useEffect(() => {
 		console.log(appToken, "check if admin");
-
-		if (appUserName && appToken) {
+		console.log("admin", appToken, appUserName);
+		//let accessToken = localStorage.getItem("accesstoken");
+		//let username = localStorage.getItem("username");
+		if (appToken && appUserName) {
+			console.log("checking role");
 			fetch(`${baseurl}/api/role`, {
 				headers: { Authorization: `Bearer ${appToken}` },
 			})
 				.then((res) => res.json())
 				.then((res) => {
-					console.log(res);
+					console.log("role", res);
 					if (res.role == "Admin") {
 						console.log("is admin");
 						setIsAdmin(true);

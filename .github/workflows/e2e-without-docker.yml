@@ -1,0 +1,60 @@
+name: Run Cypress Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "*"
+jobs:
+  test:
+    runs-on: ubuntu-latest # GitHub Actions runner
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Docker Compose # ✅ Fix: Install docker-compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Create env file
+        run: |
+          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' >> ./backend/.env &&
+          echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
+
+      - name: Start backend services
+        run: |
+          docker-compose -f docker-compose.test-e2e.yml up --build -d test-webapp
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20" # Use the latest stable Node.js version
+
+      # Step 3: Install frontend dependencies
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Step 6: Start the Vite app (frontend)
+      - name: Start Vite frontend
+        working-directory: ./frontend # Instead of 'cd frontend'
+        env:
+          VITE_BASEURL: http://localhost:5002 # Set environment variable
+        run: npm run dev & # Starts Vite in the background
+
+      # Step 7: Wait for the servers to be ready
+      #- name: Wait for Vite and backend to start
+      #  run: |
+      #    npx wait-on http://localhost:5002  # Backend API
+      #    npx wait-on http://localhost:5173  # Vite App
+
+      # Step 8: Run Cypress tests
+      - name: Run Cypress tests
+        run: |
+          cd frontend
+          npx cypress run --headless  # Run tests in headless mode using Electron (default)
+
+      - name: Stop and clean up containers
+        run: docker-compose -f docker-compose.test-e2e.yml down

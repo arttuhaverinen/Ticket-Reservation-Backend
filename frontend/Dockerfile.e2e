@@ -19,5 +19,5 @@ COPY . .
 #RUN npx cypress install
 
 # Expose necessary ports and start the application
-EXPOSE 3000
+
 #
