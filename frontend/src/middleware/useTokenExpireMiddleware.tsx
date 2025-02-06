@@ -20,41 +20,40 @@ const useTokenExpireMiddleware = () => {
 		console.log(appUserName, appToken, isAdmin);
 
 		useEffect(() => {
-			if (document.cookie.includes("refreshtoken")) {
-				let baseurl: string = import.meta.env.VITE_BASEURL;
-				let currentTime = Date.now();
-				let tokenCreatedTime = localStorage.getItem("time");
-				let accessToken = localStorage.getItem("accesstoken");
-				let expireTime = Number(localStorage.getItem("accessexpire")) || 0;
-				let expireTimeLeft =
-					(Number(currentTime) - Number(tokenCreatedTime)) / 10;
-				let refreshToken = localStorage.getItem("refreshtoken");
+			console.log("refresh");
+			let baseurl: string = import.meta.env.VITE_BASEURL;
+			let currentTime = Date.now();
+			let tokenCreatedTime = localStorage.getItem("time");
+			let accessToken = localStorage.getItem("accesstoken");
+			let expireTime = Number(localStorage.getItem("accessexpire")) || 0;
+			let expireTimeLeft =
+				(Number(currentTime) - Number(tokenCreatedTime)) / 1000;
+			let refreshToken = localStorage.getItem("refreshtoken");
 
-				console.log("auth", expireTimeLeft, expireTime);
+			console.log("auth", expireTimeLeft, expireTime / 2);
 
-				if (expireTimeLeft > expireTime) {
-					console.log("refresh accesstoken!");
-					console.log(refreshToken);
-					fetch(`${baseurl}/refresh`, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							//Authorization: `Bearer ${accessToken}`,
-						},
-						body: JSON.stringify({ refreshToken: refreshToken }),
+			if (expireTimeLeft > expireTime / 2) {
+				console.log("refresh accesstoken!");
+				console.log(refreshToken);
+				fetch(`${baseurl}/auth/refresh`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						//Authorization: `Bearer ${accessToken}`,
+					},
+					body: JSON.stringify({ refreshToken: refreshToken }),
+				})
+					.then((res) => res.json())
+					.then((res) => {
+						console.log("auth res", res);
+						localStorage.setItem("accesstoken", res.accessToken);
+						localStorage.setItem("refreshtoken", res.refreshToken);
+						localStorage.setItem("accessexpire", res.expiresIn);
+						localStorage.setItem("time", Date.now().toString());
+
+						setAppToken(res.accessToken);
 					})
-						.then((res) => res.json())
-						.then((res) => {
-							console.log("auth res", res);
-							localStorage.setItem("accesstoken", res.accessToken);
-							localStorage.setItem("refreshtoken", res.refreshToken);
-							localStorage.setItem("accessexpire", res.expiresIn);
-							localStorage.setItem("time", Date.now().toString());
-
-							setAppToken(res.accessToken);
-						})
-						.catch((error) => console.log(error));
-				}
+					.catch((error) => console.log(error));
 			}
 		}, [appUserName, setAppToken]);
 	}

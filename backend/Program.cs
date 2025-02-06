@@ -24,6 +24,8 @@ using TicketReservationApp.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Data;
 using static System.Net.WebRequestMethods;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.Extensions.DependencyInjection;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -278,6 +280,7 @@ builder.Services.AddAuthentication(options =>
 */
 builder.Services.AddAuthentication();
 
+
 builder.Services.AddAuthorization();
 
 
@@ -288,6 +291,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
+
+
+builder.Services.ConfigureAll
+<BearerTokenOptions>(option => {
+    option.BearerTokenExpiration =
+    TimeSpan.FromMinutes(60);
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -394,6 +404,7 @@ app.UseHttpsRedirection();
 
 //app.UseAuthentication();
 //app.UseAuthorization();
+app.MapGroup("/auth");
 
 app.MapControllers();
 
