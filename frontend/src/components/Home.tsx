@@ -85,6 +85,7 @@ const Home = () => {
 					<Offers />
 					<Info />
 				</Row>
+
 				{/*
 			<Row className="justify-content-between">
 				<Col xs={4}>
