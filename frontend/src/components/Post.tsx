@@ -47,7 +47,7 @@ const Post = (props: postInterface) => {
 
 	return (
 		<div
-			className={` p-2 my-4 gray-div shadow border-start border-5 border-${bgColor}`}
+			className={`h-100  p-2 my-4 gray-div  shadow border-start border-5 border-${bgColor}`}
 			data-testid="post-div"
 		>
 			{isAdmin && inAdminPanel && (
@@ -60,21 +60,22 @@ const Post = (props: postInterface) => {
 					</Button>
 				</div>
 			)}
-			<Row className="w-100 justify-content-between">
-				<Col className="justify-content-start" xs={10}>
+			<Row className=" h-100 justify-content-between">
+				<Col xs={10}>
+					{" "}
 					<h6>{new Date().toISOString().slice(0, 10)}</h6>
 					<h5 style={{ color: bgColor }}>{props.postTitle}</h5>
 				</Col>
-				<Col xs={2} className="justify-content-end align-items-end">
+				<Col xs={2}>
 					{" "}
 					{bgColor == "danger" && (
-						<div className="d-flex justify-content-end">
-							<i className="bi bi-exclamation-triangle text-danger fs-1"></i>
-						</div>
+						<i className="bi bi-exclamation-triangle text-danger fs-1"></i>
 					)}
 				</Col>
+				<Col className="h-100 justify-content-start" xs={12}>
+					<p className=" text-start">{props.postContent}</p>
+				</Col>
 			</Row>
-			<p className=" text-start">{props.postContent}</p>
 		</div>
 	);
 };
