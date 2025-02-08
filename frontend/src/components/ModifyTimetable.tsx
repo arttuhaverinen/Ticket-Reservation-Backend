@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
-
+import { Appcontext } from "../App";
 const ModifyTimetable = () => {
 	interface timetableInterface {
 		id: number;
@@ -33,6 +33,8 @@ const ModifyTimetable = () => {
 	const [timetable, setTimetable] = useState<timetableInterface>();
 
 	let timetableId = searchParams.get("Timetable");
+
+	const { darkMode } = useContext(Appcontext);
 
 	useEffect(() => {
 		fetch(`${baseurl}/api/Timetables/${timetableId}`)
@@ -152,7 +154,10 @@ const ModifyTimetable = () => {
 					<h3>Muokattava ajovuoro</h3>
 					<div className="d-block  d-lg-none">{mapTimetablesMobile()}</div>
 					<Table
-						className="d-none d-lg-block table-responsive mx-auto"
+						className={`${
+							darkMode ? "table-dark" : ""
+						} "table-responsive" "d-none"
+										"d-lg-block"`}
 						striped
 						bordered
 						hover

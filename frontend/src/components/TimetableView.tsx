@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle";
+import { Appcontext } from "../App";
 
 const TimetableView = () => {
 	interface timetableInterface {
@@ -14,6 +16,8 @@ const TimetableView = () => {
 		priceDiscount: number | null;
 		day: string[];
 	}
+
+	const { darkMode } = useContext(Appcontext);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [timetables, setTimetables] = useState<timetableInterface[]>();
@@ -53,7 +57,7 @@ const TimetableView = () => {
 							<strong>Ajopäivät:</strong> {timetable.day.toString()}
 						</p>
 						<Link to={`modifytimetable?Timetable=${timetable.id}`}>
-							<Button className="btn btn-primary">Muokkaa</Button>
+							<Button className="btn me-3 btn-primary">Muokkaa</Button>
 						</Link>
 						<Button className="btn btn-danger">Poista</Button>
 					</div>
@@ -112,8 +116,8 @@ const TimetableView = () => {
 				striped
 				bordered
 				hover
-				className="table-responsive 				d-none
-				d-lg-block"
+				className={`${darkMode ? "table-dark" : ""} table-responsive d-none
+				d-lg-block`}
 			>
 				<thead className="">
 					<tr>

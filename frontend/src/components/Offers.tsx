@@ -152,7 +152,11 @@ const Offers = () => {
 										<h5 className="p-0 text-center">Ajopäivät:</h5>
 										<ul className="list-group">
 											{translateDaysToFinnish(tt.day).map((day) => {
-												return <li className="list-group-item">{day}</li>;
+												return (
+													<li className="list-group-item">
+														<h6>{day}</h6>{" "}
+													</li>
+												);
 											})}
 										</ul>
 									</div>
@@ -161,9 +165,9 @@ const Offers = () => {
 							<hr />
 							<Row className="my-3">
 								{/** <!-- justify-content-center --> */}
-								<Col xs={3} sm={6} className="  ">
+								<Col xs={3} sm={6} className="d-flex align-items-center">
 									<Link
-										className="text-center btn btn-primary"
+										className="text-center ms-1 btn btn-primary"
 										to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
 									>
 										Osta
@@ -172,7 +176,7 @@ const Offers = () => {
 								<Col xs={9} sm={6} className="">
 									<span>Päivämäärä </span>
 									<DatePicker
-										className="datepicker"
+										className="datepicker w-100"
 										locale="fi"
 										selected={new Date(startDate)}
 										dateFormat="dd/MM/yyyy"

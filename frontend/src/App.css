@@ -35,6 +35,7 @@ body.dark-mode {
 	--primary-text: #fff; /* White text for dark mode */
 	--secondary-bg: #343a40;
 	--link-color: #66b3ff;
+	--mild-dark: #343a40;
 	--button-bg: #007bff;
 	--button-text: #fff;
 	--input-bg: #3c4248;
@@ -77,11 +78,9 @@ textarea {
 	border: 1px solid var(--border-color);
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: var(--secondary-bg); /* Ensure dark mode applies */
-	color: var(--primary-text); /* Ensures text color is correct */
+input::placeholder {
+	color: var(--input-text) !important; /* White text inside inputs */
+	opacity: 0.5 !important;
 }
 
 h1,
@@ -113,6 +112,7 @@ button:hover {
 
 body.dark-mode ul li {
 	background-color: var(--secondary-bg) !important;
+	color: var(--button-text) !important;
 }
 
 body.dark-mode .footer {
@@ -136,6 +136,55 @@ body.dark-mode .footer {
 }
 .logo.react:hover {
 	filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Change the background color of the date picker calendar */
+.react-datepicker__triangle {
+	background-color: var(--secondary-bg);
+	color: var(
+		--primary-text
+	) !important; /* Ensures headers also have white text */
+}
+
+.react-datepicker__header {
+	background-color: var(--secondary-bg) !important;
+	color: var(
+		--primary-text
+	) !important; /* Ensures headers also have white text */
+}
+.react-datepicker-popper {
+	background-color: var(
+		--secondary-bg
+	) !important; /* Ensure dark mode applies */
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name,
+.react-datepicker__day--selected,
+.react-datepicker__time-box,
+.react-datepicker__time-list,
+.react-datepicker__day-names {
+	background-color: var(--secondary-bg); /* Ensure dark mode applies */
+	color: var(--primary-text) !important;
+}
+
+.react-datepicker__month-container {
+	background-color: var(--secondary-bg);
+}
+.react-datepicker__current-month {
+	background-color: var(--secondary-bg);
+	color: var(--primary-text) !important;
+}
+/* Change the overall calendar's background */
+.react-datepicker {
+	background-color: var(--secondary-bg);
+}
+
+.react-datepicker-wrapper {
+	width: 100%;
+}
+.react-datepicker__input-container {
+	width: 100%;
 }
 
 @keyframes logo-spin {
