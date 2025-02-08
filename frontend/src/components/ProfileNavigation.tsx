@@ -1,13 +1,15 @@
 import { Row, Col, Container } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-
+import { Appcontext } from "../App";
+import { useContext } from "react";
 const ProfileNavigation = () => {
 	const location = useLocation();
+	const { isAdmin } = useContext(Appcontext);
 	return (
 		<Container className="p-0 mx-auto my-3 shadow p-3 gray-div rounded">
-			<Row className=" ">
-				<Col>
-					<Link to={"/profile/"}>
+			<Row className="d-flex justify-content-center">
+				<Col xs={6} lg={3} className="d-flex justify-content-center">
+					<Link className="" to={"/profile/"}>
 						<h5
 							className={
 								location.pathname == "/profile/" ||
@@ -20,7 +22,13 @@ const ProfileNavigation = () => {
 						</h5>
 					</Link>
 				</Col>
-				<Col>
+				<Col
+					xs={6}
+					lg={3}
+					className={`${
+						isAdmin ? "" : "d-none"
+					} d-flex  justify-content-center`}
+				>
 					<Link to={"/profile/timetables"}>
 						<h5
 							className={
@@ -33,7 +41,13 @@ const ProfileNavigation = () => {
 						</h5>
 					</Link>{" "}
 				</Col>
-				<Col>
+				<Col
+					xs={6}
+					lg={3}
+					className={` ${
+						isAdmin ? "" : "d-none"
+					} d-flex justify-content-center`}
+				>
 					<Link to={"/profile/posts"}>
 						<h5
 							className={
@@ -46,7 +60,7 @@ const ProfileNavigation = () => {
 						</h5>
 					</Link>{" "}
 				</Col>
-				<Col>
+				<Col xs={6} lg={3} className="d-flex justify-content-center">
 					<Link to={"/profile/tickets"}>
 						<h5
 							className={
