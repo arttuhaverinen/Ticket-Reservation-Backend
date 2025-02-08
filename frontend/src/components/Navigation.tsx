@@ -34,8 +34,10 @@ const Navigation = () => {
 	return (
 		<Navbar
 			expand="lg"
-			className={` "navbar" "d-flex" ${
-				darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
+			className={` navbar d-flex ${
+				darkMode
+					? "navbar-dark  border-bottom border-secondary"
+					: "navbar-light bg-light"
 			}   `}
 			data-testid="navbar"
 			style={{ minHeight: "100px" }}
@@ -56,7 +58,7 @@ const Navigation = () => {
 
 				<Navbar.Toggle
 					style={{ marginTop: "30px" }}
-					className="navbar-toggler mx-3  position-absolute end-0 top-0"
+					className="navbar-toggler mx-3 border  position-absolute end-0 top-0"
 				/>
 
 				<Link to={"/profile"}>

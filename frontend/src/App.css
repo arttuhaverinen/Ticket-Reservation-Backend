@@ -60,6 +60,10 @@ body.dark-mode a {
 	color: var(--input-text);
 }
 
+body.dark-mode b {
+	color: var(--input-text);
+}
+
 button {
 	background-color: var(--button-bg);
 	color: var(--button-text); /* White text on button */
@@ -105,6 +109,10 @@ textarea:focus {
 
 button:hover {
 	background-color: var(--link-color);
+}
+
+body.dark-mode ul li {
+	background-color: var(--secondary-bg) !important;
 }
 
 body.dark-mode .footer {
@@ -240,7 +248,7 @@ h3 {
 	scale: 1.02;
 }
 
-.navbar-profile-hover:hover p {
+.navbar-profile-hover:hover b {
 	cursor: pointer;
 	color: #0d6efd;
 }

@@ -79,41 +79,87 @@ const Offers = () => {
 		return finnishDays;
 	};
 	*/
+
+	const translateDaysToFinnish = (days: string[]): string[] => {
+		let finnishDays = [];
+		let daysToString = days.toString();
+		console.log("days to string", daysToString);
+		daysToString = daysToString.replaceAll(" ", "");
+		let commaSeparatedDays = daysToString.split(",");
+		console.log("commasep", commaSeparatedDays);
+
+		if (commaSeparatedDays.includes("monday")) {
+			finnishDays.push("maanantai");
+		}
+		if (commaSeparatedDays.includes("tuesday")) {
+			finnishDays.push("tiistai");
+		}
+		if (commaSeparatedDays.includes("wednesday")) {
+			finnishDays.push("keskiviikko");
+		}
+		if (commaSeparatedDays.includes("thursday")) {
+			finnishDays.push("torstai");
+		}
+		if (commaSeparatedDays.includes("friday")) {
+			finnishDays.push("perjantai");
+		}
+		if (commaSeparatedDays.includes("saturday")) {
+			finnishDays.push("lauantai");
+		}
+		if (commaSeparatedDays.includes("sunday")) {
+			finnishDays.push("sunnuntai");
+		}
+
+		return finnishDays;
+	};
+
 	const mapTimetables = () => {
 		console.log(timetables);
 		if (timetables) {
 			return timetables.map((tt) => {
 				return (
 					<Col className="" md={12} lg={6}>
-						<div className="gray-div  rounded p-3">
-							<div className="card gray-div mb-3 p-3" key={tt.id}>
-								<div className="">
-									<h5 className="card-title">
+						<div className="h-100 gray-div  rounded p-3">
+							<Row>
+								<Col className="" md={6}>
+									<h5 className=" text-center">
 										{tt.departure} → {tt.destination}
 									</h5>
-									<p>
-										<strong>Lähtöaika:</strong> {tt.startTime}
-									</p>
-									<p>
-										<strong>Saapumisaika:</strong> {tt.endTime}
-									</p>
-									<p>
-										<strong>Hinta:</strong>{" "}
-										{tt.priceDiscount ? (
-											<>
-												<s>{tt.price}</s> | {tt.priceDiscount}
-											</>
-										) : (
-											tt.price
-										)}
-									</p>
-									<p>
-										<strong>Ajopäivät:</strong> {tt.day.toString()}
-									</p>
-								</div>
-							</div>
-
-							<Row className="">
+									<div className="card gray-div mb-3 p-3" key={tt.id}>
+										<div className="">
+											<p>
+												<strong>Lähtöaika:</strong> {tt.startTime}
+											</p>
+											<p>
+												<strong>Saapumisaika:</strong> {tt.endTime}
+											</p>
+											<p>
+												<strong>Hinta:</strong>{" "}
+												{tt.priceDiscount ? (
+													<>
+														<s>{tt.price}</s> | {tt.priceDiscount}
+													</>
+												) : (
+													tt.price
+												)}
+											</p>
+										</div>
+									</div>
+								</Col>
+								<Col md={6}>
+									{" "}
+									<div className="d-flex flex-column">
+										<h5 className="p-0 text-center">Ajopäivät:</h5>
+										<ul className="list-group">
+											{translateDaysToFinnish(tt.day).map((day) => {
+												return <li className="list-group-item">{day}</li>;
+											})}
+										</ul>
+									</div>
+								</Col>
+							</Row>
+							<hr />
+							<Row className="my-3">
 								{/** <!-- justify-content-center --> */}
 								<Col xs={3} sm={6} className="  ">
 									<Link
@@ -179,7 +225,7 @@ const Offers = () => {
 			style={{ backgroundColor: darkMode ? "#263062" : "#77b1d4" }}
 		>
 			<Container className="">
-				<h2 className="text-center">Tarjousliput</h2>
+				<h2 className="text-center">Tarjousmatkat</h2>
 				<Row className=" my-1  g-5  gx-5  ">{mapTimetables()}</Row>
 			</Container>
 		</Container>
