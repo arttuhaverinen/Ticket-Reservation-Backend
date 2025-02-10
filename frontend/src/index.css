@@ -69,11 +69,6 @@ li {
 	list-style: none;
 }
 
-.datepicker {
-	color: black;
-	background-color: white;
-}
-
 @media (prefers-color-scheme: light) {
 	:root {
 		color: #213547;

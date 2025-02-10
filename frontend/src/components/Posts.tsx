@@ -187,9 +187,13 @@ const Posts = (/*props: postInterface*/) => {
 								return (
 									<Button
 										onClick={() => setPage(index / 4 + 1)}
-										variant={page == index / 4 + 1 ? "primary" : "info"}
+										variant="primary"
 										className="rounded-circle mx-1"
-										style={{ width: "50px", height: "50px" }}
+										style={{
+											width: "50px",
+											height: "50px",
+											opacity: page === index / 4 + 1 ? "1" : "0.33", // Slightly transparent
+										}}
 									>
 										{index / 4 + 1}
 									</Button>
@@ -203,9 +207,13 @@ const Posts = (/*props: postInterface*/) => {
 								return (
 									<Button
 										onClick={() => setPage(index / 6 + 1)}
-										variant={page == index / 6 + 1 ? "primary" : "info"}
+										variant="primary"
 										className="rounded-circle mx-1"
-										style={{ width: "50px", height: "50px" }}
+										style={{
+											width: "50px",
+											height: "50px",
+											opacity: page === index / 6 + 1 ? "1" : "0.33", // Slightly transparent
+										}}
 									>
 										{index / 6 + 1}
 									</Button>
