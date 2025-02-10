@@ -1,25 +1,27 @@
-name: Docker - Unit tests
+name: Run Unit Tests
 
 on:
   pull_request:
   push:
     branches:
       - "*"
+
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Start frontend unit tests
-        uses: hoverkraft-tech/compose-action@v2.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          compose-file: "./docker-compose.test-unit.yml"
-          up-flags: "--build --remove-orphans --abort-on-container-exit"
+          node-version: 20
 
-      - name: Shut down docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.test-unit.yml"
-          down-flags: ""
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./frontend

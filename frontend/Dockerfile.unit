@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 3000
 
 # Command to run unit tests
-CMD npm run test:unit || exit 1
+#CMD npm run test:unit || exit 1
+CMD npm run test
