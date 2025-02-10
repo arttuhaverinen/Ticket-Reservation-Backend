@@ -24,7 +24,7 @@ const useTokenExpireMiddleware = () => {
 			let baseurl: string = import.meta.env.VITE_BASEURL;
 			let currentTime = Date.now();
 			let tokenCreatedTime = localStorage.getItem("time");
-			let accessToken = localStorage.getItem("accesstoken");
+			//let accessToken = localStorage.getItem("accesstoken");
 			let expireTime = Number(localStorage.getItem("accessexpire")) || 0;
 			let expireTimeLeft =
 				(Number(currentTime) - Number(tokenCreatedTime)) / 1000;

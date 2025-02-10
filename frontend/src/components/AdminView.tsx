@@ -6,11 +6,11 @@ import ProfileNavigation from "./ProfileNavigation";
 import { Outlet } from "react-router-dom";
 
 const AdminView = () => {
-	const { isAdmin } = useContext(Appcontext)!;
+	const { appUserName } = useContext(Appcontext)!;
 
 	return (
 		<Container className=" my-3 mx-auto">
-			{isAdmin && (
+			{appUserName && (
 				<Row>
 					<ProfileNavigation />
 					{/*
