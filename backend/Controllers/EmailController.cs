@@ -33,7 +33,8 @@ public class EmailController : ControllerBase, IEmailSender
         {
             var EMAIL_FRONTEND_DEV = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_DEV");
             if (EMAIL_FRONTEND_DEV != null) { client_email = EMAIL_FRONTEND_DEV; };
-        } else if (environment == "Production")
+        }
+        else if (environment == "Production")
         {
             var EMAIL_FRONTEND_PROD = Environment.GetEnvironmentVariable("EMAIL_FRONTEND_PROD");
             if (EMAIL_FRONTEND_PROD != null) { client_email = EMAIL_FRONTEND_PROD; };
@@ -60,17 +61,20 @@ public class EmailController : ControllerBase, IEmailSender
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             //emailMessage.Body = new TextPart("html") { Text = message };
-            var resetLink = $"{_configuration["FrontendBaseUrl"]}/resetPassword?code={message}"; // "message" is the reset code
+            var resetLink = $"{client_email}/resetPassword?code={message}"; // "message" is the reset code
             var htmlBody = string.Empty;
 
             if (subject.Contains("Reset")) // forgotPassword endpoint
             {
                 // Password reset link
-                
+
                 htmlBody = $@"
                     <p>Please reset your password using the following link:</p>
-                    <a href='{_configuration["FrontendBaseUrl"]}/resetPassword?code={message}'>Reset Password</a>
+                    <a href='{client_email}/resetPassword?code={message}'>Reset Password</a>
                     <p>If you did not request a password reset, please ignore this email.</p>";
+
+                Console.WriteLine(htmlBody);
+
             }
             else if (subject.Contains("Confirm")) // rescendConfirmation endpoint
             {
@@ -78,7 +82,7 @@ public class EmailController : ControllerBase, IEmailSender
                 if (environment == "Production")
                 {
                     Console.WriteLine("Email Production");
-                     redirectedMessage = message.Replace("http://localhost", client_email);
+                    redirectedMessage = message.Replace("http://localhost", client_email);
                     Console.WriteLine(redirectedMessage);
 
                 }
@@ -91,21 +95,21 @@ public class EmailController : ControllerBase, IEmailSender
                 }
                 Console.WriteLine(redirectedMessage);
                 Console.WriteLine(message);
-                htmlBody = $@"
-                    <p>{redirectedMessage}</p>
-                    <p>If you did not request this, please ignore this email.</p>";
+                //htmlBody = $@"
+                //    <p>{redirectedMessage}</p>
+                //    <p>If you did not request this, please ignore this email.</p>";
 
-                /*
+
                 // Email confirmation link
                 htmlBody = $@"
                 <p>Please confirm your email address by clicking the following link:</p>
-                <a href='{_configuration["localhost:5001"]}/confirmEmail?code={Uri.EscapeDataString(message)}'>Confirm Email</a>
+                <a href='{client_email}/confirmEmail?code={Uri.EscapeDataString(redirectedMessage)}'>Confirm Email</a>
                 <p>If you did not request this, please ignore this email.</p>";
-                */
+
             }
             else if (subject.Contains("Purchase")) // rescendConfirmation endpoint
             {
-                
+
                 htmlBody = $@"
                     <p>{message}</p>
                     <p>If you did not request this, please ignore this email.</p>";

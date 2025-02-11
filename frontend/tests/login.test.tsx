@@ -4,6 +4,8 @@ import "@testing-library/jest-dom"; // Import jest-dom matchers
 import { Appcontext } from "../src/App";
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
+import { Link } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom"; // Import MemoryRouter for testing
 
 describe("Login Component", () => {
 	it("updates username and password state on input change", () => {
@@ -18,7 +20,9 @@ describe("Login Component", () => {
 
 		render(
 			<Appcontext.Provider value={mockAppContext}>
-				<Login />
+				<MemoryRouter>
+					<Login />
+				</MemoryRouter>{" "}
 			</Appcontext.Provider>
 		);
 
@@ -51,7 +55,9 @@ describe("Login Component", () => {
 
 		render(
 			<Appcontext.Provider value={mockAppContext}>
-				<Login />
+				<MemoryRouter>
+					<Login />
+				</MemoryRouter>
 			</Appcontext.Provider>
 		);
 
@@ -102,7 +108,9 @@ describe("Login Component", () => {
 
 		render(
 			<Appcontext.Provider value={mockAppContext}>
-				<Login />
+				<MemoryRouter>
+					<Login />
+				</MemoryRouter>{" "}
 			</Appcontext.Provider>
 		);
 
@@ -167,7 +175,9 @@ describe("Login Component", () => {
 
 		render(
 			<Appcontext.Provider value={mockAppContext}>
-				<Login />
+				<MemoryRouter>
+					<Login />
+				</MemoryRouter>{" "}
 			</Appcontext.Provider>
 		);
 		global.fetch = await vi.fn(() =>
