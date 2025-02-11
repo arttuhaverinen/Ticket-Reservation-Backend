@@ -1,5 +1,13 @@
 import { useEffect, useState, useContext } from "react";
-import { Col, Container, Placeholder, Row } from "react-bootstrap";
+import {
+	Button,
+	Col,
+	Container,
+	FormControl,
+	InputGroup,
+	Placeholder,
+	Row,
+} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { Appcontext } from "../App";
@@ -46,6 +54,7 @@ const Offers = () => {
 		"Perjantai",
 		"Lauantai" /* , … */,
 	];
+	const [searchWord, setSearchWord] = useState("");
 
 	useEffect(() => {
 		fetch(`${baseurl}/api/Timetables?offers=true`)
@@ -117,82 +126,88 @@ const Offers = () => {
 		console.log(timetables);
 		if (timetables) {
 			return timetables.map((tt) => {
-				return (
-					<Col className="" md={12} lg={6}>
-						<div className="h-100 gray-div  rounded p-3">
-							<Row>
-								<Col className="" md={6}>
-									<h5 className=" text-center">
-										{tt.departure} → {tt.destination}
-									</h5>
-									<div className="card gray-div mb-3 p-3" key={tt.id}>
-										<div className="">
-											<p>
-												<strong>Lähtöaika:</strong> {tt.startTime}
-											</p>
-											<p>
-												<strong>Saapumisaika:</strong> {tt.endTime}
-											</p>
-											<p>
-												<strong>Hinta:</strong>{" "}
-												{tt.priceDiscount ? (
-													<>
-														<s>{tt.price}</s> | {tt.priceDiscount}
-													</>
-												) : (
-													tt.price
-												)}
-											</p>
+				if (
+					searchWord.length == 0 ||
+					tt.departure.toLowerCase().includes(searchWord.toLowerCase()) ||
+					tt.destination.toLowerCase().includes(searchWord.toLowerCase())
+				) {
+					return (
+						<Col className="" md={12} lg={6}>
+							<div className="h-100 gray-div  rounded p-3">
+								<Row>
+									<Col className="" md={6}>
+										<h5 className=" text-center">
+											{tt.departure} → {tt.destination}
+										</h5>
+										<div className="card gray-div mb-3 p-3" key={tt.id}>
+											<div className="">
+												<p>
+													<strong>Lähtöaika:</strong> {tt.startTime}
+												</p>
+												<p>
+													<strong>Saapumisaika:</strong> {tt.endTime}
+												</p>
+												<p>
+													<strong>Hinta:</strong>{" "}
+													{tt.priceDiscount ? (
+														<>
+															<s>{tt.price}</s> | {tt.priceDiscount}
+														</>
+													) : (
+														tt.price
+													)}
+												</p>
+											</div>
 										</div>
-									</div>
-								</Col>
-								<Col md={6}>
-									{" "}
-									<div className="d-flex flex-column">
-										<h5 className="p-0 text-center">Ajopäivät:</h5>
-										<ul className="list-group">
-											{translateDaysToFinnish(tt.day).map((day) => {
-												return (
-													<li className="list-group-item">
-														<h6>{day}</h6>{" "}
-													</li>
-												);
-											})}
-										</ul>
-									</div>
-								</Col>
-							</Row>
-							<hr />
-							<Row className="my-3">
-								{/** <!-- justify-content-center --> */}
-								<Col xs={3} sm={6} className="d-flex align-items-center">
-									<Link
-										className="text-center ms-1 btn btn-primary"
-										to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
-									>
-										Osta
-									</Link>
-								</Col>
-								<Col xs={9} sm={6} className="">
-									<span>Päivämäärä </span>
-									<DatePicker
-										className="datepicker w-100"
-										locale="fi"
-										selected={new Date(startDate)}
-										dateFormat="dd/MM/yyyy"
-										onChange={(date) => {
-											if (date) {
-												setStartDate(date.toISOString().split("T")[0]);
-											} else {
-												setStartDate(""); // Optionally handle the case when the date is cleared (null or undefined)
-											}
-										}}
-									></DatePicker>
-								</Col>
-							</Row>
-						</div>
-					</Col>
-				);
+									</Col>
+									<Col md={6}>
+										{" "}
+										<div className="d-flex flex-column">
+											<h5 className="p-0 text-center">Ajopäivät:</h5>
+											<ul className="list-group">
+												{translateDaysToFinnish(tt.day).map((day) => {
+													return (
+														<li className="list-group-item">
+															<h6>{day}</h6>{" "}
+														</li>
+													);
+												})}
+											</ul>
+										</div>
+									</Col>
+								</Row>
+								<hr />
+								<Row className="my-3">
+									{/** <!-- justify-content-center --> */}
+									<Col xs={3} sm={6} className="d-flex align-items-center">
+										<Link
+											className="text-center ms-1 btn btn-primary"
+											to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
+										>
+											Osta
+										</Link>
+									</Col>
+									<Col xs={9} sm={6} className="">
+										<span>Päivämäärä </span>
+										<DatePicker
+											className="datepicker w-100"
+											locale="fi"
+											selected={new Date(startDate)}
+											dateFormat="dd/MM/yyyy"
+											onChange={(date) => {
+												if (date) {
+													setStartDate(date.toISOString().split("T")[0]);
+												} else {
+													setStartDate(""); // Optionally handle the case when the date is cleared (null or undefined)
+												}
+											}}
+										></DatePicker>
+									</Col>
+								</Row>
+							</div>
+						</Col>
+					);
+				}
 			});
 		} else {
 			return Array.from([2]).map(() => {
@@ -229,7 +244,23 @@ const Offers = () => {
 			style={{ backgroundColor: darkMode ? "#263062" : "#77b1d4" }}
 		>
 			<Container className="">
-				<h2 className="text-center">Tarjousmatkat</h2>
+				<h2 className="text-center mb-3">Tarjousmatkat</h2>
+				<div className="w-100 d-flex justify-conent-center ">
+					<InputGroup className="">
+						<FormControl
+							className="border-0 shadow-none"
+							placeholder="Hae tarjousmatkoja paikkakunnan perusteella"
+							aria-label="Search"
+							onChange={(e) => setSearchWord(e.target.value)}
+						/>
+						<InputGroup.Text className="border-0 search-icon">
+							<i
+								className="fa fa-search fa-4x text-secondary "
+								aria-hidden="true"
+							></i>
+						</InputGroup.Text>
+					</InputGroup>
+				</div>
 				<Row className=" my-1  g-5  gx-5  ">{mapTimetables()}</Row>
 			</Container>
 		</Container>
