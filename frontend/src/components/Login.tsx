@@ -62,6 +62,8 @@ const Login = () => {
 				/>
 			)}
 			<h3>Kirjaudu</h3>
+			<Link to={"/forgotpassword"}>Unohdin salasanani.</Link>
+
 			<Form onSubmit={(e: React.FormEvent<HTMLFormElement>) => login(e)}>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Käyttäjänimi</Form.Label>
@@ -90,8 +92,6 @@ const Login = () => {
 					Kirjaudu
 				</Button>
 			</Form>
-			<br />
-			<Link to="/forgotpassword">Olen unohtanut salasanani.</Link>
 		</div>
 	);
 };
