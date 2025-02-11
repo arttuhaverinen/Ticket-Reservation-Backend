@@ -100,9 +100,6 @@ const Home = () => {
 			</Row>
 	*/}
 			</Container>
-			<a href="localhost:5173/resetPassword?code=Please reset your password using the following code: Q2ZESjhIWTNHeTROS2toSXEyWC9kNWROZXlZa1R5UGhjUlEwV080ZUFTNDlmV0lCUGNJWFJPZE0yUHV0cnRqakhmWGlpS2xmTFdXZmRoMS9vT09qY1poWHArVVRqdjI3c25FR2FvS0k2SDhKMWVhZStGN3ErSUloZmF1eEdVRElIekZlTHlIclR2cjMycTlHV3djSWM5WktVc3NHYStBQ2FDT3hMVmYramF1akFnb0JVSEpSLzNIcHJReHJ0eXJwVEVYTTRnPT0">
-				Reset Password
-			</a>
 		</Container>
 	);
 };
