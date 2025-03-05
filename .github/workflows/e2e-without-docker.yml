@@ -27,7 +27,7 @@ jobs:
 
       - name: Wait for backend and frontend to be ready
         run: |
-          npx wait-on tcp:5002  # Backend API
+          npx wait-on tcp:5001  # Backend API
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
@@ -44,8 +44,8 @@ jobs:
       # Step 6: Start the Vite app (frontend)
       - name: Start Vite frontend
         working-directory: ./frontend # Instead of 'cd frontend'
-        env:
-          VITE_BASEURL: http://localhost:5002 # Set environment variable
+        #env:
+        #  VITE_BASEURL: http://localhost:5002 # Set environment variable
         run: npm run dev & # Starts Vite in the background
 
       # Step 7: Wait for the servers to be ready
@@ -58,7 +58,7 @@ jobs:
       - name: Run Cypress tests
         run: |
           cd frontend
-          npx cypress run --headless  # Run tests in headless mode using Electron (default)
+          npx cypress run --headless
 
       - name: Stop and clean up containers
         run: docker-compose -f docker-compose.test-e2e.yml down
