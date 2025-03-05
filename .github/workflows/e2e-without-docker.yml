@@ -23,7 +23,10 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
-          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
+          echo 'PROD_DOMAIN=${{ secrets.PROD_DOMAIN }}' >> ./backend/.env &&
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env &&
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env
 
       - name: Restore .NET dependencies
         run: |
