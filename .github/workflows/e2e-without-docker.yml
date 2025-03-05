@@ -25,6 +25,10 @@ jobs:
         run: |
           docker-compose -f docker-compose.test-e2e.yml up --build -d test-webapp
 
+      - name: Wait for backend and frontend to be ready
+        run: |
+          npx wait-on tcp:5002  # Backend API
+
       # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
