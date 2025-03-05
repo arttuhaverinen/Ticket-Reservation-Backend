@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest # GitHub Actions runner
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v3
         with:
@@ -40,7 +42,7 @@ jobs:
 
       - name: Wait for backend API endpoint to be ready
         run: |
-          npx wait-on http://localhost:5001/api/posts
+          npx wait-on http://localhost:5001/api/posts --timeout 15000 || (echo "Backend failed to start" && exit 1)
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
