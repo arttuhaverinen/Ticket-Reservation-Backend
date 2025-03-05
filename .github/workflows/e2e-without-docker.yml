@@ -10,24 +10,35 @@ jobs:
     runs-on: ubuntu-latest # GitHub Actions runner
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Docker Compose # ✅ Fix: Install docker-compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
 
       - name: Create env file
         run: |
-          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' >> ./backend/.env &&
-          echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
+          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' >> ./backend/.env
+          echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env
           echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
 
-      - name: Start backend services
+      - name: Restore .NET dependencies
         run: |
-          docker-compose -f docker-compose.test-e2e.yml up --build -d test-webapp
+          cd backend
+          dotnet restore
 
-      - name: Wait for backend and frontend to be ready
+      - name: Build .NET app
         run: |
-          npx wait-on tcp:5001  # Backend API
+          cd backend
+          dotnet build
+
+      - name: Start backend app
+        run: |
+          cd backend
+          dotnet run --launch-profile "Test" &   # Run in the background
+
+      - name: Wait for backend API endpoint to be ready
+        run: |
+          npx wait-on http://localhost:5001/api/posts
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
@@ -59,6 +70,3 @@ jobs:
         run: |
           cd frontend
           npx cypress run --headless
-
-      - name: Stop and clean up containers
-        run: docker-compose -f docker-compose.test-e2e.yml down
