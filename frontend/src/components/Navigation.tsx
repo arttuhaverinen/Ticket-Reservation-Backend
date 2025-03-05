@@ -7,6 +7,7 @@ import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
 import "../App.css";
+import Cookies from "js-cookie";
 
 const Navigation = () => {
 	const {
@@ -29,6 +30,11 @@ const Navigation = () => {
 		setAppUserName(null);
 		setAppToken(null);
 		setIsAdmin(false);
+		console.log("cookies");
+		console.log(Cookies.get()); // Log all cookies before removal
+
+		Cookies.remove("GoogleCookie");
+		Cookies.remove("GoogleCookie", { path: "/" });
 	};
 
 	return (
@@ -43,6 +49,8 @@ const Navigation = () => {
 			style={{ minHeight: "100px" }}
 		>
 			<Container style={{ width: "95%" }} fluid>
+				{console.log("appusername", appUserName, appToken)}
+
 				<Nav.Link className="me-3">
 					<Link to={"/"}>
 						<div

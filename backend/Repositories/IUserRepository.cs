@@ -6,6 +6,8 @@ namespace TicketReservationApp.Repositories
     {
         Task<IEnumerable<AppUser>> GetUsers();
         Task<AppUser?> GetUserByID(string postId);
+
+        Task<AppUser?> GetUserByEmail(string userEmail);
         Task<AppUser> InsertUser(AppUser user);
         Task<AppUser> DeleteUser(int userId);
         Task<AppUser> UpdateUser(AppUser user);

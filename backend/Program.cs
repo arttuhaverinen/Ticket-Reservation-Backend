@@ -27,6 +27,10 @@ using static System.Net.WebRequestMethods;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.Extensions.DependencyInjection;
 
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 // dotnet run --launch-profile Test
@@ -178,17 +182,18 @@ DateTime date = DateTime.SpecifyKind(new DateTime(2024, 7, 19, 9, 0, 0), DateTim
 Console.WriteLine(DateTime.Today.DayOfWeek);
 Console.WriteLine(date.DayOfWeek);
 
-
+var PROD_DOMAIN = Environment.GetEnvironmentVariable("PROD_DOMAIN")!;
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          //policy.WithOrigins("http://localhost:5173",
-                            policy.AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                          ;
+                          //policy.AllowAnyOrigin()
+                          policy.WithOrigins("http://localhost:5173", PROD_DOMAIN)
+                          .AllowAnyHeader()
+                          .AllowCredentials()  // Allow cookies and credentials
+                          .AllowAnyMethod();
+                          
                       });
 });
 //var endpoint = "http://localhost:9000"; // Your MinIO endpoint (use the correct URL here)
@@ -278,7 +283,31 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer();
 */
-builder.Services.AddAuthentication();
+
+var authProperties = new AuthenticationProperties
+{
+    IsPersistent = true, // Make the cookie persistent
+    ExpiresUtc = DateTime.UtcNow.AddDays(1) // Explicitly set expiration time
+};
+
+builder.Services.AddAuthentication()
+    .AddCookie("GoogleCookie", options =>
+    {
+        
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.Cookie.Name = "GoogleCookie"; // Force the name to stay "GoogleCookie"
+
+    }) // Separate cookie scheme for Google
+    .AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+    googleOptions.ClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
+    googleOptions.CallbackPath = "/signin-google";
+    googleOptions.SignInScheme = "GoogleCookie"; // Store Google login session in a separate cookie
+    googleOptions.SaveTokens = true; // Save the tokens in the AuthenticationProperties
+
+}
+    );
 
 
 builder.Services.AddAuthorization();

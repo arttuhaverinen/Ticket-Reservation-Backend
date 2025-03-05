@@ -27,7 +27,6 @@ namespace TicketReservationApp.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        [Authorize(Roles = "Admin")]
         [HttpGet("role")]
         public string getRole ()
         {
@@ -46,7 +45,24 @@ namespace TicketReservationApp.Controllers
             return JsonSerializer.Serialize(userInfo);
         }
 
+        [Authorize]
+        [HttpGet("test-authorize")]
+        public string testAuthorize()
+        {
 
+            Console.WriteLine("Username: " + User.FindFirstValue(ClaimTypes.Name));
+            Console.WriteLine("Role: " + User.FindFirstValue(ClaimTypes.Role));
+            Console.WriteLine("First name: " + User.FindFirstValue("firstname"));
+            Console.WriteLine("Last name: " + User.FindFirstValue("lastname"));
+            Console.WriteLine(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            var userInfo = new { username = username, role = role };
+
+            return JsonSerializer.Serialize(userInfo);
+        }
 
 
     }

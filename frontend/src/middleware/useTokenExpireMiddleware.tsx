@@ -43,7 +43,12 @@ const useTokenExpireMiddleware = () => {
 					},
 					body: JSON.stringify({ refreshToken: refreshToken }),
 				})
-					.then((res) => res.json())
+					.then((res) => {
+						if (res.status == 400 || res.status == 401) {
+							throw new Error();
+						}
+						return res.json();
+					})
 					.then((res) => {
 						console.log("auth res", res);
 						localStorage.setItem("accesstoken", res.accessToken);

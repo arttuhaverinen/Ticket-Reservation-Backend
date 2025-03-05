@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using TicketReservationApp.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Newtonsoft.Json;
 
 namespace TicketReservationApp.Controllers
 {
@@ -38,6 +39,32 @@ namespace TicketReservationApp.Controllers
             var user = await _usersRepository.GetUserByID(userId);
 
             Console.WriteLine(user);
+
+
+            return Ok(user);
+        }
+        //[Authorize(Roles = "Admin")]
+        [HttpGet("{email}")]
+        public async Task<ActionResult> getUserByEmail(string email)
+        {
+
+            var user = await _usersRepository.GetUserByEmail(email);
+
+            Console.WriteLine(user);
+
+
+            return Ok(user);
+        }
+
+        //[Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<ActionResult> insertUser([FromBody] AppUser appUser)
+        {
+            Console.WriteLine($"repository user: {JsonConvert.SerializeObject(appUser)}");
+
+            var user = await _usersRepository.InsertUser(appUser);
+
+            Console.WriteLine($"repository user: {JsonConvert.SerializeObject(user)}");
 
 
             return Ok(user);

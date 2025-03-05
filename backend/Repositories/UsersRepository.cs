@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System.Xml;
 using TicketReservationApp.Data;
 using TicketReservationApp.Models;
@@ -27,7 +29,15 @@ namespace TicketReservationApp.Repositories
             }
             return user;
         }
-
+        public async Task<AppUser?> GetUserByEmail(string userEmail)
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(user => user.Email == userEmail);
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
+        }
         public  Task<IEnumerable<AppUser>> GetUsers()
         {
             //return await _dataContext.Users.ToListAsync();
@@ -35,9 +45,12 @@ namespace TicketReservationApp.Repositories
 
         }
 
-        public Task<AppUser> InsertUser(AppUser user)
+        public async Task<AppUser> InsertUser(AppUser user)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"repository user: {JsonConvert.SerializeObject(user)}");
+            await _dataContext.Users.AddAsync(user);
+            await _dataContext.SaveChangesAsync();
+            return user;
         }
 
         public async Task<AppUser> UpdateUser(AppUser user)
