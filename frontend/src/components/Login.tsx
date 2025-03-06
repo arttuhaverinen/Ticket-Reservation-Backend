@@ -1,9 +1,13 @@
 import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
+import GoogleLogo from "../images/googlelogo.png";
 import { Appcontext } from "../App";
 import AlertMessage from "./AlertMessage";
 import { Link } from "react-router-dom";
+import { height } from "@fortawesome/free-brands-svg-icons/fa42Group";
+import { Col, Row } from "react-bootstrap";
 const Login = () => {
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [userName, setUserName] = useState<string>("null");
@@ -82,18 +86,39 @@ const Login = () => {
 						data-testid="login-password-label"
 					/>
 				</Form.Group>
-				<Button
-					className="mb-3"
-					data-testid="login-submit-button"
-					variant="primary"
-					type="submit"
-				>
-					Kirjaudu
-				</Button>
+
+				<Row>
+					<Col xs={12} md={4}>
+						{" "}
+						<Button
+							className="mb-3 w-100 "
+							data-testid="login-submit-button"
+							variant="primary"
+							type="submit"
+						>
+							Kirjaudu
+						</Button>
+					</Col>
+					<div className="w-100"></div>
+					<Col xs={12} md={4} className="mb-3">
+						{" "}
+						<Button className="p-1 w-100" href={`${baseurl}/login/google`}>
+							<Image
+								style={{ height: "32px" }}
+								className="bg-white me-2 p-0"
+								src={GoogleLogo}
+							/>
+							Kirjaudu Googlella
+						</Button>
+					</Col>
+					<div className="w-100"></div>
+					<Col xs={12} md={4}>
+						<Link className="" to={"/forgotpassword"}>
+							Unohdin salasanani.
+						</Link>
+					</Col>
+				</Row>
 			</Form>
-			<Link className="" to={"/forgotpassword"}>
-				Unohdin salasanani.
-			</Link>
 		</div>
 	);
 };

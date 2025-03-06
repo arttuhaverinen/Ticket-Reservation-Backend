@@ -35,6 +35,9 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> .env &&
           echo 'MINIO_PROD_URL=${{ secrets.MINIO_PROD_URL }}' >> .env &&
           echo 'BACKEND_URL=${{ secrets.BACKEND_URL }}' >> .env &&
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env &&
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env &&
+          echo 'PROD_DOMAIN=${{ secrets.PROD_DOMAIN }}' >> .env &&
           cd ${{ secrets.VPS_PROJECT_PATH }} &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
           sudo docker network prune -f &&  # Prunes unused networks

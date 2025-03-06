@@ -162,6 +162,7 @@ namespace TicketReservationApp.Data
                 Cancelled = new List<DateTime>(),
                 Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 AppUserId = userId,
+                
 
 
 

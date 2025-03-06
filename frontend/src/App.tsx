@@ -76,6 +76,7 @@ function App() {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
 	const [darkMode, setDarkMode] = useState(false);
+	const [googleCookies, setGoogleCookie] = useState(false);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	console.log(baseurl);
@@ -105,7 +106,7 @@ function App() {
 					localStorage.setItem("accessexpire", res.expiresIn);
 					localStorage.setItem("time", Date.now().toString());
 					setAppToken(res.accessToken);
-					setAppRefreshToken(res.refresToken);
+					setAppRefreshToken(res.refreshToken);
 					return fetch(`${baseurl}/api/role`, {
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
@@ -114,14 +115,14 @@ function App() {
 				})
 				.then((res) => res.json())
 				.then((res) => {
-					console.log(res);
+					console.log("role check");
 					if (res.role == "Admin") {
 						console.log("is admin");
-						localStorage.setItem("username", res.username);
 						setIsAdmin(true);
-						setAppUserName(res.username);
-						fetchProfileImage();
 					}
+					localStorage.setItem("username", res.username);
+					setAppUserName(res.username);
+					fetchProfileImage();
 				})
 				.catch((error) => console.log(error));
 		}
@@ -131,14 +132,17 @@ function App() {
 
 	useEffect(() => {
 		if (!appToken) {
-			if (localStorage.getItem("accesstoken")) {
-				console.log("setting token");
+			let accesstoken = localStorage.getItem("accesstoken");
+			let refreshtoken = localStorage.getItem("refreshtoken");
+			let username = localStorage.getItem("username");
+
+			if (accesstoken) {
 				setAppToken(localStorage.getItem("accesstoken"));
 			}
-			if (localStorage.getItem("refreshtoken")) {
+			if (refreshtoken) {
 				setAppRefreshToken(localStorage.getItem("refreshtoken"));
 			}
-			if (localStorage.getItem("username")) {
+			if (username) {
 				setAppUserName(localStorage.getItem("username"));
 			}
 		}
@@ -146,18 +150,28 @@ function App() {
 
 	const fetchProfileImage = () => {
 		console.log("vite mode ", import.meta.env.MODE);
+		console.log("profile pic", localStorage.getItem("accesstoken"));
 		if (
 			localStorage.getItem("accesstoken") &&
 			import.meta.env.MODE == "development"
 		) {
 			try {
-				fetch(`${baseurl}/api/minio`, {
+				fetch(`${baseurl}/api/User`, {
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+						Authorization: `Bearer ${localStorage.getItem("accesstoken")} `,
 					},
 				})
 					.then((res) => res.json())
-					.then((res) => setProfilePicture(res.url));
+					.then((res) => {
+						console.log("IMAGE: ", res);
+						return fetch(`${baseurl}/api/minio/${res.profileImage}`);
+						//fetchProfileImage();
+					})
+					.then((res) => res.json())
+					.then((res) => {
+						setProfilePicture(res.url);
+						console.log(res.url);
+					});
 			} catch (error) {}
 		}
 		if (
@@ -165,32 +179,48 @@ function App() {
 			import.meta.env.MODE == "production"
 		) {
 			try {
-				fetch(`${baseurl}/api/minio`, {
+				fetch(`${baseurl}/api/User`, {
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+						Authorization: `Bearer ${localStorage.getItem("accesstoken")} `,
 					},
 				})
 					.then((res) => res.json())
-					.then((res) => setProfilePicture(res.url));
+					.then((res) => {
+						console.log("IMAGE: ", res);
+						return fetch(`${baseurl}/api/minio/${res.profileImage}`);
+						//fetchProfileImage();
+					})
+					.then((res) => res.json())
+					.then((res) => {
+						setProfilePicture(res.url);
+						console.log(res.url);
+					});
 			} catch (error) {}
 		}
 	};
 
 	useEffect(() => {
-		console.log(appToken, "check profileimage");
+		console.log(
+			appToken,
+			localStorage.getItem("accesstoken"),
+			"check profileimage"
+		);
 
 		if (appUserName && appToken) {
 			fetch(`${baseurl}/api/User`, {
-				headers: { Authorization: `Bearer ${appToken}` },
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("accesstoken")} `,
+				},
 			})
 				.then((res) => res.json())
 				.then((res) => {
 					console.log("IMAGE: ", res);
 					return fetch(`${baseurl}/api/minio/${res.profileImage}`);
+					//fetchProfileImage();
 				})
 				.then((res) => res.json())
 				.then((res) => {
-					console.log(res.url);
+					console.log("res url", res.url);
 					setProfilePicture(res.url);
 				});
 		}
@@ -223,6 +253,56 @@ function App() {
 		document.body.classList.toggle("dark-mode", darkMode);
 	});
 
+	// Check if logged in with google
+	useEffect(() => {
+		if (!appToken) {
+			console.log("apptoken login process");
+			fetch(`${baseurl}/login-process`, {
+				method: "GET",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then((res) => {
+					console.log("login process", res.status);
+					if (res.status == 401) {
+						console.log("login process 401");
+						throw new Error();
+					}
+					return res.json();
+				})
+				.then((res) => {
+					console.log("apptoken login process setters", res);
+					localStorage.setItem("accesstoken", res.accessToken);
+					localStorage.setItem("refreshtoken", res.refreshToken);
+					localStorage.setItem("accessexpire", res.expiresIn);
+					localStorage.setItem("time", Date.now().toString());
+					setAppToken(res.accessToken);
+					setAppRefreshToken(res.refreshToken);
+
+					fetchProfileImage();
+
+					return fetch(`${baseurl}/api/role`, {
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("accesstoken")}`,
+						},
+					});
+				})
+				.then((res) => res.json())
+				.then((res) => {
+					console.log("role check");
+					if (res.role == "Admin") {
+						console.log("is admin");
+						setIsAdmin(true);
+					}
+					localStorage.setItem("username", res.username);
+					setAppUserName(res.username);
+				})
+				.catch((error) => console.log(error));
+		}
+	});
+
 	return (
 		<Appcontext.Provider
 			value={{
@@ -242,6 +322,7 @@ function App() {
 		>
 			<Router basename={basename}>
 				<Navigation />
+				{console.log("apptoken", appToken)}
 				<Container fluid style={{ padding: 0 }} className="app">
 					<Routes>
 						<Route path="/" element={<Home />} />

@@ -12,18 +12,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Docker Compose # ✅ Fix: Install docker-compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
 
       - name: Create env file
         run: |
-          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' >> ./backend/.env &&
+          echo 'DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}' > ./backend/.env &&
           echo 'SECRET_KEY=${{ secrets.STRIPE_SECRET }}' >> ./backend/.env && 
-          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
+          echo 'EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}' >> ./backend/.env &&
+          echo 'PROD_DOMAIN=${{ secrets.PROD_DOMAIN }}' >> ./backend/.env &&
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> ./backend/.env &&
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> ./backend/.env
 
-      - name: Start backend services
+      - name: Restore .NET dependencies
         run: |
-          docker-compose -f docker-compose.test-e2e.yml up --build -d test-webapp
+          cd backend
+          dotnet restore
+
+      - name: Build .NET app
+        run: |
+          cd backend
+          dotnet build
+
+      - name: Start backend app
+        run: |
+          cd backend
+          dotnet run --launch-profile "Test" &
+          sleep 30
+          curl --max-time 60 -f -v http://localhost:5001/api/posts || (echo "Problem with endpoint")
 
       # Step 2: Set up Node.js
       - name: Set up Node.js
@@ -40,8 +60,8 @@ jobs:
       # Step 6: Start the Vite app (frontend)
       - name: Start Vite frontend
         working-directory: ./frontend # Instead of 'cd frontend'
-        env:
-          VITE_BASEURL: http://localhost:5002 # Set environment variable
+        #env:
+        #  VITE_BASEURL: http://localhost:5002 # Set environment variable
         run: npm run dev & # Starts Vite in the background
 
       # Step 7: Wait for the servers to be ready
@@ -54,7 +74,4 @@ jobs:
       - name: Run Cypress tests
         run: |
           cd frontend
-          npx cypress run --headless  # Run tests in headless mode using Electron (default)
-
-      - name: Stop and clean up containers
-        run: docker-compose -f docker-compose.test-e2e.yml down
+          npx cypress run --headless
