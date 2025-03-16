@@ -13,6 +13,10 @@ using TicketReservationApp.Dto;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using TicketReservationApp.Caching;
+using Moq;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace TicketReservationApp.Tests
@@ -22,6 +26,9 @@ namespace TicketReservationApp.Tests
         private readonly DbContextOptions<DataContext> _options;
 
         private readonly ITestOutputHelper _output;
+        private IDistributedCache _redisCacheService;  // Use IDistributedCache for RedisCache
+
+
 
         public TimetableTest(ITestOutputHelper output)
         {
@@ -37,8 +44,7 @@ namespace TicketReservationApp.Tests
 
 
 
-
-        _output = output;
+            _output = output;
 
         }
 
@@ -52,6 +58,7 @@ namespace TicketReservationApp.Tests
 
         public async Task InitializeAsync()
         {
+
             // Apply seed data
             using (var context = GetDbContext())
             {
@@ -87,9 +94,17 @@ namespace TicketReservationApp.Tests
         [Fact]
         public async Task GetAllTimetables()
         {
+
+
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            // using mock redis cache that always returns null
+            var mockedRedisCache = new Mock<RedisCache>();
+            var key = "timetables_cache";
+            mockedRedisCache.Setup(cache => cache.GetData<IEnumerable<TimetableDto>>(key)).Returns((IEnumerable<TimetableDto>)null);
+
+            var controller = new TimetablesController(repository, mockedRedisCache.Object);
 
             var result = await controller.GetTimetables(null);
 
@@ -109,7 +124,14 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            // using mock redis cache that always returns null
+            var mockedRedisCache = new Mock<RedisCache>();
+            var key = "timetables_cache";
+            mockedRedisCache.Setup(cache => cache.GetData<IEnumerable<TimetableDto>>(key)).Returns((IEnumerable<TimetableDto>)null);
+
+
+            var controller = new TimetablesController(repository, mockedRedisCache.Object);
 
             var result = await controller.GetTimetablesById(1);
 
@@ -130,7 +152,13 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            var mockedRedisCache = new Mock<RedisCache>();
+            var key = "timetables_cache";
+            mockedRedisCache.Setup(cache => cache.GetData<IEnumerable<TimetableDto>>(key)).Returns((IEnumerable<TimetableDto>)null);
+
+
+            var controller = new TimetablesController(repository, mockedRedisCache.Object);
 
             var result = await controller.GetTimetablesById(9999);
 
@@ -147,7 +175,14 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            var mockedRedisCache = new Mock<RedisCache>();
+            var key = "timetables_cache";
+            mockedRedisCache.Setup(cache => cache.GetData<IEnumerable<TimetableDto>>(key)).Returns((IEnumerable<TimetableDto>)null);
+
+
+            var controller = new TimetablesController(repository, mockedRedisCache.Object);
+
 
             var claims = new[]
 {
@@ -201,7 +236,14 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            var mockedRedisCache = new Mock<RedisCache>();
+            var key = "timetables_cache";
+            mockedRedisCache.Setup(cache => cache.GetData<IEnumerable<TimetableDto>>(key)).Returns((IEnumerable<TimetableDto>)null);
+
+
+            var controller = new TimetablesController(repository, mockedRedisCache.Object);
+
 
             var result = await controller.DeleteTimetables(1);
 

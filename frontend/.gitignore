@@ -155,3 +155,5 @@ dist
 .pnp.*
 
 .cypress/screenshots
+
+.env.production

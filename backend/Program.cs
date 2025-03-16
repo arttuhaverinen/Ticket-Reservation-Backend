@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
+using TicketReservationApp.Caching;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -366,6 +367,13 @@ builder.Services.AddDbContext<DataContext>(options =>
     }
 });
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = Environment.GetEnvironmentVariable("REDIS_DEV");
+    options.InstanceName = "Bus_";
+});
+
+builder.Services.AddScoped<IRedisCacheService, RedisCache>();
 
 
 var app = builder.Build();

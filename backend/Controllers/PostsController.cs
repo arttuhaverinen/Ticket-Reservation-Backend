@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using TicketReservationApp.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TicketReservationApp.Caching;
 
 namespace TicketReservationApp.Controllers
 {
@@ -16,9 +17,12 @@ namespace TicketReservationApp.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostsRepository _postsRepository;
-        public PostsController(IPostsRepository postsRepository)
+        private readonly IRedisCacheService _cache;
+        public PostsController(IPostsRepository postsRepository, IRedisCacheService cache)
         {
             _postsRepository = postsRepository;
+            _cache = cache;
+
         }
 
         [HttpGet]
@@ -27,6 +31,21 @@ namespace TicketReservationApp.Controllers
         {
             //string authorizationHeader = Request.Headers["Authorization"];
             //var id = User.Identity.IsAuthenticated;
+
+            var cachedPosts = _cache.GetData<IEnumerable<Posts>>("posts_cache");
+
+            if (cachedPosts != null) {
+                Console.WriteLine("posts cache hit");
+                var cachedPostsDto = cachedPosts.Select(p => new PostsDto
+                {
+                    AppUserId = p.AppUserId,
+                    PostContent = p.PostContent,
+                    PostTitle = p.PostTitle,
+                    PostType = p.PostType,
+                });
+
+                return Ok(cachedPostsDto);
+            }
 
             var posts = await _postsRepository.GetPosts();
 
@@ -37,6 +56,8 @@ namespace TicketReservationApp.Controllers
                 PostTitle = p.PostTitle,
                 PostType = p.PostType,
             });
+
+            _cache.setData("posts_cache", posts);
 
             return Ok(postsDto);
         }
