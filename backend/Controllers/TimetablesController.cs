@@ -28,7 +28,7 @@ namespace TicketReservationApp.Controllers
         private ITimetablesRepository _timetablesRepository;
         private readonly IRedisCacheService _redisCacheService;
 
-        public TimetablesController(ITimetablesRepository timetablesRepository, IRedisCacheService redisCacheService)
+        public TimetablesController(ITimetablesRepository timetablesRepository, IRedisCacheService? redisCacheService = null)
         {
             _timetablesRepository = timetablesRepository;
             _redisCacheService = redisCacheService;
@@ -38,7 +38,7 @@ namespace TicketReservationApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TimetableDto>>> GetTimetables([FromQuery] string? offers)
         {
-            var cachedTimetables = _redisCacheService.GetData<IEnumerable<Timetables>>("timetables_cache");
+            var cachedTimetables = _redisCacheService?.GetData<IEnumerable<Timetables>>("timetables_cache");
             if (cachedTimetables != null)
             {
                 Console.WriteLine("Returning cached Timetables");
@@ -62,7 +62,7 @@ namespace TicketReservationApp.Controllers
             }
 
             var timetables = await _timetablesRepository.GetTimetables(offers);
-            _redisCacheService.setData("timetables_cache", timetables);
+            _redisCacheService?.setData("timetables_cache", timetables);
             var timetablesDto = timetables.Select(t => new TimetableResponseDto()
             {
                 Id = t.Id,
