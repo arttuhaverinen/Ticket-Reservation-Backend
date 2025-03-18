@@ -17,8 +17,11 @@ jobs:
 
       - name: SSH into VPS and deploy
         run: |
-          ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd ${{ secrets.VPS_PROJECT_PATH }} && git pull origin master &&
+          ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<EOF
+          echo "Current directory: $(pwd)" &&
+          cd ${{ secrets.VPS_PROJECT_PATH }} &&
+          echo "Current directory: $(pwd)" &&
+          git pull origin master &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
           echo 'VPS_PROJECT_PATH=${{ secrets.VPS_PROJECT_PATH }}' >> .env &&
