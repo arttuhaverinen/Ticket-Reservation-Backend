@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+      - test-workflow
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<EOF
           echo "Current directory: $(pwd)" &&
-          cd ${{ secrets.VPS_PROJECT_PATH }} &&
+          cd /home/Ticket-Reservation-Backend &&
           echo "Current directory: $(pwd)" &&
           git pull origin master &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
