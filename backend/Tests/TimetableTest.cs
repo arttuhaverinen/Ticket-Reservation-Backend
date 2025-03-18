@@ -13,6 +13,11 @@ using TicketReservationApp.Dto;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using TicketReservationApp.Caching;
+using Moq;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
+using StackExchange.Redis;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace TicketReservationApp.Tests
@@ -22,6 +27,9 @@ namespace TicketReservationApp.Tests
         private readonly DbContextOptions<DataContext> _options;
 
         private readonly ITestOutputHelper _output;
+        private ConnectionMultiplexer? _redis;
+
+
 
         public TimetableTest(ITestOutputHelper output)
         {
@@ -37,9 +45,13 @@ namespace TicketReservationApp.Tests
 
 
 
+            _output = output;
 
-        _output = output;
-
+            /*_redisContainer = new RedisBuilder()
+                .WithImage("redis:latest") // Use the latest Redis image
+                .WithCleanUp(true) // Automatically remove container after test
+                .Build();
+            */
         }
 
         private DataContext GetDbContext()
@@ -52,6 +64,10 @@ namespace TicketReservationApp.Tests
 
         public async Task InitializeAsync()
         {
+            /*
+            await _redisContainer.StartAsync();
+            _redis = await ConnectionMultiplexer.ConnectAsync(_redisContainer.GetConnectionString());
+            */
             // Apply seed data
             using (var context = GetDbContext())
             {
@@ -67,7 +83,7 @@ namespace TicketReservationApp.Tests
 
         }
 
-        public Task DisposeAsync()
+        public  Task DisposeAsync()
         {
             // Cleanup after each test
             _output.WriteLine("Test cleanup starting...");
@@ -76,7 +92,14 @@ namespace TicketReservationApp.Tests
             using (var context = GetDbContext())
             {
                 context.Database.EnsureDeleted(); // Optionally delete the database after the test (it will be auto-cleaned anyway)
+                /*
+                if (_redis != null)
+                {
+                    await _redis.CloseAsync();
+                    await _redisContainer.DisposeAsync();
+                }
                 _output.WriteLine("Database cleaned up.");
+                */
             }
 
             return Task.CompletedTask;
@@ -87,9 +110,20 @@ namespace TicketReservationApp.Tests
         [Fact]
         public async Task GetAllTimetables()
         {
+
+
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            /*
+            var db = _redis!.GetDatabase();
+            await db.StringSetAsync("test-key", "Hello, Redis!");
+            var value = await db.StringGetAsync("test-key");
+            */
+
+
+
+            var controller = new TimetablesController(repository, null);
 
             var result = await controller.GetTimetables(null);
 
@@ -109,7 +143,10 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+            // using mock redis cache that always returns null
+
+            var controller = new TimetablesController(repository, null);
 
             var result = await controller.GetTimetablesById(1);
 
@@ -130,7 +167,10 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+
+
+            var controller = new TimetablesController(repository, null);
 
             var result = await controller.GetTimetablesById(9999);
 
@@ -147,7 +187,10 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+
+            var controller = new TimetablesController(repository, null);
+
 
             var claims = new[]
 {
@@ -201,7 +244,11 @@ namespace TicketReservationApp.Tests
         {
             using var context = GetDbContext();
             var repository = new TimetableRepository(context);
-            var controller = new TimetablesController(repository);
+
+
+
+            var controller = new TimetablesController(repository, null);
+
 
             var result = await controller.DeleteTimetables(1);
 

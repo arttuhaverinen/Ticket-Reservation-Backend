@@ -16,6 +16,8 @@ using NuGet.Protocol;
 using System.Text.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using TicketReservationApp.Caching;
+using Amazon.Runtime.Internal.Util;
 
 namespace TicketReservationApp.Controllers
 {
@@ -24,17 +26,45 @@ namespace TicketReservationApp.Controllers
     public class TimetablesController : ControllerBase
     {
         private ITimetablesRepository _timetablesRepository;
+        private readonly IRedisCacheService _redisCacheService;
 
-        public TimetablesController(ITimetablesRepository timetablesRepository)
+        public TimetablesController(ITimetablesRepository timetablesRepository, IRedisCacheService? redisCacheService = null)
         {
             _timetablesRepository = timetablesRepository;
+            _redisCacheService = redisCacheService;
+
+
         }
 
         // GET: api/Timetables
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TimetableDto>>> GetTimetables([FromQuery] string? offers)
         {
+            var cachedTimetables = _redisCacheService?.GetData<IEnumerable<Timetables>>("timetables_cache");
+            if (cachedTimetables != null)
+            {
+                Console.WriteLine("Returning cached Timetables");
+
+                var cachedTimetablesDto = cachedTimetables.Select(t => new TimetableResponseDto()
+                {
+                    Id = t.Id,
+                    EndTime = t.EndTime,
+                    Day = t.Day,
+                    Departure = t.Departure,
+                    Destination = t.Destination,
+                    Price = t.Price,
+                    StartTime = t.StartTime,
+                    PriceDiscount = t.PriceDiscount,
+                }).ToList();
+
+                Console.WriteLine(cachedTimetablesDto);
+
+                return Ok(cachedTimetablesDto);
+
+            }
+
             var timetables = await _timetablesRepository.GetTimetables(offers);
+            _redisCacheService?.setData("timetables_cache", timetables);
             var timetablesDto = timetables.Select(t => new TimetableResponseDto()
             {
                 Id = t.Id,
@@ -47,6 +77,7 @@ namespace TicketReservationApp.Controllers
                 PriceDiscount = t.PriceDiscount,
             }).ToList();
            
+
             return Ok(timetablesDto);
         }
 
@@ -78,6 +109,39 @@ namespace TicketReservationApp.Controllers
         [Route("{departure}/{destination}/{date}/{time?}")]
         public async Task<ActionResult<IEnumerable<TimetableWithTicketsDto>>> GetTimetablesByLocations(string departure, string destination, string date, string? time = null )
         {
+            IEnumerable<Timetables>? cachedTimetables;
+
+            if (time == null)
+            {
+                cachedTimetables = _redisCacheService.GetData<IEnumerable<Timetables>>($"timetables_cache_{departure}_{destination}_{date}");
+            } else
+            {
+                cachedTimetables = _redisCacheService.GetData<IEnumerable<Timetables>>($"timetables_cache_{departure}_{destination}_{date}_{time}");
+            }
+
+            if (cachedTimetables != null)
+            {
+                Console.WriteLine("Returning cached Timetables");
+
+                var cachedTimetableDTO = cachedTimetables.Select(t => new TimetableWithTicketsDto
+                {
+                    Id = t.Id,
+                    Date = t.Date,
+                    StartTime = t.StartTime,
+                    EndTime = t.EndTime,
+                    Price = t.Price,
+                    Departure = t.Departure,
+                    Destination = t.Destination,
+                    Day = t.Day,
+                    Cancelled = t.Cancelled,
+                    PriceDiscount = t.PriceDiscount,
+                    Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList()
+                });
+                Console.WriteLine(cachedTimetableDTO);
+
+                return Ok(cachedTimetableDTO);
+            }
+
 
             string[] yearMonthDay = date.Split("-");
 
@@ -98,8 +162,15 @@ namespace TicketReservationApp.Controllers
                 return NotFound();
             }
 
-
-            #pragma warning disable CS8602 // Dereference of a possibly null reference
+            if (time == null)
+            {
+                _redisCacheService.setData($"timetables_cache_{departure}_{destination}_{date}", timetables);
+            }
+            else
+            {
+                _redisCacheService.setData($"timetables_cache_{departure}_{destination}_{date}_{time}", timetables);
+            }
+#pragma warning disable CS8602 // Dereference of a possibly null reference
             var timetableDTO = timetables
             .Select(t => new TimetableWithTicketsDto
             {

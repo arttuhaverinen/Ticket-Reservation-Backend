@@ -17,13 +17,21 @@ jobs:
 
       - name: SSH into VPS and deploy
         run: |
+<<<<<<< HEAD
+          ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+=======
           ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+>>>>>>> master
           cd ${{ secrets.VPS_PROJECT_PATH }} && git pull origin master &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
           echo 'VPS_PROJECT_PATH=${{ secrets.VPS_PROJECT_PATH }}' >> .env &&
           echo 'VPS_PROJECT_PATH_ENV=${{ secrets.VPS_PROJECT_PATH_ENV }}' >> .env &&
+<<<<<<< HEAD
+          echo 'VITE_BASEURL=${{secrets.VITE_BASEURL_PROD}}' > ./frontend/.env.production &&
+=======
           echo 'VITE_BASEURL=${{secrets.VITE_BASEURL_PROD}}' > ./frontend/.env.production
+>>>>>>> master
           cd ${{ secrets.VPS_PROJECT_PATH_ENV }} &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
@@ -40,4 +48,5 @@ jobs:
           cd ${{ secrets.VPS_PROJECT_PATH }} &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
           sudo docker network prune -f &&  # Prunes unused networks
-          sudo docker-compose -f docker-compose.prod.yml up --build -d"  # Use production file
+          sudo docker-compose -f docker-compose.prod.yml up --build -d
+          EOF

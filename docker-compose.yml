@@ -108,6 +108,11 @@ services:
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
 volumes:
   minio-data:
   elasticsearch_data:

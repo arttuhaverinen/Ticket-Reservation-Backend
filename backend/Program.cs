@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
+using TicketReservationApp.Caching;
 
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -134,6 +135,7 @@ Console.WriteLine(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI"));
 Console.WriteLine(environment);
 
 var DB_CONNECTION_STRING = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+Console.WriteLine(Environment.GetEnvironmentVariable("REDIS_DEV"));
 
 if (environment != "Test" && !string.IsNullOrEmpty(DB_CONNECTION_STRING))
 {
@@ -365,6 +367,29 @@ builder.Services.AddDbContext<DataContext>(options =>
 
     }
 });
+
+
+
+    if (environment == "Test")
+    {
+    Console.WriteLine("Test mode - Using inmemory cache");
+    builder.Services.AddMemoryCache();
+
+    builder.Services.AddScoped<IRedisCacheService, TestInMemoryCache>();
+
+    } 
+    else
+    {
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = Environment.GetEnvironmentVariable("REDIS_DEV");
+        options.InstanceName = "Bus_";
+    });
+
+    builder.Services.AddScoped<IRedisCacheService, RedisCache>();
+
+    }
+
 
 
 
