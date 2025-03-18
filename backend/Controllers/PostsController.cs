@@ -32,7 +32,7 @@ namespace TicketReservationApp.Controllers
             //string authorizationHeader = Request.Headers["Authorization"];
             //var id = User.Identity.IsAuthenticated;
 
-            var cachedPosts = _cache.GetData<IEnumerable<Posts>>("posts_cache");
+            var cachedPosts = _cache?.GetData<IEnumerable<Posts>>("posts_cache");
 
             if (cachedPosts != null) {
                 Console.WriteLine("posts cache hit");
@@ -57,7 +57,7 @@ namespace TicketReservationApp.Controllers
                 PostType = p.PostType,
             });
 
-            _cache.setData("posts_cache", posts);
+            _cache?.setData("posts_cache", posts);
 
             return Ok(postsDto);
         }

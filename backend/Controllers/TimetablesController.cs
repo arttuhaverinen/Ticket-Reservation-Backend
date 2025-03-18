@@ -32,6 +32,8 @@ namespace TicketReservationApp.Controllers
         {
             _timetablesRepository = timetablesRepository;
             _redisCacheService = redisCacheService;
+
+
         }
 
         // GET: api/Timetables

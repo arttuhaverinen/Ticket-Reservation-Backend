@@ -5,7 +5,6 @@ services:
       dockerfile: Dockerfile.e2e
     volumes:
       - ./frontend:/app
-      - /app/node_modules
       - ./frontend/cypress/screenshots:/app/cypress/screenshots
     depends_on:
       test-webapp:
@@ -41,13 +40,18 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
     environment:
       - VITE_MINIO_URL=http://minio:9000
-      - VITE_BASEURL=http://test-webapp:5002
+      - VITE_BASEURL=http://test-webapp:5001
     #depends_on:
     #  test-webapp:
     #    condition: service_healthy
+    networks:
+      - busapp-network
+  test-redis:
+    image: redis
+    ports:
+      - "6379:6379"
     networks:
       - busapp-network
 
