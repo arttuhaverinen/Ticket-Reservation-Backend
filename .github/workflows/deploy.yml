@@ -39,6 +39,7 @@ jobs:
           echo 'BACKEND_URL=${{ secrets.BACKEND_URL }}' >> .env &&
           echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env &&
           echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env &&
+          echo 'REDIS_DEV=${{ secrets.REDIS_DEV }}' >> .env &&
           echo 'PROD_DOMAIN=${{ secrets.PROD_DOMAIN }}' >> .env &&
           cd /home/Ticket-Reservation-Backend &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
