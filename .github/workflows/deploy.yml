@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+      - test-workflow
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no  -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} <<EOF
           echo "Current directory: $(pwd)" &&
-          cd ${{ secrets.VPS_PROJECT_PATH }} &&
+          cd /home/Ticket-Reservation-Backend &&
           echo "Current directory: $(pwd)" &&
           git pull origin master &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
@@ -27,7 +27,7 @@ jobs:
           echo 'VPS_PROJECT_PATH=${{ secrets.VPS_PROJECT_PATH }}' >> .env &&
           echo 'VPS_PROJECT_PATH_ENV=${{ secrets.VPS_PROJECT_PATH_ENV }}' >> .env &&
           echo 'VITE_BASEURL=${{secrets.VITE_BASEURL_PROD}}' > ./frontend/.env.production &&
-          cd ${{ secrets.VPS_PROJECT_PATH_ENV }} &&
+          cd    /home/Ticket-Reservation-Backend/backend &&
           echo 'MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}' > .env &&
           echo 'MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}' >> .env &&
           echo 'DB_CONNECTION_STRING_PROD=${{ secrets.DB_CONNECTION_STRING_PROD }}' >> .env &&
@@ -39,8 +39,9 @@ jobs:
           echo 'BACKEND_URL=${{ secrets.BACKEND_URL }}' >> .env &&
           echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env &&
           echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env &&
+          echo 'REDIS_DEV=${{ secrets.REDIS_DEV }}' >> .env &&
           echo 'PROD_DOMAIN=${{ secrets.PROD_DOMAIN }}' >> .env &&
-          cd ${{ secrets.VPS_PROJECT_PATH }} &&
+          cd /home/Ticket-Reservation-Backend &&
           sudo docker-compose -f docker-compose.prod.yml down --remove-orphans &&
           sudo docker network prune -f &&  # Prunes unused networks
           sudo docker-compose -f docker-compose.prod.yml up --build -d
