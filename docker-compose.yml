@@ -63,7 +63,7 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false # Disable all security features
+      - xpack.security.enabled=false
     ports:
       - 9200:9200
       - 9300:9300
@@ -82,7 +82,6 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200 # Use HTTP for development
     ports:
       - 5601:5601 # Expose Kibana UI on port 5601
-    restart: always
     depends_on:
       elasticsearch:
         condition: service_healthy
