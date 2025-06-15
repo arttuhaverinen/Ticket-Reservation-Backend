@@ -13,6 +13,9 @@ services:
     #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
+      PROD_ELASTICSEARCH_URI: "http://prod-elasticsearch:9200"
+    depends_on:
+      - prod-kibana
   frontend:
     build:
       context: . # Adjust this to point to your React app's directory
@@ -29,6 +32,9 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # Mount your local default.conf
       - ./nginx/static-files:/usr/share/nginx/html # Optionally, if you have static files to serve
+    depends_on:
+      - backend
+
   minio:
     image: minio/minio:latest # Specify the MinIO image and tag here
     container_name: prod-minio
@@ -48,9 +54,42 @@ services:
     image: redis
     ports:
       - "6379:6379"
+  prod-elasticsearch:
+    #image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: prod-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data # Persist Elasticsearch data
+    mem_limit: 2g
+    healthcheck:
+      test: curl -s http://localhost:9200/_cluster/health | grep -E '"status":"(green|yellow)"'
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  prod-kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    container_name: prod-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://prod-elasticsearch:9200 # Use HTTP for development
+      - NODE_OPTIONS=--max-old-space-size=512
+    ports:
+      - 5601:5601 # Expose Kibana UI on port 5601
+    mem_limit: 1g
+    depends_on:
+      prod-elasticsearch:
+        condition: service_healthy
 
 volumes:
   minio-data:
+  elasticsearch_data:
 #  minio-data-prod:
 #    driver: local # Ensures a local volume is used
 

@@ -77,14 +77,14 @@ builder.Host.UseSerilog((context, services, configuration) =>
     var url = Environment.GetEnvironmentVariable("ELASTICSEARCH_URI");
     Console.WriteLine(url);
     var elasticsearchUri = Environment.GetEnvironmentVariable("DEV_ELASTICSEARCH_URI");
-
-    if (url != null && environment == "Production")
+    var prod_elasticsearchUri = Environment.GetEnvironmentVariable("PROD_ELASTICSEARCH_URI"); 
+    if (prod_elasticsearchUri != null && environment == "Production")
         {
         Console.WriteLine("if");
-        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(url))
+        configuration.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(prod_elasticsearchUri))
         {
             //FailureCallback = e => Console.WriteLine("Unable to submit event " + e.MessageTemplate),
-            //IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
+            IndexFormat = $"elasticsearch-logs-{DateTime.UtcNow:yyyy-MM}",
             //IndexFormat = "elasticsearch-logs-{0:yyyy-MM}",
             ModifyConnectionSettings = settings => settings.RequestTimeout(TimeSpan.FromSeconds(30)),
             AutoRegisterTemplate = true,
@@ -108,7 +108,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
                 AutoRegisterTemplate = true,
                 NumberOfShards = 1,
                 NumberOfReplicas = 1,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
 
         })
         .Filter.ByExcluding(e => excludePatterns.Any(pattern => e.MessageTemplate.Text.Contains(pattern)))
@@ -191,7 +191,7 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           //policy.AllowAnyOrigin()
-                          policy.WithOrigins("http://localhost:5173", PROD_DOMAIN)
+                          policy.WithOrigins("http://localhost:5173", "http://localhost:3000", PROD_DOMAIN)
                           .AllowAnyHeader()
                           .AllowCredentials()  // Allow cookies and credentials
                           .AllowAnyMethod();
