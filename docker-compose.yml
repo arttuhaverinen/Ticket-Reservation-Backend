@@ -112,11 +112,40 @@ services:
     ports:
       - "6379:6379"
 
+  dev-prometheus:
+    image: prom/prometheus:v3.1.0
+    ports:
+      - 5431:9090
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus:/prometheus
+
+  dev-grafana:
+    image: grafana/grafana:11.4.0
+    expose:
+      - "3000"
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+
+  dev-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    ports:
+      - "8090:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
 volumes:
   minio-data:
   elasticsearch_data:
   pgadmin-data:
   postgres_data:
+  prometheus:
+  grafana:
 #networks:
 #  busapp-network:
 #    driver: bridge

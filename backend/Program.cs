@@ -32,6 +32,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
 using TicketReservationApp.Caching;
 
+using Prometheus;
+
+
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 // dotnet run --launch-profile Test
@@ -116,7 +119,8 @@ builder.Host.UseSerilog((context, services, configuration) =>
 
     };
  
-}); 
+});
+
 
 
 
@@ -391,11 +395,16 @@ builder.Services.AddDbContext<DataContext>(options =>
     }
 
 
+builder.Services.UseHttpClientMetrics();
 
 
 var app = builder.Build();
 
 
+// Prometheus
+
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 
 
