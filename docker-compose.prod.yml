@@ -87,9 +87,38 @@ services:
       prod-elasticsearch:
         condition: service_healthy
 
+  prod-prometheus:
+    image: prom/prometheus:v3.1.0
+    ports:
+      - 5431:9090
+    volumes:
+      - ./prometheus/prometheus.prod.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+
+  prod-grafana:
+    image: grafana/grafana:11.4.0
+    expose:
+      - "3000"
+    ports:
+      - 3003:3000
+    volumes:
+      - grafana:/var/lib/grafana
+
+  prod-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    ports:
+      - "8090:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
 volumes:
   minio-data:
   elasticsearch_data:
+  prometheus:
+  grafana:
 #  minio-data-prod:
 #    driver: local # Ensures a local volume is used
 
