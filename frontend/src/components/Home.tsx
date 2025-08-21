@@ -12,6 +12,7 @@ import "../App.css";
 import useTokenExpireMiddleware from "../middleware/useTokenExpireMiddleware";
 import { useMediaQuery } from "react-responsive";
 import Info from "./Info";
+import Maps from "./Maps";
 
 registerLocale("fi", fi);
 
