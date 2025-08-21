@@ -135,8 +135,8 @@ namespace TicketReservationApp.Controllers
                     Day = t.Day,
                     Cancelled = t.Cancelled,
                     PriceDiscount = t.PriceDiscount,
-                    Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList()
-                });
+                    Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList() ?? new List<string>()
+                }) ;
                 Console.WriteLine(cachedTimetableDTO);
 
                 return Ok(cachedTimetableDTO);
@@ -184,7 +184,7 @@ namespace TicketReservationApp.Controllers
                 Day = t.Day,
                 Cancelled = t.Cancelled,
                 PriceDiscount = t.PriceDiscount,
-                Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList()
+                Seats = t.Tickets?.Select(ticket => ticket.Seat.ToString()).ToList() ?? new List<string>()
             });
 
             return Ok(timetableDTO);
