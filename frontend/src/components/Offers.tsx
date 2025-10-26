@@ -11,6 +11,7 @@ import {
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { Appcontext } from "../App";
+import Maps from "./Maps";
 
 const Offers = () => {
 	interface timetableInterface {
@@ -119,6 +120,10 @@ const Offers = () => {
 			finnishDays.push("sunnuntai");
 		}
 
+		while (finnishDays.length < 7) {
+			finnishDays.push("-");
+		}
+
 		return finnishDays;
 	};
 
@@ -166,11 +171,19 @@ const Offers = () => {
 											<h5 className="p-0 text-center">Ajopäivät:</h5>
 											<ul className="list-group">
 												{translateDaysToFinnish(tt.day).map((day) => {
-													return (
-														<li className="list-group-item">
-															<h6>{day}</h6>{" "}
-														</li>
-													);
+													if (day == "-") {
+														return (
+															<li className="list-group-item border-0">
+																<h6>&nbsp;</h6>{" "}
+															</li>
+														);
+													} else {
+														return (
+															<li className="list-group-item">
+																<h6>{day}</h6>{" "}
+															</li>
+														);
+													}
 												})}
 											</ul>
 										</div>
@@ -179,6 +192,16 @@ const Offers = () => {
 								<hr />
 								<Row className="my-3">
 									{/** <!-- justify-content-center --> */}
+									<Col xs={12}>
+										<div className="my-3" style={{ height: "250px" }}>
+											{" "}
+											<Maps
+												zoom={null}
+												fromCity={tt.departure}
+												toCity={tt.destination}
+											/>
+										</div>
+									</Col>
 									<Col xs={3} sm={6} className="d-flex align-items-center">
 										<Link
 											className="text-center ms-1 btn btn-primary"

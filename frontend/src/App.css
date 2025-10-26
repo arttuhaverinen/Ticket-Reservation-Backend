@@ -336,6 +336,12 @@ h3 {
 }
 */
 
+/* LEAFLET */
+
+.leaflet-container {
+	height: 100%;
+}
+
 @media (max-width: 991.98px) {
 	/* Adjust the breakpoint as needed */
 
