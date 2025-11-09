@@ -38,6 +38,7 @@ import ProfilePicture from "./components/ProfilePicture";
 import ConfirmEmail from "./components/ConfirmEmail";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import Maps from "./components/Maps";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
