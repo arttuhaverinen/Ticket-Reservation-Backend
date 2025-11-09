@@ -12,6 +12,15 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 //import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+L.Marker.prototype.options.icon = L.icon({
+	iconUrl: markerIcon,
+	iconRetinaUrl: markerIcon2x,
+	shadowUrl: markerShadow,
+});
 interface mapsInterface {
 	zoom: number | null;
 	fromCity: string | null;
@@ -119,7 +128,7 @@ const Maps = (props: mapsInterface) => {
 				{toCityCoordinates && (
 					<Marker position={fromCityCoordinates}>
 						{" "}
-						<Tooltip permanent direction="right">
+						<Tooltip permanent direction="top" offset={[15, 0]}>
 							{props.fromCity}
 						</Tooltip>{" "}
 					</Marker>
@@ -127,7 +136,7 @@ const Maps = (props: mapsInterface) => {
 				{toCityCoordinates && (
 					<Marker position={toCityCoordinates}>
 						{" "}
-						<Tooltip permanent direction="right">
+						<Tooltip permanent direction="top" offset={[15, 0]}>
 							{props.toCity}
 						</Tooltip>{" "}
 					</Marker>
