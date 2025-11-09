@@ -372,7 +372,6 @@ function App() {
 				*/}
 				</Container>
 				<Footer />
-				<Maps />
 			</Router>
 		</Appcontext.Provider>
 	);

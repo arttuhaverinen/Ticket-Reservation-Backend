@@ -1,6 +1,16 @@
-import React from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import React, { useEffect, useRef } from "react";
+import {
+	MapContainer,
+	Marker,
+	Popup,
+	TileLayer,
+	Tooltip,
+	Polyline,
+	useMap,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+//import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 interface mapsInterface {
 	zoom: number | null;
@@ -9,6 +19,28 @@ interface mapsInterface {
 }
 
 const Maps = (props: mapsInterface) => {
+	/*
+	const mapRef = useRef<L.Map | null>(null); // ref to store the map instance
+
+	useEffect(() => {
+		if (!mapRef.current) return;
+
+		const routingControl = L.Routing.control({
+			waypoints: [
+				L.latLng(fromCityCoordinates[0], fromCityCoordinates[1]),
+				L.latLng(toCityCoordinates[0], toCityCoordinates[1]),
+			],
+			routeWhileDragging: false,
+			addWaypoints: false,
+			draggableWaypoints: false,
+			fitSelectedRoutes: true,
+			lineOptions: { styles: [{ color: "blue", weight: 4 }] },
+			show: false,
+		}).addTo(mapRef.current);
+
+		return () => mapRef.current?.removeControl(routingControl);
+	}, [fromCityCoordinates, toCityCoordinates]);
+*/
 	const position: number[] = [60.1699, 24.9384]; // Helsinki
 
 	const cityLocations = {
@@ -17,6 +49,16 @@ const Maps = (props: mapsInterface) => {
 		Tampere: [61.4978, 23.761],
 		Kuopio: [62.8924, 27.677],
 	};
+
+	const markers = [
+		{
+			geocode: [62.601, 29.7636],
+			Popup: "Joensuu",
+		},
+		{ geocode: [63.5421, 29.1391], Popup: "Nurmes" },
+		{ geocode: [61.4978, 23.761], Popup: "Tampere" },
+		{ geocode: [62.8924, 27.677], Popup: "Kuopio" },
+	];
 
 	console.log("Joensuu", cityLocations["Joensuu"]);
 	let fromCityCoordinates: number[] | null;
@@ -44,6 +86,17 @@ const Maps = (props: mapsInterface) => {
 		];
 	}
 
+	/*
+				{markers.map((marker) => (
+					<Marker position={marker.geocode}>
+						{" "}
+						<Tooltip permanent direction="right">
+							{marker.Popup}
+						</Tooltip>
+					</Marker>
+				))}
+	*/
+
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<MapContainer
@@ -57,11 +110,28 @@ const Maps = (props: mapsInterface) => {
 				doubleClickZoom={true}
 				touchZoom={false}
 				keyboard={false}
+				whenCreated={(mapInstance) => (mapRef.current = mapInstance)} // store map instance
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
+				{toCityCoordinates && (
+					<Marker position={fromCityCoordinates}>
+						{" "}
+						<Tooltip permanent direction="right">
+							{props.fromCity}
+						</Tooltip>{" "}
+					</Marker>
+				)}
+				{toCityCoordinates && (
+					<Marker position={toCityCoordinates}>
+						{" "}
+						<Tooltip permanent direction="right">
+							{props.toCity}
+						</Tooltip>{" "}
+					</Marker>
+				)}
 			</MapContainer>
 		</div>
 	);
