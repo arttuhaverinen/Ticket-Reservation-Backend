@@ -20,6 +20,11 @@ L.Marker.prototype.options.icon = L.icon({
 	iconUrl: markerIcon,
 	iconRetinaUrl: markerIcon2x,
 	shadowUrl: markerShadow,
+	iconSize: [25, 41], // default Leaflet size
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41],
+	tooltipAnchor: [16, -28],
 });
 interface mapsInterface {
 	zoom: number | null;
@@ -134,17 +139,13 @@ const Maps = (props: mapsInterface) => {
 				{toCityCoordinates && (
 					<Marker position={fromCityCoordinates}>
 						{" "}
-						<Tooltip permanent direction="top" offset={[15, 0]}>
-							{props.fromCity}
-						</Tooltip>{" "}
+						<Tooltip permanent>{props.fromCity}</Tooltip>{" "}
 					</Marker>
 				)}
 				{toCityCoordinates && (
 					<Marker position={toCityCoordinates}>
 						{" "}
-						<Tooltip permanent direction="top" offset={[15, 0]}>
-							{props.toCity}
-						</Tooltip>{" "}
+						<Tooltip permanent>{props.toCity}</Tooltip>{" "}
 					</Marker>
 				)}
 			</MapContainer>
