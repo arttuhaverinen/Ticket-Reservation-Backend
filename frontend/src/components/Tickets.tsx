@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import Maps from "./Maps";
 
 const Tickets = () => {
 	interface timetableInterface {
@@ -80,7 +81,15 @@ const Tickets = () => {
 
 			<div>
 				{timetables && timetables?.length > 0 && (
-					<h2 className="text-center my-3">Aikataulut</h2>
+					<>
+						<h2 className="text-center my-3">
+							{departure} - {destination}
+						</h2>
+						<div style={{ height: "250px" }}>
+							<Maps zoom={null} fromCity={departure} toCity={destination} />
+						</div>
+						<h2 className="text-center my-5">Aikataulut</h2>
+					</>
 				)}
 
 				{mobileScreen && timetables && timetables?.length > 0 && (

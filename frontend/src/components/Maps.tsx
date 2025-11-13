@@ -112,13 +112,19 @@ const Maps = (props: mapsInterface) => {
 				center={
 					midpointCoordinates ? midpointCoordinates : cityLocations.Tampere
 				}
-				zoom={props.zoom || 6}
+				zoomSnap={0.1}
+				zoom={props.zoom || 6.5}
 				scrollWheelZoom={false}
 				zoomControl={true}
 				dragging={true}
 				doubleClickZoom={true}
 				touchZoom={false}
 				keyboard={false}
+				maxBounds={[
+					[59, 19],
+					[70, 32],
+				]} // southwest & northeast corners
+				maxBoundsViscosity={1.0} // prevents panning outside bounds
 				whenCreated={(mapInstance) => (mapRef.current = mapInstance)} // store map instance
 			>
 				<TileLayer
