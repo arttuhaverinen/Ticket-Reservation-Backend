@@ -5,6 +5,7 @@ import { Appcontext } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import StripeContainer from "./StripeContainer";
+import Maps from "./Maps";
 
 interface Itimetable {
 	id: number;
@@ -220,7 +221,7 @@ const Orders = () => {
 						</Col>
 					</Row>
 					<Row className="my-5 mx-1 justify-content-between">
-						<Col className="p-5 shadow p-3 mb-5 gray-div rounded" xs={5}>
+						<Col className="p-5 shadow p-3 mb-3 gray-div rounded" xs={5}>
 							<div className="w-100">
 								<p className="text-center">{timetable.departure}</p>{" "}
 							</div>
@@ -236,7 +237,7 @@ const Orders = () => {
 								style={{ opacity: "0.8" }}
 							/>
 						</Col>
-						<Col className="p-5  shadow p-3 mb-5 gray-div rounded" xs={5}>
+						<Col className="p-5  shadow p-3 mb-3 gray-div rounded" xs={5}>
 							<div className="w-100">
 								<div className="w-100">
 									<p className="text-center">{timetable.destination}</p>
@@ -249,6 +250,13 @@ const Orders = () => {
 							<div className="w-100">{timetable.endTime.slice(11, 16)} </div>
 						</Col>
 					</Row>
+					<div className="border mb-5" style={{ height: "250px" }}>
+						<Maps
+							zoom={null}
+							fromCity={timetable.departure}
+							toCity={timetable.destination}
+						/>
+					</div>
 					<Row>
 						{/*
 				<Col className="p-2 my-1 border border-dark" xs={12}>
