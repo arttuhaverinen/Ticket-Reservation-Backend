@@ -76,7 +76,9 @@ function App() {
 	const [appRefreshToken, setAppRefreshToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
-	const [darkMode, setDarkMode] = useState(false);
+	const [darkMode, setDarkMode] = useState(
+		localStorage.getItem("darkmode") == "true" ? true : false
+	);
 	const [googleCookies, setGoogleCookie] = useState(false);
 
 	let baseurl: string = import.meta.env.VITE_BASEURL;
