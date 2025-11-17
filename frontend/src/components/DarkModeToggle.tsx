@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { Appcontext } from "../App";
 const DarkModeToggle = () => {
@@ -10,6 +10,14 @@ const DarkModeToggle = () => {
 		{ name: "Light", value: "1" },
 		{ name: "Dark", value: "2" },
 	];
+
+	useEffect(() => {
+		if (darkMode) {
+			localStorage.setItem("darkmode", "true");
+		} else {
+			localStorage.setItem("darkmode", "false");
+		}
+	}, [darkMode]);
 
 	return (
 		<div className="">
