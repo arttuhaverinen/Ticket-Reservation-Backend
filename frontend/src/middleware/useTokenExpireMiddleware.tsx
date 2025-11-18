@@ -32,7 +32,7 @@ const useTokenExpireMiddleware = () => {
 
 			console.log("auth", expireTimeLeft, expireTime / 2);
 
-			if (expireTimeLeft > expireTime / 1000) {
+			if (expireTimeLeft > expireTime / 2) {
 				console.log("refresh accesstoken!");
 				console.log(refreshToken);
 				fetch(`${baseurl}/auth/refresh`, {
