@@ -32,7 +32,7 @@ const useTokenExpireMiddleware = () => {
 
 			console.log("auth", expireTimeLeft, expireTime / 2);
 
-			if (expireTimeLeft > expireTime / 2) {
+			if (expireTimeLeft > expireTime / 1000) {
 				console.log("refresh accesstoken!");
 				console.log(refreshToken);
 				fetch(`${baseurl}/auth/refresh`, {
@@ -44,7 +44,20 @@ const useTokenExpireMiddleware = () => {
 					body: JSON.stringify({ refreshToken: refreshToken }),
 				})
 					.then((res) => {
+						console.log("res", res);
 						if (res.status == 400 || res.status == 401) {
+							// If refresh token is expired, remove user related information from localstorage, and force new login
+							console.log("401");
+							localStorage.removeItem("accesstoken");
+							localStorage.removeItem("refreshtoken");
+							localStorage.removeItem("username");
+							localStorage.removeItem("time");
+							localStorage.removeItem("accessexpire");
+
+							setAppUserName(null);
+							setAppToken(null);
+							setIsAdmin(false);
+
 							throw new Error();
 						}
 						return res.json();
@@ -63,5 +76,6 @@ const useTokenExpireMiddleware = () => {
 		}, [appUserName, setAppToken]);
 	}
 };
+// 			if (expireTimeLeft > expireTime / 2) {
 
 export default useTokenExpireMiddleware;
