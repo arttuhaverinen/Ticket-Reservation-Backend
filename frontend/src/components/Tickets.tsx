@@ -3,6 +3,8 @@ import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Link, useSearchParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import Maps from "./Maps";
+import { WiDaySunny, WiCloud, WiRain } from "react-icons/wi";
+import WeatherInfo from "./WeatherInfo";
 
 const Tickets = () => {
 	interface timetableInterface {
@@ -39,6 +41,15 @@ const Tickets = () => {
 		null
 	);
 
+	const cityLocations = {
+		Joensuu: [62.601, 29.7636],
+		Nurmes: [63.5421, 29.1391],
+		Tampere: [61.4978, 23.761],
+		Kuopio: [62.8924, 27.677],
+	};
+
+	const [weather, setWeather] = useState(null);
+	const [toCityWeather, setToCityWeather] = useState(null);
 	useEffect(() => {
 		console.log(
 			`${baseurl}/api/Timetables/${departure}/${destination}/${date}`
@@ -52,6 +63,30 @@ const Tickets = () => {
 			});
 		//				//
 	}, []);
+
+	useEffect(() => {
+		if (timetables) {
+			let coordinates = cityLocations[timetables[0].departure];
+			//console.log("tt", timetables[0].departure);
+			fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${coordinates[0]}&longitude=${coordinates[1]}&current_weather=true`
+			)
+				.then((res) => res.json())
+				.then((data) => setWeather(data))
+				.catch((err) => console.log(err));
+		}
+		if (timetables) {
+			let coordinates = cityLocations[timetables[0].destination];
+			//console.log("tt", timetables[0].departure);
+			fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${coordinates[0]}&longitude=${coordinates[1]}&current_weather=true`
+			)
+				.then((res) => res.json())
+				.then((data) => setToCityWeather(data))
+				.catch((err) => console.log(err));
+		}
+	}, [timetables]);
+
 	//http://localhost:5173/tickets?departure=Joensuu&destination=Nurmes&date=2024-12-26
 	return (
 		<Container>
@@ -89,6 +124,7 @@ const Tickets = () => {
 							<Maps zoom={null} fromCity={departure} toCity={destination} />
 						</div>
 						<h2 className="text-center my-5">Aikataulut</h2>
+						{weather && console.log("current", weather.current_weather)}
 					</>
 				)}
 
@@ -177,8 +213,39 @@ const Tickets = () => {
 											{timetable.startTime} - {timetable.endTime}{" "}
 										</h5>
 									</Col>
-									<Col className="   py-3" xs={3}>
-										{timetable.departure} - {timetable.destination}
+									<Col className="py-3" xs={3}>
+										<Row>
+											<Col className="">
+												<h6>{timetable.departure}</h6>
+											</Col>
+
+											<Col>
+												<h6>{timetable.destination}</h6>
+											</Col>
+										</Row>
+										<br />
+										<Row>
+											{weather && toCityWeather && (
+												<>
+													<Col>
+														<WeatherInfo
+															weathercode={weather.current_weather.weathercode}
+															temperature={weather.current_weather.temperature}
+														/>
+													</Col>
+													<Col>
+														<WeatherInfo
+															weathercode={
+																toCityWeather.current_weather.weathercode
+															}
+															temperature={
+																toCityWeather.current_weather.temperature
+															}
+														/>
+													</Col>
+												</>
+											)}
+										</Row>
 									</Col>
 
 									<Col className=" py-3" xs={3}>

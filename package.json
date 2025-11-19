@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "bootstrap-icons": "^1.11.3",
-    "leaflet-routing-machine": "^3.2.12"
+    "leaflet-routing-machine": "^3.2.12",
+    "weather-icons": "^1.3.2",
+    "weather-icons-animated": "^2.0.1"
   }
 }
