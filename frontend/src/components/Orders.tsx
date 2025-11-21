@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import StripeContainer from "./StripeContainer";
 import Maps from "./Maps";
+import WeatherInfo from "./WeatherInfo";
 
 interface Itimetable {
 	id: number;
@@ -62,6 +63,16 @@ const Orders = () => {
 	const [customerName, setCustomerName] = useState("");
 	//const [customerInfo, setCustomerInfo] = useState();
 
+	const cityLocations = {
+		Joensuu: [62.601, 29.7636],
+		Nurmes: [63.5421, 29.1391],
+		Tampere: [61.4978, 23.761],
+		Kuopio: [62.8924, 27.677],
+	};
+
+	const [weather, setWeather] = useState(null);
+	const [toCityWeather, setToCityWeather] = useState(null);
+
 	useEffect(() => {
 		//let id = timetable.id.toString();
 		console.log(
@@ -89,6 +100,31 @@ const Orders = () => {
 				);*/
 			});
 	}, []);
+
+	useEffect(() => {
+		if (timetable) {
+			console.log("useeffect tt", timetable);
+			let coordinates = cityLocations[timetable.departure];
+			//console.log("tt", timetables[0].departure);
+			fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${coordinates[0]}&longitude=${coordinates[1]}&current_weather=true`
+			)
+				.then((res) => res.json())
+				.then((data) => setWeather(data))
+				.catch((err) => console.log(err));
+		}
+		if (timetable) {
+			let coordinates = cityLocations[timetable.destination];
+			//console.log("tt", timetables[0].departure);
+			fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${coordinates[0]}&longitude=${coordinates[1]}&current_weather=true`
+			)
+				.then((res) => res.json())
+				.then((data) => setToCityWeather(data))
+				.catch((err) => console.log(err));
+		}
+	}, [timetable]);
+
 	/*
 	const handleCreateOrder = (e) => {
 		e.preventDefault();
@@ -228,6 +264,14 @@ const Orders = () => {
 							<div className="w-100">
 								<p className="text-center">{timetable.startTime}</p>{" "}
 							</div>
+							{weather && toCityWeather && (
+								<div className="w-100 d-flex justify-content-center">
+									<WeatherInfo
+										weathercode={weather.current_weather.weathercode}
+										temperature={weather.current_weather.temperature}
+									/>
+								</div>
+							)}
 						</Col>
 						<Col className="h-100 d-flex p-3 align-items-center " xs={2}>
 							<FontAwesomeIcon
@@ -248,6 +292,14 @@ const Orders = () => {
 								</div>
 							</div>
 							<div className="w-100">{timetable.endTime.slice(11, 16)} </div>
+							{weather && toCityWeather && (
+								<div className="w-100 d-flex justify-content-center">
+									<WeatherInfo
+										weathercode={toCityWeather.current_weather.weathercode}
+										temperature={toCityWeather.current_weather.temperature}
+									/>
+								</div>
+							)}
 						</Col>
 					</Row>
 					<div className="border mb-5" style={{ height: "250px" }}>

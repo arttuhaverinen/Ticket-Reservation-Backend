@@ -8,28 +8,63 @@ import { MemoryRouter, Route, Routes } from "react-router-dom"; // Import Memory
 
 describe("Orders Component", () => {
 	beforeAll(() => {
-		global.fetch = vi.fn(() =>
-			Promise.resolve({
-				ok: true,
-				json: () =>
-					Promise.resolve([
-						// Ensure this returns a promise
-						{
-							id: 0,
-							date: "2024-10-15T18:02:46.715Z",
-							startTime: "string",
-							endTime: "string",
-							price: 0,
-							departure: "string",
-							destination: "string",
-							day: ["monday"],
-							cancelled: ["2024-10-15T18:02:46.715Z"],
-							seats: ["1,2,3,4,5"],
-							priceDiscount: 0,
-						},
-					]),
-			})
-		);
+		global.fetch = vi.fn((url) => {
+			if (url.includes("/api/Timetables/")) {
+				return Promise.resolve({
+					ok: true,
+					json: () =>
+						Promise.resolve([
+							// Ensure this returns a promise
+							{
+								id: 0,
+								date: "2024-10-15T18:02:46.715Z",
+								startTime: "string",
+								endTime: "string",
+								price: 0,
+								departure: "Joensuu",
+								destination: "Nurmes",
+								day: ["monday"],
+								cancelled: ["2024-10-15T18:02:46.715Z"],
+								seats: ["1,2,3,4,5"],
+								priceDiscount: 0,
+							},
+						]),
+				});
+			}
+			if (url.includes("open-meteo")) {
+				return Promise.resolve({
+					ok: true,
+					json: () =>
+						Promise.resolve({
+							latitude: 62.59922,
+							longitude: 29.756393,
+							generationtime_ms: 0.07665157318115234,
+							utc_offset_seconds: 0,
+							timezone: "GMT",
+							timezone_abbreviation: "GMT",
+							elevation: 89,
+							current_weather_units: {
+								time: "iso8601",
+								interval: "seconds",
+								temperature: "°C",
+								windspeed: "km/h",
+								winddirection: "°",
+								is_day: "",
+								weathercode: "wmo code",
+							},
+							current_weather: {
+								time: "2025-11-21T02:30",
+								interval: 900,
+								temperature: -0.6,
+								windspeed: 15.8,
+								winddirection: 160,
+								is_day: 0,
+								weathercode: 3,
+							},
+						}),
+				});
+			}
+		});
 	});
 	afterAll(() => {
 		vi.restoreAllMocks(); // Clean up mocks after tests are done

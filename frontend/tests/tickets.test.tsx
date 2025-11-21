@@ -9,28 +9,64 @@ import Orders from "../src/components/Orders";
 
 describe("Tickets Component", () => {
 	beforeAll(() => {
-		global.fetch = vi.fn(() =>
-			Promise.resolve({
-				ok: true,
-				json: () =>
-					Promise.resolve([
-						// Ensure this returns a promise
-						{
-							id: 1,
-							date: "2024-09-15T15:39:11.691161",
-							startTime: "09:00:00",
-							endTime: "09:00:00",
-							price: 29.99,
-							departure: "Joensuu",
-							destination: "Tampere",
-							day: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-							cancelled: [],
-							seats: ["12", "13"],
-							priceDiscount: null,
-						},
-					]),
-			})
-		);
+		global.fetch = vi.fn((url) => {
+			if (url.includes("/api/Timetables/")) {
+				return Promise.resolve({
+					ok: true,
+					json: () =>
+						Promise.resolve([
+							// Ensure this returns a promise
+							{
+								id: 1,
+								date: "2024-09-15T15:39:11.691161",
+								startTime: "09:00:00",
+								endTime: "09:00:00",
+								price: 29.99,
+								departure: "Joensuu",
+								destination: "Tampere",
+								day: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+								cancelled: [],
+								seats: ["12", "13"],
+								priceDiscount: null,
+							},
+						]),
+				});
+			}
+			// --- Weather endpoint ---
+			if (url.includes("open-meteo")) {
+				return Promise.resolve({
+					ok: true,
+					json: () =>
+						Promise.resolve({
+							latitude: 62.59922,
+							longitude: 29.756393,
+							generationtime_ms: 0.07665157318115234,
+							utc_offset_seconds: 0,
+							timezone: "GMT",
+							timezone_abbreviation: "GMT",
+							elevation: 89,
+							current_weather_units: {
+								time: "iso8601",
+								interval: "seconds",
+								temperature: "°C",
+								windspeed: "km/h",
+								winddirection: "°",
+								is_day: "",
+								weathercode: "wmo code",
+							},
+							current_weather: {
+								time: "2025-11-21T02:30",
+								interval: 900,
+								temperature: -0.6,
+								windspeed: 15.8,
+								winddirection: 160,
+								is_day: 0,
+								weathercode: 3,
+							},
+						}),
+				});
+			}
+		});
 	});
 	afterAll(() => {
 		vi.restoreAllMocks(); // Clean up mocks after tests are done
