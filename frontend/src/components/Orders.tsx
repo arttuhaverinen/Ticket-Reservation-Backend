@@ -103,6 +103,7 @@ const Orders = () => {
 
 	useEffect(() => {
 		if (timetable) {
+			console.log("useeffect tt", timetable);
 			let coordinates = cityLocations[timetable.departure];
 			//console.log("tt", timetables[0].departure);
 			fetch(
