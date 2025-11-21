@@ -67,7 +67,7 @@ const WeatherInfo = (props: WeatherInterface) => {
 		<div>
 			<div> </div>
 
-			<div className="d-block d-l-flex">
+			<div className="d-block d-md-flex">
 				<p className={`${getTemperatureColor()} me-2`}>{props.temperature}</p>
 				<WeatherSvg
 					state={
