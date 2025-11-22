@@ -65,7 +65,7 @@ const Tickets = () => {
 	}, []);
 
 	useEffect(() => {
-		if (timetables) {
+		if (timetables && timetables.length > 0) {
 			let coordinates = cityLocations[timetables[0].departure];
 			//console.log("tt", timetables[0].departure);
 			fetch(
@@ -75,7 +75,7 @@ const Tickets = () => {
 				.then((data) => setWeather(data))
 				.catch((err) => console.log(err));
 		}
-		if (timetables) {
+		if (timetables && timetables.length > 0) {
 			let coordinates = cityLocations[timetables[0].destination];
 			//console.log("tt", timetables[0].departure);
 			fetch(
