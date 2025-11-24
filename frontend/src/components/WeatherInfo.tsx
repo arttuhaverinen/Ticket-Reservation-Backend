@@ -68,7 +68,9 @@ const WeatherInfo = (props: WeatherInterface) => {
 			<div> </div>
 
 			<div className="d-block d-md-flex">
-				<p className={`${getTemperatureColor()} me-2`}>{props.temperature}</p>
+				<p className={`${getTemperatureColor()} me-2`}>
+					{props.temperature > 0 ? `+${props.temperature}` : props.temperature}
+				</p>
 				<WeatherSvg
 					state={
 						(weatherCodeMap[props.weathercode] ?? "cloudy") as WeatherState
