@@ -378,6 +378,23 @@ h3 {
 	}
 }
 
+.leaflet-control-zoom-in > span {
+	color: black;
+}
+.leaflet-control-zoom-out > span {
+	color: black;
+}
+
+.leaflet-routing-container
+	leaflet-bar
+	leaflet-routing-collapsible
+	leaflet-control
+	leaflet-routing-container-hide {
+	display: none;
+}
+.leaflet-top .leaflet-right {
+	display: none;
+}
 @media (max-width: 768px) {
 	.image-container {
 		background-size: contain; /* Adjusts image scaling on smaller screens */
