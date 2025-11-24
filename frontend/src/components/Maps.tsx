@@ -88,7 +88,7 @@ const Maps = (props: mapsInterface) => {
 
 		useEffect(() => {
 			console.log("map useeffect", fromCityCoordinates);
-			if (!map) return;
+			if (!map || !fromCityCoordinates || !toCityCoordinates) return;
 			console.log("map useeffect control");
 
 			const control = L.Routing.control({
@@ -112,7 +112,11 @@ const Maps = (props: mapsInterface) => {
 			const container = document.querySelector(".leaflet-routing-container");
 			if (container) container.remove();
 
-			return () => map.removeControl(control);
+			return () => {
+				if (map && control) {
+					map.removeControl(control);
+				}
+			};
 		}, [map, fromCityCoordinates, toCityCoordinates]);
 
 		return null;
