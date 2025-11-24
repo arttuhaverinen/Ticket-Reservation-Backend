@@ -16,6 +16,9 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
 L.Marker.prototype.options.icon = L.icon({
 	iconUrl: markerIcon,
 	iconRetinaUrl: markerIcon2x,
@@ -33,30 +36,9 @@ interface mapsInterface {
 }
 
 const Maps = (props: mapsInterface) => {
-	/*
-	const mapRef = useRef<L.Map | null>(null); // ref to store the map instance
-
-	useEffect(() => {
-		if (!mapRef.current) return;
-
-		const routingControl = L.Routing.control({
-			waypoints: [
-				L.latLng(fromCityCoordinates[0], fromCityCoordinates[1]),
-				L.latLng(toCityCoordinates[0], toCityCoordinates[1]),
-			],
-			routeWhileDragging: false,
-			addWaypoints: false,
-			draggableWaypoints: false,
-			fitSelectedRoutes: true,
-			lineOptions: { styles: [{ color: "blue", weight: 4 }] },
-			show: false,
-		}).addTo(mapRef.current);
-
-		return () => mapRef.current?.removeControl(routingControl);
-	}, [fromCityCoordinates, toCityCoordinates]);
-*/
 	const position: number[] = [60.1699, 24.9384]; // Helsinki
 
+	// Hardcoded locations for now - use database later
 	const cityLocations = {
 		Joensuu: [62.601, 29.7636],
 		Nurmes: [63.5421, 29.1391],
@@ -64,6 +46,7 @@ const Maps = (props: mapsInterface) => {
 		Kuopio: [62.8924, 27.677],
 	};
 
+	// Hardcoded locations for now - use database later
 	const markers = [
 		{
 			geocode: [62.601, 29.7636],
@@ -100,16 +83,40 @@ const Maps = (props: mapsInterface) => {
 		];
 	}
 
-	/*
-				{markers.map((marker) => (
-					<Marker position={marker.geocode}>
-						{" "}
-						<Tooltip permanent direction="right">
-							{marker.Popup}
-						</Tooltip>
-					</Marker>
-				))}
-	*/
+	const Routing = ({ fromCityCoordinates, toCityCoordinates }) => {
+		const map = useMap();
+
+		useEffect(() => {
+			console.log("map useeffect", fromCityCoordinates);
+			if (!map) return;
+			console.log("map useeffect control");
+
+			const control = L.Routing.control({
+				waypoints: [
+					L.latLng(fromCityCoordinates[0], fromCityCoordinates[1]),
+					L.latLng(toCityCoordinates[0], toCityCoordinates[1]),
+				],
+				router: new L.Routing.OSRMv1({
+					serviceUrl: "https://routing.openstreetmap.de/routed-car/route/v1",
+				}),
+				routeWhileDragging: false,
+				draggableWaypoints: false,
+				addWaypoints: false,
+				show: false,
+				lineOptions: {
+					styles: [{ color: "#007aff", weight: 4 }],
+				},
+			}).addTo(map);
+
+			// This removes the generated top-right button
+			const container = document.querySelector(".leaflet-routing-container");
+			if (container) container.remove();
+
+			return () => map.removeControl(control);
+		}, [map, fromCityCoordinates, toCityCoordinates]);
+
+		return null;
+	};
 
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
@@ -128,9 +135,9 @@ const Maps = (props: mapsInterface) => {
 				maxBounds={[
 					[59, 19],
 					[70, 32],
-				]} // southwest & northeast corners
-				maxBoundsViscosity={1.0} // prevents panning outside bounds
-				whenCreated={(mapInstance) => (mapRef.current = mapInstance)} // store map instance
+				]}
+				maxBoundsViscosity={1.0}
+				whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -147,6 +154,12 @@ const Maps = (props: mapsInterface) => {
 						{" "}
 						<Tooltip permanent>{props.toCity}</Tooltip>{" "}
 					</Marker>
+				)}
+				{fromCityCoordinates && toCityCoordinates && (
+					<Routing
+						fromCityCoordinates={fromCityCoordinates}
+						toCityCoordinates={toCityCoordinates}
+					/>
 				)}
 			</MapContainer>
 		</div>
