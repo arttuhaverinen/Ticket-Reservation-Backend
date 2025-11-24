@@ -129,106 +129,125 @@ const Offers = () => {
 
 	const mapTimetables = () => {
 		console.log(timetables);
+		let hidden = false;
 		if (timetables) {
 			return timetables.map((tt) => {
-				if (
-					searchWord.length == 0 ||
-					tt.departure.toLowerCase().includes(searchWord.toLowerCase()) ||
-					tt.destination.toLowerCase().includes(searchWord.toLowerCase())
-				) {
+				{
+					if (
+						searchWord.length == 0 ||
+						tt.departure.toLowerCase().includes(searchWord.toLowerCase()) ||
+						tt.destination.toLowerCase().includes(searchWord.toLowerCase())
+					) {
+						{
+							console.log("hidden", hidden);
+						}
+						hidden = false;
+					} else {
+						{
+							console.log("hidden", hidden);
+						}
+
+						hidden = true;
+					}
 					return (
-						<Col className="" md={12} lg={6}>
-							<div className="h-100 gray-div  rounded p-3">
-								<Row>
-									<Col className="" md={6}>
-										<h5 className=" text-center">
-											{tt.departure} → {tt.destination}
-										</h5>
-										<div className="card gray-div mb-3 p-3" key={tt.id}>
-											<div className="">
-												<p>
-													<strong>Lähtöaika:</strong> {tt.startTime}
-												</p>
-												<p>
-													<strong>Saapumisaika:</strong> {tt.endTime}
-												</p>
-												<p>
-													<strong>Hinta:</strong>{" "}
-													{tt.priceDiscount ? (
-														<>
-															<s>{tt.price}</s> | {tt.priceDiscount}
-														</>
-													) : (
-														tt.price
-													)}
-												</p>
+						<>
+							<Col
+								className={`${hidden ? "d-none" : "d-block"}`}
+								md={12}
+								lg={6}
+							>
+								<div className="h-100 gray-div  rounded p-3">
+									<Row>
+										<Col className="" md={6}>
+											<h5 className=" text-center">
+												{tt.departure} → {tt.destination}
+											</h5>
+											<div className="card gray-div mb-3 p-3" key={tt.id}>
+												<div className="">
+													<p>
+														<strong>Lähtöaika:</strong> {tt.startTime}
+													</p>
+													<p>
+														<strong>Saapumisaika:</strong> {tt.endTime}
+													</p>
+													<p>
+														<strong>Hinta:</strong>{" "}
+														{tt.priceDiscount ? (
+															<>
+																<s>{tt.price}</s> | {tt.priceDiscount}
+															</>
+														) : (
+															tt.price
+														)}
+													</p>
+												</div>
 											</div>
-										</div>
-									</Col>
-									<Col md={6}>
-										{" "}
-										<div className="d-flex flex-column">
-											<h5 className="p-0 text-center">Ajopäivät:</h5>
-											<ul className="list-group">
-												{translateDaysToFinnish(tt.day).map((day) => {
-													if (day == "-") {
-														return (
-															<li className="list-group-item border-0">
-																<h6>&nbsp;</h6>{" "}
-															</li>
-														);
-													} else {
-														return (
-															<li className="list-group-item">
-																<h6>{day}</h6>{" "}
-															</li>
-														);
-													}
-												})}
-											</ul>
-										</div>
-									</Col>
-								</Row>
-								<hr />
-								<Row className="my-3">
-									{/** <!-- justify-content-center --> */}
-									<Col xs={12}>
-										<div className="my-3" style={{ height: "250px" }}>
+										</Col>
+										<Col md={6}>
 											{" "}
-											<Maps
-												zoom={null}
-												fromCity={tt.departure}
-												toCity={tt.destination}
-											/>
-										</div>
-									</Col>
-									<Col xs={3} sm={6} className="d-flex align-items-center">
-										<Link
-											className="text-center ms-1 btn btn-primary"
-											to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
-										>
-											Osta
-										</Link>
-									</Col>
-									<Col xs={9} sm={6} className="">
-										<span>Päivämäärä </span>
-										<DatePicker
-											className="datepicker w-100"
-											locale="fi"
-											selected={new Date(startDate)}
-											dateFormat="dd/MM/yyyy"
-											onChange={(date) => {
-												if (date) {
-													setStartDate(date.toISOString().split("T")[0]);
-												} else {
-													setStartDate(""); // Optionally handle the case when the date is cleared (null or undefined)
-												}
-											}}
-										></DatePicker>
-									</Col>
-								</Row>
-							</div>
-						</Col>
+											<div className="d-flex flex-column">
+												<h5 className="p-0 text-center">Ajopäivät:</h5>
+												<ul className="list-group">
+													{translateDaysToFinnish(tt.day).map((day) => {
+														if (day == "-") {
+															return (
+																<li className="list-group-item border-0">
+																	<h6>&nbsp;</h6>{" "}
+																</li>
+															);
+														} else {
+															return (
+																<li className="list-group-item">
+																	<h6>{day}</h6>{" "}
+																</li>
+															);
+														}
+													})}
+												</ul>
+											</div>
+										</Col>
+									</Row>
+									<hr />
+									<Row className="my-3">
+										{/** <!-- justify-content-center --> */}
+										<Col xs={12}>
+											<div className="my-3" style={{ height: "250px" }}>
+												{" "}
+												<Maps
+													zoom={null}
+													fromCity={tt.departure}
+													toCity={tt.destination}
+												/>
+											</div>
+										</Col>
+										<Col xs={3} sm={6} className="d-flex align-items-center">
+											<Link
+												className="text-center ms-1 btn btn-primary"
+												to={`/orders?departure=${tt.departure}&destination=${tt.destination}&date=${startDate}&time=${tt.startTime}`}
+											>
+												Osta
+											</Link>
+										</Col>
+										<Col xs={9} sm={6} className="">
+											<span>Päivämäärä </span>
+											<DatePicker
+												className="datepicker w-100"
+												locale="fi"
+												selected={new Date(startDate)}
+												dateFormat="dd/MM/yyyy"
+												onChange={(date) => {
+													if (date) {
+														setStartDate(date.toISOString().split("T")[0]);
+													} else {
+														setStartDate(""); // Optionally handle the case when the date is cleared (null or undefined)
+													}
+												}}
+											></DatePicker>
+										</Col>
+									</Row>
+								</div>
+							</Col>
+						</>
 					);
 				}
 			});
