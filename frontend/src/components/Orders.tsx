@@ -322,7 +322,7 @@ const Orders = () => {
 								<h5 className="">Paikanvaraus</h5>
 								<Row className="p-0 m-0 justify-content-center  ">
 									<hr />
-									<Col className="" xs={4}>
+									<Col className="" xs={6}>
 										{" "}
 										<Button
 											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -391,6 +391,7 @@ const Orders = () => {
 											10
 										</Button>
 										<Button
+											className=""
 											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 												seatClicked == "13"
 													? setSeatClicked(null)
@@ -435,8 +436,7 @@ const Orders = () => {
 											18
 										</Button>
 									</Col>
-									<Col className="m-0 p-0" xs={1}></Col>
-									<Col className="m-0 p-0" xs={4}>
+									<Col className="" xs={6}>
 										<Button
 											onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 												seatClicked == "3"
