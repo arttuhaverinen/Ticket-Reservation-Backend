@@ -8,13 +8,13 @@ const Footer = () => {
 
 				<Row className="justify-content-center">
 					{/* Column 1: About Us */}
-					<Col className="text-center my-3" lg={2} xs={6}>
+					<Col className="text-center my-3" lg={4} xs={6}>
 						<h6 className="my-2">Frontend</h6>
 						<p className="m-0">{"React (vite)"}</p>
 						<p className="m-0">Bootstrap 5</p>
 						<p className="m-0">TypeScript</p>
 					</Col>
-					<Col className=" text-center my-3" lg={2} xs={6}>
+					<Col className=" text-center my-3" lg={4} xs={6}>
 						<h6 className="my-2">Backend</h6>
 						<p className="m-0">.Net 8 (C#)</p>
 						<p className="m-0">Entity Framework Core</p>
@@ -25,25 +25,32 @@ const Footer = () => {
 						<p className="m-0">Swagger</p>
 						<p className="m-0">Mailkit</p>
 					</Col>
-					<Col className="text-center my-3" lg={2} xs={6}>
+					<Col className="text-center my-3" lg={4} xs={6}>
 						<h6 className="my-2">Testaus</h6>
 						<p className="m-0">Vitest</p>
 						<p className="m-0">React testing library</p>
 						<p className="m-0">Cypress</p>
 						<p className="m-0">XUnit</p>
 					</Col>
-					<Col className="text-center my-3" lg={2} xs={6}>
+					<Col className="text-center my-3" lg={4} xs={6}>
 						<h6 className="my-2">Devops & CI/CD</h6>
-						<p className="m-0">Docker (dev, test, prod)</p>
-						<p className="m-0">Github actions</p>
-						<p className="m-0">Ubuntu VPS</p>
+						<p className="m-0">Docker (Dev, Test, Prod)</p>
+						<p className="m-0">GitHub Actions</p>
+						<p className="m-0">Debian VPS</p>
 						<p className="m-0">NginX</p>
 					</Col>
-					<Col className="text-center my-3" lg={2} xs={6}>
-						<h6 className="my-2">Logit</h6>
+					<Col className="text-center my-3" lg={4} xs={6}>
+						<h6 className="my-2">Logit & Monitorointi</h6>
 						<p className="m-0">Serilog</p>
 						<p className="m-0">Elasticsearch </p>
 						<p className="m-0">Kibana </p>
+						<p className="m-0">Prometheus </p>
+						<p className="m-0">Grafana </p>
+					</Col>
+					<Col className="text-center my-3" lg={4} xs={6}>
+						<h6 className="my-2">API</h6>
+						<p className="m-0">React-leaflet & OpenStreetMap - kartat</p>
+						<p className="m-0">Open-Meteo - Säätiedot </p>
 					</Col>
 					{/* Column 2: Quick Links */}
 
