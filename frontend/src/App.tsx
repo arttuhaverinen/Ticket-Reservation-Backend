@@ -39,6 +39,7 @@ import ConfirmEmail from "./components/ConfirmEmail";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Maps from "./components/Maps";
+import Contact from "./components/Contact";
 
 const basename = window.location.pathname.startsWith("/client")
 	? "/client"
@@ -354,6 +355,7 @@ function App() {
 						</Route>{" "}
 						<Route path="/failed" element={<Failed />} />
 						<Route path="/success" element={<Success />} />
+						<Route path="/contact" element={<Contact />} />
 					</Routes>
 
 					{/* 
