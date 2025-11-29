@@ -123,6 +123,12 @@ const Navigation = () => {
 									<h5 className="navigation-link-hover ">Rekisteröidy</h5>
 								</Link>
 							</Nav.Link>
+							<Nav.Link className="me-3">
+								{" "}
+								<Link to={"/contact"}>
+									<h5 className="navigation-link-hover ">Ota yhteyttä</h5>
+								</Link>
+							</Nav.Link>
 							<div className="me-3">
 								<DarkModeToggle />
 							</div>{" "}
@@ -137,6 +143,12 @@ const Navigation = () => {
 								>
 									{" "}
 									<h5 className="navigation-link-hover ">Kirjaudu ulos</h5>
+								</Link>
+							</Nav.Link>
+							<Nav.Link className="me-3">
+								{" "}
+								<Link to={"/contact"}>
+									<h5 className="navigation-link-hover ">Ota yhteyttä</h5>
 								</Link>
 							</Nav.Link>
 							<div className="ms-3">
