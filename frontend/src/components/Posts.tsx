@@ -47,9 +47,11 @@ const Posts = (/*props: postInterface*/) => {
 			{console.log("mobile ", mobileScreen)}
 			<Container>
 				<Row className="d-flex ">
-					<Col className="d-flex" xs={10}>
+					<Col className="d-flex" lg={10} xs={12}>
 						{" "}
-						<h2 className="text-center mx-3 ">Ilmoitukset</h2>{" "}
+						<h2 className={`${mobileScreen ? "w-100" : ""} text-center mx-3`}>
+							Ilmoitukset
+						</h2>{" "}
 					</Col>
 					<Col xs={2}>
 						{" "}
