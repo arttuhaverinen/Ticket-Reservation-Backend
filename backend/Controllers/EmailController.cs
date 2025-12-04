@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using static System.Net.Mime.MediaTypeNames;
 using NuGet.Protocol;
-using System.Text.Json; // Make sure this namespace is included
+using System.Text.Json;
+using System.Reactive.Subjects; // Make sure this namespace is included
 
 [ApiController]
 [Route("api/[controller]")]
@@ -218,5 +219,39 @@ public class EmailController : ControllerBase, IEmailSender
         {
             return StatusCode(500, $"Error sending email: {ex.Message}");
         }
+    }
+
+    [HttpPost("customer-support")]
+    public async Task<IActionResult> SendEmailCustomerSupport([FromBody] EmailRequest request)
+    {
+        Console.WriteLine("Customer support - email");
+
+        try
+        {
+            var emailSettings = _configuration.GetSection("EmailSettings").Get<EmailSettings>();
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress("Customer Support Message", emailSettings.SenderEmail));
+            emailMessage.To.Add(new MailboxAddress("Customer support", emailSettings.SenderEmail));
+            emailMessage.ReplyTo.Add(new MailboxAddress("Customer", request.RecipientEmail));
+            emailMessage.Subject = request.Subject;
+            emailMessage.Body = new TextPart("plain") { Text = request.Body }; 
+
+            using var smtpClient = new SmtpClient();
+            await smtpClient.ConnectAsync(emailSettings.SmtpServer, emailSettings.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            await smtpClient.AuthenticateAsync(emailSettings.SenderEmail, emailSettings.Password);
+            await smtpClient.SendAsync(emailMessage);
+            await smtpClient.DisconnectAsync(true);
+
+            return Ok("Email sent successfully.");
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error sending email: {ex.Message}");
+
+        }
+
+
+
     }
 }
