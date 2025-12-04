@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Post from "./Post";
 import { Button, Col, Container, Placeholder, Row } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
+import { Appcontext } from "../App";
 
 interface postInterface {
 	postId: number;
@@ -16,6 +17,8 @@ const Posts = (/*props: postInterface*/) => {
 	const [gridView, setGridView] = useState(false);
 	let baseurl: string = import.meta.env.VITE_BASEURL;
 	const [posts, setPosts] = useState<postInterface[]>();
+
+	const { darkMode } = useContext(Appcontext);
 
 	useEffect(() => {
 		mobileScreen == true && setGridView(false);
@@ -98,7 +101,11 @@ const Posts = (/*props: postInterface*/) => {
 				<div>
 					{Array.from([2]).map(() => {
 						return (
-							<Container className="p-3 mb-5 bg-white rounded">
+							<Container
+								className={`p-3 mb-5 ${
+									darkMode ? "bg-dark-medium" : "bg-light"
+								} rounded`}
+							>
 								{/* Placeholder Text */}
 								<div className="mb-4">
 									<Placeholder className="w-100" animation="glow">

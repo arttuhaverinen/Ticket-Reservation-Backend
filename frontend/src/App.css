@@ -395,6 +395,31 @@ h3 {
 .leaflet-top .leaflet-right {
 	display: none;
 }
+
+.blue-border-input .form-control:focus {
+	border-color: #007bff;
+	box-shadow: #007bff;
+}
+
+.blue-border-input:focus-within {
+	border-color: #007bff;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+	border-radius: 0.25rem;
+}
+
+.blue-border-input:focus-within .search-icon {
+	color: #007bff;
+}
+
+.bg-dark-medium {
+	background-color: #343a40;
+	color: white;
+}
+
+.border-primary-medium {
+	border-color: rgba(13, 110, 253, 0.25); /* 25% opacity of primary */
+}
+
 @media (max-width: 768px) {
 	.image-container {
 		background-size: contain; /* Adjusts image scaling on smaller screens */
