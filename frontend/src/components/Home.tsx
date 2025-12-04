@@ -27,8 +27,8 @@ const Home = () => {
 				<Row
 					style={{
 						backgroundImage: `url(${forest})`,
-						/*backgroundSize: "cover", // Ensures the image covers the entire area*/
-						backgroundSize: "100% auto", // Ensures the image scales fluidly across the width
+						backgroundSize: "cover", // Ensures the image covers the entire area
+						//backgroundSize: "100% auto", // Ensures the image scales fluidly across the width
 						backgroundPosition: "center",
 						backgroundRepeat: "no-repeat",
 						minHeight: "200px", // Defines a minimum height for the row
