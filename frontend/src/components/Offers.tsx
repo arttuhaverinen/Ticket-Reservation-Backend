@@ -233,6 +233,7 @@ const Offers = () => {
 											<DatePicker
 												className="datepicker w-100"
 												locale="fi"
+												withPortal
 												selected={new Date(startDate)}
 												dateFormat="dd/MM/yyyy"
 												onChange={(date) => {
@@ -288,7 +289,7 @@ const Offers = () => {
 			<Container className="">
 				<h2 className="text-center mb-3">Tarjousmatkat</h2>
 				<div className="w-100 d-flex justify-conent-center ">
-					<InputGroup className="">
+					<InputGroup className="blue-border-input">
 						<FormControl
 							className="border-0 shadow-none"
 							placeholder="Hae tarjousmatkoja paikkakunnan perusteella"
@@ -297,7 +298,7 @@ const Offers = () => {
 						/>
 						<InputGroup.Text className="border-0 search-icon">
 							<i
-								className="fa fa-search fa-4x text-secondary "
+								className="fa fa-search fa-search-custom fa-4x"
 								aria-hidden="true"
 							></i>
 						</InputGroup.Text>

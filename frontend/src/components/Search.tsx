@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { Appcontext } from "../App";
+import "../App.css";
 
 export const Search = () => {
 	//let baseurl: string = import.meta.env.VITE_BASEURL;
@@ -17,7 +18,8 @@ export const Search = () => {
 	return (
 		<Container className="w-100 my-3 overflow-hidden">
 			<Form
-				className="w-100 mx-auto p-2 shadow p-3 mb-5 rounded overflow-hidden"
+				className="w-100 mx-auto p-2 shadow p-3 mb-5 rounded overflow-hidden border border-2 border-secondary
+				"
 				style={{ backgroundColor: darkMode ? "var(--input-bg)" : "white" }}
 			>
 				<h5 className="d-none d-lg-block text-center mb-3">Matkahaku</h5>

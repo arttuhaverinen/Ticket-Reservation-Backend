@@ -58,7 +58,7 @@ const Navigation = () => {
 							style={{ minHeight: "100px" }}
 						>
 							<h5 className="navigation-link-hover roboto-slab-font ">
-								<i>Joensuun liikenne</i>
+								<i>Karjalan liikenne</i>
 							</h5>
 						</div>
 					</Link>
@@ -145,7 +145,7 @@ const Navigation = () => {
 									<h5 className="navigation-link-hover ">Kirjaudu ulos</h5>
 								</Link>
 							</Nav.Link>
-							<Nav.Link className="me-3">
+							<Nav.Link className="ms-3">
 								{" "}
 								<Link to={"/contact"}>
 									<h5 className="navigation-link-hover ">Ota yhteyttä</h5>
