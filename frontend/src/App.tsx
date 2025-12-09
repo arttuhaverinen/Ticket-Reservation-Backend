@@ -78,7 +78,7 @@ function App() {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [profilePicture, setProfilePicture] = useState<string | null>(null);
 	const [darkMode, setDarkMode] = useState(
-		localStorage.getItem("darkmode") == "true" ? true : false
+		localStorage.getItem("darkmode") == "false" ? false : true
 	);
 	const [googleCookies, setGoogleCookie] = useState(false);
 
