@@ -20,7 +20,9 @@ const Footer = () => {
 						<p className="m-0">Entity Framework Core</p>
 						<p className="m-0">Identity Framework</p>
 						<p className="m-0">Stripe - Maksujen käsittely</p>
+						<p className="m-0">OAuth</p>
 						<p className="m-0">PostgreSQL</p>
+						<p className="m-0">Redis</p>
 						<p className="m-0">Minio</p>
 						<p className="m-0">Swagger</p>
 						<p className="m-0">Mailkit</p>
@@ -38,6 +40,7 @@ const Footer = () => {
 						<p className="m-0">GitHub Actions</p>
 						<p className="m-0">Debian VPS</p>
 						<p className="m-0">NginX</p>
+						<p className="m-0">Cloudflare</p>
 					</Col>
 					<Col className="text-center my-3" lg={4} xs={6}>
 						<h5 className="my-2">Logit & Monitorointi</h5>
