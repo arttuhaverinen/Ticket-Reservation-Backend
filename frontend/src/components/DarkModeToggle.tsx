@@ -26,8 +26,8 @@ const DarkModeToggle = () => {
 					type="radio"
 					variant={"outline-secondary"}
 					style={{
-						color: darkMode ? "black" : "white", // Text color
-						backgroundColor: darkMode ? "#FFFFFF" : "black", // Background color based on dark mode
+						color: darkMode ? "black" : "yellow", // Text color
+						backgroundColor: darkMode ? "#303030" : "#303030", // Background color based on dark mode
 					}}
 					name="radio"
 					onClick={(e) => {
@@ -43,8 +43,8 @@ const DarkModeToggle = () => {
 					type="radio"
 					variant={"outline-secondary"}
 					style={{
-						color: darkMode ? "white" : "black", // Text color
-						backgroundColor: darkMode ? "black" : "white", // Background color based on dark mode
+						color: darkMode ? "yellow" : "white", // Text color
+						backgroundColor: darkMode ? "#303030" : "#303030", // Background color based on dark mode
 					}}
 					name="radio"
 					onClick={(e) => {

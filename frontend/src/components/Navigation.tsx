@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
 import "../App.css";
 import Cookies from "js-cookie";
@@ -20,6 +20,8 @@ const Navigation = () => {
 		setProfilePicture,
 		darkMode,
 	} = useContext(Appcontext)!;
+
+	const location = useLocation();
 
 	const logoutClearLocalStorage = () => {
 		localStorage.removeItem("accesstoken");
@@ -114,19 +116,43 @@ const Navigation = () => {
 							<Nav.Link className="me-3">
 								<Link to={"/login"}>
 									{" "}
-									<h5 className="navigation-link-hover ">Kirjaudu sisään</h5>
+									<h5
+										className={`${
+											location.pathname == "/login"
+												? "text-primary"
+												: "navigation-link-hover"
+										} `}
+									>
+										Kirjaudu sisään
+									</h5>
 								</Link>
 							</Nav.Link>
 							<Nav.Link className="me-3">
 								<Link to={"/register"}>
 									{" "}
-									<h5 className="navigation-link-hover ">Rekisteröidy</h5>
+									<h5
+										className={`${
+											location.pathname == "/register"
+												? "text-primary"
+												: "navigation-link-hover"
+										} `}
+									>
+										Rekisteröidy
+									</h5>
 								</Link>
 							</Nav.Link>
 							<Nav.Link className="me-3">
 								{" "}
 								<Link to={"/contact"}>
-									<h5 className="navigation-link-hover ">Ota yhteyttä</h5>
+									<h5
+										className={`${
+											location.pathname == "/contact"
+												? "text-primary"
+												: "navigation-link-hover"
+										} `}
+									>
+										Ota yhteyttä
+									</h5>
 								</Link>
 							</Nav.Link>
 							<div className="me-3">
@@ -148,7 +174,15 @@ const Navigation = () => {
 							<Nav.Link className="ms-3">
 								{" "}
 								<Link to={"/contact"}>
-									<h5 className="navigation-link-hover ">Ota yhteyttä</h5>
+									<h5
+										className={`${
+											location.pathname == "/contact"
+												? "text-primary"
+												: "navigation-link-hover"
+										} `}
+									>
+										Ota yhteyttä
+									</h5>
 								</Link>
 							</Nav.Link>
 							<div className="ms-3">
