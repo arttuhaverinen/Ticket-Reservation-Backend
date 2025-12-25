@@ -42,6 +42,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app 
+      - /app/node_modules
     command: npm run dev
     environment:
       - VITE_MINIO_URL=http://dev-minio:9000 
@@ -92,7 +93,7 @@ services:
       - "5050:80" 
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD
     volumes:
       - pgadmin-data:/var/lib/pgadmin
   redis:
