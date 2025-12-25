@@ -1,19 +1,12 @@
 services:
   test-unit:
-    #image: cypress/included:13.16.1 # Using the official Cypress Docker image
     build:
-      context: ./frontend # Path to the backend folder
-      dockerfile: Dockerfile.unit # Dockerfile inside the backend folder
+      context: ./frontend 
+      dockerfile: Dockerfile.unit 
     ports:
       - "3000:3000"
-    #    volumes:
-    #      - ./backend/wwwroot:/app/dist
     volumes:
-      - ./frontend:/app # Mount the frontend code directory into the container
-      - /app/node_modules # Prevent overwriting node_modules in container with local version
-    #command: npm run test:unit #npm run testmode
+      - ./frontend:/app 
+      - /app/node_modules 
     environment:
-      - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
-    #depends_on:
-    #  test-webapp:
-    #    condition: service_healthy
+      - VITE_MINIO_URL=http://minio:9000 

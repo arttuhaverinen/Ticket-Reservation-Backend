@@ -1,120 +1,90 @@
 services:
   test-webapp-run-tests:
-    #image: busapp
     build:
-      context: ./backend # Path to the backend folder
-      dockerfile: Dockerfile.runtests # Dockerfile inside the backend folder
+      context: ./backend 
+      dockerfile: Dockerfile.runtests 
     env_file:
-      - ./backend/.env # Specify the path to the .env file
+      - ./backend/.env 
     ports:
       - "6000:5001"
-    #volumes:
-    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
-      - ./backend:/app # Mount your local code into the container
-    #networks:
-    #  - busapp-network
+      - ./backend:/app 
 
   test-webapp:
-    #image: busapp
     build:
-      context: ./backend # Path to the backend folder
-      dockerfile: Dockerfile.testport # Dockerfile inside the backend folder
+      context: ./backend 
+      dockerfile: Dockerfile.testport 
     env_file:
-      - ./backend/.env # Specify the path to the .env file
+      - ./backend/.env 
     ports:
-      - "5002:5002"
-    #volumes:
-    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
+      - "5002:5001"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
-      - ./backend:/app # Mount your local code into the container
+      - ./backend:/app 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5002/api/posts"]
+      test: ["CMD", "curl", "-f", "http://localhost:5002/api/posts"] # Wait for backend to start, retry if not ready
       interval: 10s
       timeout: 5s
-      retries: 3
-    #networks:
-    #  - busapp-network
+      retries: 5
   test-client-vite:
-    #image: cypress/included:13.16.1 # Using the official Cypress Docker image
     build:
-      context: ./frontend # Path to the backend folder
-      dockerfile: Dockerfile # Dockerfile inside the backend folder
+      context: ./frontend 
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
-    #    volumes:
-    #      - ./backend/wwwroot:/app/dist
     volumes:
-      - ./frontend:/app # Mount the frontend code directory into the container
-      - /app/node_modules # Prevent overwriting node_modules in container with local version
-    #command: npm run test:unit #npm run testmode
+      - ./frontend:/app 
+      - /app/node_modules 
     environment:
-      - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
+      - VITE_MINIO_URL=http://minio:9000 
     depends_on:
       test-webapp:
         condition: service_healthy
 
+  # Frontend Unit tests 
   test-client-unit:
-    #image: cypress/included:13.16.1 # Using the official Cypress Docker image
     build:
-      context: ./frontend # Path to the backend folder
-      dockerfile: Dockerfile.unit # Dockerfile inside the backend folder
+      context: ./frontend 
+      dockerfile: Dockerfile.unit 
     ports:
       - "3000:3000"
-    #    volumes:
-    #      - ./backend/wwwroot:/app/dist
     volumes:
-      - ./frontend:/app # Mount the frontend code directory into the container
-      - /app/node_modules # Prevent overwriting node_modules in container with local version
-    #command: npm run test:unit #npm run testmode
+      - ./frontend:/app 
+      - /app/node_modules 
     environment:
-      - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
-    #depends_on:
-    #  test-webapp:
-    #    condition: service_healthy
+      - VITE_MINIO_URL=http://minio:9000 
 
+  # Frontend e2e tests - requires backend to work properly
   test-client-e2e:
-    #image: cypress/included:13.16.1 # Using the official Cypress Docker image
     build:
-      context: ./frontend # Path to the backend folder
-      dockerfile: Dockerfile.e2e # Dockerfile inside the backend folder
+      context: ./frontend
+      dockerfile: Dockerfile.e2e 
     ports:
       - "3001:3001"
-    #    volumes:
-    #      - ./backend/wwwroot:/app/dist
     volumes:
-      - ./frontend:/app # Mount the frontend code directory into the container
-      - /app/node_modules # Prevent overwriting node_modules in container with local version
-    #command: npm run test:unit #npm run testmode
+      - ./frontend:/app 
+      - /app/node_modules 
     environment:
-      - VITE_MINIO_URL=http://minio:9000 # React app talks directly to MinIO
+      - VITE_MINIO_URL=http://minio:9000 
     depends_on:
       test-webapp:
         condition: service_healthy
-  #  networks:
-  #    - busapp-network
   test-minio:
-    image: minio/minio:latest # Specify the MinIO image and tag here
+    image: minio/minio:latest 
     container_name: test-minio
     environment:
-      # Set up root user credentials here
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: your-secret-password
     ports:
-      - "9000:9000" # MinIO API port
-      - "9001:9001" # MinIO web console port
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - minio-data:/data # Persist data across restarts
-    command: server /data #--console-address ":9001"
-    #networks:
-    #  - busapp-network
+      - minio-data:/data 
+    command: server /data 
 
 volumes:
   minio-data:
-#networks:
-#  busapp-network:
-#    driver: bridge
+

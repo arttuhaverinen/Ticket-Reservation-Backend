@@ -3,14 +3,12 @@ version: "3"
 services:
   backend:
     build:
-      context: . # Path to the backend folder
-      dockerfile: ./backend/Dockerfile.prod # Dockerfile inside the backend folder
+      context: .
+      dockerfile: ./backend/Dockerfile.prod 
     env_file:
-      - ./backend/.env # Specify the path to the .env file
+      - ./backend/.env 
     ports:
       - "5001:5001"
-    #volumes:
-    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
       PROD_ELASTICSEARCH_URI: "http://prod-elasticsearch:9200"
@@ -18,7 +16,7 @@ services:
       - prod-kibana
   frontend:
     build:
-      context: . # Adjust this to point to your React app's directory
+      context: .
       dockerfile: ./frontend/Dockerfile.prod
 
     ports:
@@ -36,37 +34,33 @@ services:
       - backend
 
   minio:
-    image: minio/minio:latest # Specify the MinIO image and tag here
+    image: minio/minio:latest 
     container_name: prod-minio
     environment:
-      # Set up root user credentials here
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports:
       - "9000:9000" # MinIO API port
       - "9001:9001" # MinIO web console port
     volumes:
-      - minio-data:/data # Persist data across restarts
+      - minio-data:/data 
     command: server /data --console-address ":9001"
-    #networks:
-    #  - busapp-network
   redis:
     image: redis
     expose:
       - "6379"
   prod-elasticsearch:
-    #image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: prod-elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false # No credentials needed, Elasticsearch port cant be accessed from outside internet
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g # Limit RAM to 1gb for now
     ports:
       - 9200:9200
       - 9300:9300
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data # Persist Elasticsearch data
+      - elasticsearch_data:/usr/share/elasticsearch/data 
     mem_limit: 2g
     healthcheck:
       test: curl -s http://localhost:9200/_cluster/health | grep -E '"status":"(green|yellow)"'
@@ -78,11 +72,11 @@ services:
     image: docker.elastic.co/kibana/kibana:7.10.2
     container_name: prod-kibana
     environment:
-      - ELASTICSEARCH_HOSTS=http://prod-elasticsearch:9200 # Use HTTP for development
+      - ELASTICSEARCH_HOSTS=http://prod-elasticsearch:9200 
       - NODE_OPTIONS=--max-old-space-size=512
     ports:
-      - 5601:5601 # Expose Kibana UI on port 5601
-    mem_limit: 1g
+      - 5601:5601 
+    mem_limit: 1g # Limit RAM to 1gb
     depends_on:
       prod-elasticsearch:
         condition: service_healthy
@@ -119,6 +113,4 @@ volumes:
   elasticsearch_data:
   prometheus:
   grafana:
-#  minio-data-prod:
-#    driver: local # Ensures a local volume is used
 

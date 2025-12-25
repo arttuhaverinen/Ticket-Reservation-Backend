@@ -1,18 +1,14 @@
 services:
   test-webapp-run-tests:
-    #image: busapp
     build:
-      context: ./backend # Path to the backend folder
-      dockerfile: Dockerfile.runtests # Dockerfile inside the backend folder
+      context: ./backend 
+      dockerfile: Dockerfile.runtests 
     env_file:
-      - ./backend/.env # Specify the path to the .env file
+      - ./backend/.env 
     ports:
       - "6000:5001"
-    #volumes:
-    #  - ./backend:/app # Mount the backend folder to the /app directory in the container
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
     volumes:
-      - ./backend:/app # Mount your local code into the container
-    #networks:
-    #  - busapp-network
+      - ./backend:/app 
+
