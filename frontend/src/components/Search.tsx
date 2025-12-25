@@ -14,6 +14,7 @@ export const Search = () => {
 	const [startDate, setStartDate] = useState<string | undefined>(
 		new Date().toJSON().split("T")[0]
 	);
+	const locations = ["Joensuu", "Kuopio", "Nurmes", "Tampere"]
 
 	return (
 		<Container className="w-100 my-3 overflow-hidden">
@@ -34,11 +35,9 @@ export const Search = () => {
 								aria-label="Default select example"
 								value={departureLocation}
 							>
-								<option value="Joensuu">Joensuu</option>
-								<option value="Kuopio">Kuopio</option>
-								<option value="Nurmes">Nurmes</option>
-								<option value="Tampere">Tampere</option>
-							</Form.Select>
+								{locations.map(loc => {
+									return <option >{loc}</option>
+								})}							</Form.Select>
 							<Form.Text className="text-muted"></Form.Text>
 						</Form.Group>
 					</Col>
@@ -50,10 +49,9 @@ export const Search = () => {
 								aria-label="Default select example"
 								value={destinationLocation}
 							>
-								<option value="Joensuu">Joensuu</option>
-								<option value="Kuopio">Kuopio</option>
-								<option value="Nurmes">Nurmes</option>
-								<option value="Tampere">Tampere</option>
+								{locations.map(loc => {
+									return <option>{loc}</option>
+								})}
 							</Form.Select>
 						</Form.Group>
 					</Col>
@@ -93,7 +91,7 @@ export const Search = () => {
 								to={`tickets?departure=${departureLocation}&destination=${destinationLocation}&date=${startDate}`}
 							>
 								<Button className="w-100 h-75 p-2 my-auto" variant="primary">
-									haku
+									Hae matkoja
 								</Button>
 							</Link>
 						</Link>
