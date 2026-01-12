@@ -1,23 +1,10 @@
-# Use the Node.js 20 image
-#FROM node:18-bullseye
 FROM cypress/included:13.16.1  
 # Use the Cypress image that includes Node.js and Cypress
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first
 COPY package*.json ./
 
-# Install dependencies including Cypress
 RUN npm install
 
-# Copy the rest of your application files
 COPY . .
-
-# Install Cypress binaries (if needed)
-#RUN npx cypress install
-
-# Expose necessary ports and start the application
-
-#

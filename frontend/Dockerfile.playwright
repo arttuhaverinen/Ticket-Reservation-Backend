@@ -1,15 +1,10 @@
-# Use Node.js 20 as the base image
 FROM mcr.microsoft.com/playwright:v1.50.0-noble  
-# Set working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies
 COPY package*.json ./ 
 
-# Install project dependencies
 RUN npm install
 
-# Copy the rest of your app files into the container
 COPY . .
 
 # Install Playwright browsers (if not already included in the base image)
