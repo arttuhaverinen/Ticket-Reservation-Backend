@@ -1,13 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:35792ea4ad1db051981f62b313f1be3b46b1f45cadbaa3c288cd0d3056eefb83 AS build-env
 WORKDIR /app
 
-# Copy everything (source code)
 COPY . ./
-
 
 # Restore NuGet packages
 RUN dotnet restore
 
 # Command to run the app with file watching for automatic reload
-#ENTRYPOINT ["dotnet", "test", "--logger", "console;verbosity=detailed"]
+#ENTRYPOINT ["dotnet", "test", "--logger", "console;verbosity=detailed"] // Use this for more details
 ENTRYPOINT ["dotnet", "run", "--launch-profile", "Test"]
